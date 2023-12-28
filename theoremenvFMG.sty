@@ -43,20 +43,10 @@
     \swapnumbers
 \fi
 
-\newcommand{\colorcommand}[2]{% comando para elegir si activar los colores o no
-    \if@coloroption
-        #1
-    \else
-        #2
-    \fi
-}
-\newcommand{\englishname}[2]{% comando para elegir si utilizar el inglés o no
-    \if@en
-        #1
-    \else
-        #2
-    \fi
-}
+% comando para elegir si activar los colores o no
+\newcommand{\colorcommand}[2]{\if@coloroption#1\else#2\fi}
+% comando para elegir si utilizar el inglés o no
+\newcommand{\englishname}[2]{\if@en#1\else#2\fi}
 
 % Comando de colores
 \newcommand{\colorb}[1]{\colorcommand{\textcolor{Blue}{#1}}{#1}}
