@@ -22,8 +22,8 @@
 \DeclareOption{leftnum}{\@swapnumtrue}
 \DeclareOption{rightnum}{\@swapnumfalse}
 \DeclareOption{contnum}{\@contnumtrue}
-\DeclareOption{english}{\@entrue}
 \DeclareOption{nocontnum}{\@contnumfalse}
+\DeclareOption{english}{\@entrue}
 \DeclareOption{uprightd}{\AtEndOfPackage{\DeclareMathSymbol{d}{\mathalpha}{operators}{`d}}}
 \DeclareOption{uprighte}{\AtEndOfPackage{\DeclareMathSymbol{e}{\mathalpha}{operators}{`e}}}
 \DeclareOption{uprighti}{\AtEndOfPackage{\DeclareMathSymbol{i}{\mathalpha}{operators}{`i}}}
@@ -35,7 +35,7 @@
 \LoadClass[12pt,letterpaper,oneside]{book}
 
 %% Packages necesarios
-\RequirePackage[utf8]{inputenc} %Encoding
+\RequirePackage[utf8]{inputenc} % Encoding
 \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
 \RequirePackage{amsmath, amssymb, amsthm, graphicx} % Varios
 

@@ -1,6 +1,8 @@
 % se puede agregar la opción [english] para 
 %  memorias o tesis en inglés (borrando el archivo .aux)
-\documentclass{umemoria} 
+\documentclass[draft]{umemoria} 
+
+\usepackage[color]{theoremsenvFMG}
 
 \depto{Departamento de ???}
 \author{Nombre Completo Autor}
@@ -32,6 +34,8 @@
 
 \usepackage{lipsum}
 
+% \includeonly{lib/cap2.tex,lib/cap3.tex}
+
 \begin{document}
 
 \frontmatter
@@ -62,10 +66,10 @@
 
 \mainmatter
 
-\input{lib/intro.tex}
-\input{lib/cap2.tex}
-\input{lib/cap3.tex}
-\input{lib/conclu.tex}
+\include{lib/intro.tex}
+\include{lib/cap2.tex}
+\include{lib/cap3.tex}
+\include{lib/conclu.tex}
 
 % ver https://www.overleaf.com/learn/latex/Glossaries
 % \input{lib/glosario.tex} % opcional
