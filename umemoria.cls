@@ -11,16 +11,12 @@
 \ProvidesClass{umemoria}[2021/09/23 v1.6 Clase LaTeX para estandarizacion de Memorias U. de Chile]
 
 %% Definicion de Condicionales
-\newif\if@swapnum
 \newif\if@contnum
 \newif\if@en
-\@swapnumfalse
 \@contnumtrue
 \@enfalse
 
 %% Declaracion de Opciones
-\DeclareOption{leftnum}{\@swapnumtrue}
-\DeclareOption{rightnum}{\@swapnumfalse}
 \DeclareOption{contnum}{\@contnumtrue}
 \DeclareOption{nocontnum}{\@contnumfalse}
 \DeclareOption{english}{\@entrue}
@@ -109,51 +105,6 @@
 
 }
 {\vfill\null}
-
-%% Teoremas, proofs, etc
-\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\scshape\footnotesize#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
-
-\newtheoremstyle{miestilo}{\baselineskip}{3pt}{\itshape}{}{\bfseries}{}{.5em}{}
-\newtheoremstyle{miobs}{\baselineskip}{3pt}{}{}{\bfseries}{}{.5em}{}
-\if@swapnum
-    \swapnumbers
-\fi
-\theoremstyle{miestilo}
-\newtheorem{defn}{Definición}[chapter]
-\if@contnum
-    \if@en
-        \newtheorem{teo}[defn]{Theorem}
-        \newtheorem{cor}[defn]{Corollary}
-        \newtheorem{lema}[defn]{Lemma}
-        \newtheorem{prop}[defn]{Proposition}
-    \else
-        \newtheorem{teo}[defn]{Teorema}
-        \newtheorem{cor}[defn]{Corolario}
-        \newtheorem{lema}[defn]{Lema}
-        \newtheorem{prop}[defn]{Proposición}
-    \fi
-\else
-    \if@en
-        \newtheorem{teo}{Theorem}[chapter]
-        \newtheorem{cor}{Corollary}[chapter]
-        \newtheorem{lema}{Lemma}[chapter]
-        \newtheorem{prop}{Proposition}[chapter]
-    \else
-        \newtheorem{teo}{Teorema}[chapter]
-        \newtheorem{cor}{Corolario}[chapter]
-        \newtheorem{lema}{Lema}[chapter]
-        \newtheorem{prop}{Proposición}[chapter]
-    \fi
-\fi
-\theoremstyle{miobs}
-
-\if@en
-    \newtheorem*{ej}{Example}
-    \newtheorem*{obs}{Observation}
-\else
-    \newtheorem*{ej}{Ejemplo}
-    \newtheorem*{obs}{Observación}
-\fi
 
 %% Comandos para la portada
 \global\def\@universidad{Universidad de Chile}
