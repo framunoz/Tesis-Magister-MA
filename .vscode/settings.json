@@ -1,5 +1,14 @@
 {
-    "cSpell.language": "en,es-ES",
+    "spellright.language": [
+        "en",
+        "es",
+        "es-ES"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "plaintext",
+        "latex"
+    ],
     "cSpell.words": [
         "cotutela"
     ]

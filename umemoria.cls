@@ -32,7 +32,9 @@
 
 %% Packages necesarios
 \RequirePackage[utf8]{inputenc} % Encoding
-\RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
+% Hay que cambiar a la antigua geometría después!
+% \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
+\RequirePackage[top=2cm, left=2cm, bottom=2cm, right=3cm, paper=letterpaper]{geometry} % Margenes
 % \RequirePackage{amsmath, amssymb, amsthm, graphicx} % Varios
 \RequirePackage{graphicx} % Varios
 
