@@ -33,7 +33,8 @@
 %% Packages necesarios
 \RequirePackage[utf8]{inputenc} % Encoding
 \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
-\RequirePackage{amsmath, amssymb, amsthm, graphicx} % Varios
+% \RequirePackage{amsmath, amssymb, amsthm, graphicx} % Varios
+\RequirePackage{graphicx} % Varios
 
 %% Caption antes de la tabla
 \RequirePackage{caption}
@@ -261,25 +262,3 @@
 \makeatletter
 \appto{\appendices}{\def\Hy@chapapp{Appendix}}
 \makeatother
-
-%% Miscelaneos
-\newcommand{\A}{\mathcal{A}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\D}{\mathbb{D}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\F}{\mathcal{F}}
-\newcommand{\G}{\mathcal{G}}
-\renewcommand{\H}{\mathcal{H}}
-\newcommand{\K}{\mathcal{K}}
-\renewcommand{\L}{\mathcal{L}}
-\newcommand{\M}{\mathcal{M}}
-\newcommand{\N}{\mathbb{N}}
-\renewcommand{\M}{\mathcal{M}}
-\renewcommand{\P}{\mathbb{P}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\R}{\mathbb{R}}
-\renewcommand{\S}{\mathcal{S}}
-\newcommand{\T}{\mathcal{T}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\1}{\mathbf{1}}
-\let\epsilon\varepsilon

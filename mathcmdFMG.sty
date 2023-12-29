@@ -1,16 +1,15 @@
 %% Base del template: overleaf.com/learn/latex/Writing_your_own_package
-%% Para saber más: overleaf.com/learn/latex/theorems_and_proofs
 
 %% Identificación
 %% El paquete se identifica a sí mismo y se define la versión de LaTeX necesitada
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{theoremenvFMG}[2020/08/30 Paquete que maneja el entornos de los teoremas]
+\ProvidesPackage{mathcmdFMG}[2023/12/28 Paquete que proporciona comandos matemáticos]
 
 %% ====================================================================
 
 %% Paquetes requeridos y definiciones preliminares, necesarias para las opciones
-\RequirePackage{amssymb,amsthm}                    % Para los símbolos matemáticos
-% \RequirePackage[dvipsnames]{xcolor}        % Para cambiar el color de la letra
+\RequirePackage{amssymb}  % Para los símbolos matemáticos
+\RequirePackage{physics}  % Para las diferenciales y paréntesis
 
 \newif\if@swapeps  % Para controlar el estilo del epsilon
 \@swapepsfalse
@@ -76,32 +75,32 @@
 %% ====================================================================
 
 % Macros de letras estilo blackboard
-\newcommand{\bA}{\mathcal{A}}
-\newcommand{\bB}{\mathcal{B}}
-\newcommand{\bC}{\mathcal{C}}
-\newcommand{\bD}{\mathcal{D}}
-\newcommand{\bE}{\mathcal{E}}
-\newcommand{\bF}{\mathcal{F}}
-\newcommand{\bG}{\mathcal{G}}
-\newcommand{\bH}{\mathcal{H}}
-\newcommand{\bI}{\mathcal{I}}
-\newcommand{\bJ}{\mathcal{J}}
-\newcommand{\bK}{\mathcal{K}}
-\newcommand{\bL}{\mathcal{L}}
-\newcommand{\bM}{\mathcal{M}}
-\newcommand{\bN}{\mathcal{N}}
-\newcommand{\bO}{\mathcal{O}}
-\newcommand{\bP}{\mathcal{P}}
-\newcommand{\bQ}{\mathcal{Q}}
-\newcommand{\bR}{\mathcal{R}}
-\newcommand{\bS}{\mathcal{S}}
-\newcommand{\bT}{\mathcal{T}}
-\newcommand{\bU}{\mathcal{U}}
-\newcommand{\bV}{\mathcal{V}}
-\newcommand{\bW}{\mathcal{W}}
-\newcommand{\bX}{\mathcal{X}}
-\newcommand{\bY}{\mathcal{Y}}
-\newcommand{\bZ}{\mathcal{Z}}
+\newcommand{\bA}{\mathbb{A}}
+\newcommand{\bB}{\mathbb{B}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\bD}{\mathbb{D}}
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\bG}{\mathbb{G}}
+\newcommand{\bH}{\mathbb{H}}
+\newcommand{\bI}{\mathbb{I}}
+\newcommand{\bJ}{\mathbb{J}}
+\newcommand{\bK}{\mathbb{K}}
+\newcommand{\bL}{\mathbb{L}}
+\newcommand{\bM}{\mathbb{M}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bO}{\mathbb{O}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bS}{\mathbb{S}}
+\newcommand{\bT}{\mathbb{T}}
+\newcommand{\bU}{\mathbb{U}}
+\newcommand{\bV}{\mathbb{V}}
+\newcommand{\bW}{\mathbb{W}}
+\newcommand{\bX}{\mathbb{X}}
+\newcommand{\bY}{\mathbb{Y}}
+\newcommand{\bZ}{\mathbb{Z}}
 
 %% ====================================================================
 
@@ -114,24 +113,3 @@
 \newcommand{\F}{\bF}
 \newcommand{\K}{\bK}
 \newcommand{\1}{\mathbf{1}}
-
-
-% \newcommand{\A}{\mathcal{A}}
-% \newcommand{\C}{\mathbb{C}}
-% \newcommand{\D}{\mathbb{D}}
-% \newcommand{\E}{\mathbb{E}}
-% \newcommand{\F}{\mathcal{F}}
-% \newcommand{\G}{\mathcal{G}}
-% \renewcommand{\H}{\mathcal{H}}
-% \newcommand{\K}{\mathcal{K}}
-% \renewcommand{\L}{\mathcal{L}}
-% \newcommand{\M}{\mathcal{M}}
-% \newcommand{\N}{\mathbb{N}}
-% \renewcommand{\M}{\mathcal{M}}
-% \renewcommand{\P}{\mathbb{P}}
-% \newcommand{\Q}{\mathbb{Q}}
-% \newcommand{\R}{\mathbb{R}}
-% \renewcommand{\S}{\mathcal{S}}
-% \newcommand{\T}{\mathcal{T}}
-% \newcommand{\Z}{\mathbb{Z}}
-% \let\epsilon\varepsilon
