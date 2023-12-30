@@ -1,0 +1,49 @@
+%% Base del template: overleaf.com/learn/latex/Writing_your_own_package
+
+%% Identificación
+%% El paquete se identifica a sí mismo y se define la versión de LaTeX necesitada
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mathprobcmdFMG}[2023/12/28 Paquete que proporciona comandos matemáticos]
+
+%% ====================================================================
+
+% Si se le entrega otra opción, que retorne una advertencia.
+\DeclareOption*{
+    \PassOptionsToPackage{\CurrentOption}{mathcmdFMG}
+}
+\ProcessOptions\relax
+
+%% ====================================================================
+
+%% Paquetes requeridos y definiciones preliminares, necesarias para las opciones
+\RequirePackage{mathcmdFMG}  % Para los símbolos matemáticos
+\RequirePackage{physics}  % Para las diferenciales y paréntesis
+\RequirePackage{xifthen}
+
+%% ====================================================================
+
+\newcommand{\Tpf}{T_{\#}}
+
+\newcommand{\Simplex}[1][n]{\Sigma_{#1}}
+\newcommand{\ProbSpace}[1][\cX]{\cP(#1)}
+\newcommand{\ProbSpaceAC}[1][\cX]{\cP_{\text{ac}}(#1)}
+
+%% ====================================================================
+% Macros para operadores
+\DeclareMathOperator{\ProbOp}{\mathbb{P}}
+\newcommand{\Prob}[1]{\ProbOp\left(#1\right)}
+\DeclareMathOperator{\ExpOp}{\mathbb{E}}
+\newcommand{\Exp}[1]{\ExpOp\left[#1\right]}
+\DeclareMathOperator{\Cpl}{Cpl}
+
+%% ====================================================================
+% Macros para diferenciales
+\newcommand{\ddarg}[2]{\if#2{}\dd{#1}\else\dd{#1(#2)}\fi}
+% \newcommand{\ddarg}[2]{\ifthenelse{\isempty{#2}}{\dd{#1}}{\dd{#1(#2)}}}1
+% \newcommand{\dP}[1][]{\ifthenelse{\isempty{#1}}{\dd{\ProbOP}}{\dd{\ProbOP(#1)}}}
+% \newcommand{\dmu}[1][]{\ifthenelse{\isempty{#1}}{\dd{\mu}}{\dd{\mu(#1)}}}
+% \newcommand{\dnu}[1][]{\ifthenelse{\isempty{#1}}{\dd{\nu}}{\dd{\nu(#1)}}}
+
+\newcommand{\dP}[1][]{\ddarg{\ProbOp}{#1}}
+\newcommand{\dmu}[1][]{\ddarg{\mu}{#1}}
+\newcommand{\dnu}[1][]{\ddarg{\nu}{#1}}
