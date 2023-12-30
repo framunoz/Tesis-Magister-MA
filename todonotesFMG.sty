@@ -22,13 +22,15 @@
 %% ====================================================================
 %% Cuerpo del paquete, la mayor parte de las declaraciones aparecen aquí.
 
-\setlength{\marginparwidth}{2cm} % Ancho de la nota al margen
+% \setlength{\marginparwidth}{2cm} % Ancho de la nota al margen
 
 % Comando personalizado para notas al margen
 \newcommand{\customtodo}[2][]{\todo[size=footnotesize,tickmarkheight=0.1cm, #1]{#2}} % Comando para notas al margen
 
 % Comando para Francisco
-\newcommand{\FM}[2][]{\customtodo[author=Francisco,color=blue!50, #1]{#2}} % Comando para notas al margen
+\newcommand{\FM}[2][]{\customtodo[author=Francisco,color=blue!20, #1]{#2}} % Comando para notas al margen
+\newcommand{\FMinline}[2][]{\FM[inline, #1]{#2}}
 
 % Comando para Joaquín
 \newcommand{\JF}[2][]{\customtodo[author=Joaquín, #1]{#2}} % Comando para notas al margen
+\newcommand{\JFinline}[2][]{\JF[inline, #1]{#2}}
