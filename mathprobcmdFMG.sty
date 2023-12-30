@@ -22,28 +22,45 @@
 
 %% ====================================================================
 
-\newcommand{\Tpf}{T_{\#}}
-
+% Macros para espacios
 \newcommand{\Simplex}[1][n]{\Sigma_{#1}}
 \newcommand{\ProbSpace}[1][\cX]{\cP(#1)}
 \newcommand{\ProbSpaceAC}[1][\cX]{\cP_{\text{ac}}(#1)}
 
 %% ====================================================================
 % Macros para operadores
+
+% Transporte push-forward
+\newcommand{\Tpf}{T_{\#}}
+% Convergencia débil
+\newcommand{\wto}{\Rightarrow}
+% Probabilidad
 \DeclareMathOperator{\ProbOp}{\mathbb{P}}
-\newcommand{\Prob}[1]{\ProbOp\left(#1\right)}
+\newcommand{\Prob}[1][]{\opparent{\ProbOp}{#1}{\left(#1\right)}}
+% Esperanza
 \DeclareMathOperator{\ExpOp}{\mathbb{E}}
-\newcommand{\Exp}[1]{\ExpOp\left[#1\right]}
+\newcommand{\Exp}[1][]{\opparent{\ExpOp}{#1}{\left[#1\right]}}
+% Variación Total
+\DeclareMathOperator{\TVOp}{TV}
+\newcommand{\TV}[2]{\opparent{\TVOp}{#1}{\left(#1, #2\right)}}
+% Divergencia de Kullback-Leibler
+\DeclareMathOperator{\KLOp}{KL}
+\newcommand{\KL}[2]{\opparent{\KLOp}{#1}{\left(#1 \mid #2\right)}}
+% Divergencia de Jensen-Shannon
+\DeclareMathOperator{\JSOp}{JS}
+\newcommand{\JS}[2]{\opparent{\JSOp}{#1}{\left(#1, #2\right)}}
+% Coupling
 \DeclareMathOperator{\Cpl}{Cpl}
+% Distancia de Wasserstein
+\newcommand{\Wasserstein}[3][1]{W_{#1}(#2,#3)}
+% Espacio de Wasserstein
+\newcommand{\WassersteinSpace}[2][1]{\cW_{#1}(#2)}
 
 %% ====================================================================
 % Macros para diferenciales
-\newcommand{\ddarg}[2]{\if#2{}\dd{#1}\else\dd{#1(#2)}\fi}
-% \newcommand{\ddarg}[2]{\ifthenelse{\isempty{#2}}{\dd{#1}}{\dd{#1(#2)}}}1
-% \newcommand{\dP}[1][]{\ifthenelse{\isempty{#1}}{\dd{\ProbOP}}{\dd{\ProbOP(#1)}}}
-% \newcommand{\dmu}[1][]{\ifthenelse{\isempty{#1}}{\dd{\mu}}{\dd{\mu(#1)}}}
-% \newcommand{\dnu}[1][]{\ifthenelse{\isempty{#1}}{\dd{\nu}}{\dd{\nu(#1)}}}
+\newcommand{\ddpar}[2]{\if#2{}\dd{#1}\else\dd{#1(#2)}\fi}
 
-\newcommand{\dP}[1][]{\ddarg{\ProbOp}{#1}}
-\newcommand{\dmu}[1][]{\ddarg{\mu}{#1}}
-\newcommand{\dnu}[1][]{\ddarg{\nu}{#1}}
+\newcommand{\dP}[1][]{\ddpar{\ProbOp}{#1}}
+\newcommand{\dmu}[1][]{\ddpar{\mu}{#1}}
+\newcommand{\dgamma}[1][]{\ddpar{\gamma}{#1}}
+\newcommand{\dnu}[1][]{\ddpar{\nu}{#1}}

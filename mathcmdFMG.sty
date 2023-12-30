@@ -10,6 +10,7 @@
 %% Paquetes requeridos y definiciones preliminares, necesarias para las opciones
 \RequirePackage{amssymb}  % Para los símbolos matemáticos
 \RequirePackage{physics}  % Para las diferenciales y paréntesis
+\RequirePackage{ifthen}
 
 \newif\if@swapeps  % Para controlar el estilo del epsilon
 \@swapepsfalse
@@ -117,6 +118,10 @@
 %% ====================================================================
 
 % Macros de operadores
+
+% Si el otro argumento es vacío, retorna el símbolo del operador sin evaluar
+\newcommand{\opparent}[3]{\ifthenelse{\equal{#2}{}}{#1}{#1#3}}
+
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\dom}{dom}
@@ -124,7 +129,15 @@
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\Lip}{Lip}
+% Lipschitz
+\DeclareMathOperator{\LipOp}{Lip}
+\newcommand{\Lip}[1][]{\opparent{\LipOp}{#1}{\left(#1\right)}}
+% Espacio de funciones continuas
+\DeclareMathOperator{\ContSpaceOp}{\cC}
+\newcommand{\ContSpace}[1][]{\opparent{\ContSpaceOp}{#1}{\left(#1\right)}}
+% Espacio de funciones continuas acotadas
+\DeclareMathOperator{\ContBoundedSpaceOp}{\ContSpaceOp_{\mathrm{b}}}
+\newcommand{\ContBoundedSpace}[1][]{\opparent{\ContBoundedSpaceOp}{#1}{\left(#1\right)}}
 
 %% ====================================================================
 % Macros de diferenciales
