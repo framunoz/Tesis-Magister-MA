@@ -12,9 +12,11 @@
 
 %% Definicion de Condicionales
 \newif\if@contnum
-\newif\if@en
 \@contnumtrue
+\newif\if@en
 \@enfalse
+\newif\if@final
+\@finalfalse
 
 %% Declaracion de Opciones
 \DeclareOption{contnum}{\@contnumtrue}
@@ -24,6 +26,7 @@
 \DeclareOption{uprighte}{\AtEndOfPackage{\DeclareMathSymbol{e}{\mathalpha}{operators}{`e}}}
 \DeclareOption{uprighti}{\AtEndOfPackage{\DeclareMathSymbol{i}{\mathalpha}{operators}{`i}}}
 \DeclareOption{upright}{\ExecuteOptions{uprightd,uprighte,uprighti}}
+\DeclareOption{final}{\@finaltrue}
 
 %% Pasar Opciones a clase Book
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
@@ -33,9 +36,12 @@
 %% Packages necesarios
 \RequirePackage[utf8]{inputenc} % Encoding
 % Hay que cambiar a la antigua geometría después!
-% \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
-\RequirePackage[top=2cm, left=2cm, bottom=2cm, right=3cm, paper=letterpaper]{geometry} % Margenes
-% \RequirePackage{amsmath, amssymb, amsthm, graphicx} % Varios
+\if@final
+    \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
+\else
+    \RequirePackage[top=2cm, left=1cm, bottom=2cm, right=4cm, paper=letterpaper]{geometry} % Margenes
+    \setlength{\marginparwidth}{3.5cm} % Ancho de la nota al margen
+\fi
 \RequirePackage{graphicx} % Varios
 
 %% Caption antes de la tabla
