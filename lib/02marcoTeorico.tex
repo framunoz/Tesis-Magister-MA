@@ -1,0 +1,75 @@
+\chapter{Transporte Óptimo de Masas}
+En este capítulo se abordará el problema de transporte óptimo, la distancia de Wasserstein, y el problema de los baricentros de Wasserstein. Además, se presentarán algunas propiedades de la distancia de Wasserstein, las cuales serán de utilidad en el desarrollo de este trabajo. La notación y definiciones utilizadas en este capítulo se encuentran basadas en \cite{villani2009optimal} y \cite{peyre2019computational}. Sin embargo, antes de empezar a enunciar definiciones y propiedades, se sentarán la notación y definiciones básicas que se utilizarán a lo largo de este trabajo.
+
+\section{Notación}
+ {
+  \begin{definition}
+      Se definen los siguientes espacios:
+      \begin{itemize}
+          \item $(\cX, d)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
+          \item $\ProbSpace[\cX]$ denotará al conjunto de medidas de probabilidad en $\cX$, utilizando la $\sigma$-álgebra de Borel.
+          \item $\ProbSpaceAC[\cX]$ denotará al conjunto de medidas de probabilidad absolutamente continuas con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
+          \item $\mathcal{C}(\cX)$ denotará al conjunto de funciones continuas en $\cX$.
+      \end{itemize}
+  \end{definition}
+
+  \begin{definition}
+      Se definirá el \emph{simplex} de dimension $n$ como el conjunto de vectores de $\R^{n}$ cuyas componentes suman 1, es decir,
+      \begin{equation}
+          \Simplex \eqdef \left\{
+          x \in [0, 1]^{n} \colon \sum_{i=1}^{n} x_{i} = 1
+          \right\},
+      \end{equation}
+      y a los elementos pertenecientes al simplex se les llamará \emph{vectores de probabilidad}.
+  \end{definition}
+
+
+  %   \begin{definition}
+  %       Se denotará al \emph{conjunto de medidas de probabilidad} en $\cX$ por medio de $\ProbSpace$, y al \emph{conjunto de medidas de probabilidad absolutamente continuas} con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos) por medio de $\ProbSpaceAC$.
+  %   \end{definition}
+
+  \begin{definition}
+      Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se denotará por $\Cpl(\mu, \nu)$ al conjunto de medidas de probabilidad en $\cX \times \cY$ cuyas proyecciones marginales sean $\mu$ y $\nu$, es decir,
+      \begin{equation}
+          \Cpl(\mu, \nu) \eqdef \left\{
+          \pi \in \ProbSpace[\cX \times \cY] \colon \pi(A \times \cY) = \mu(A), \pi(\cX \times B) = \nu(B), \forall A \subseteq \cX, B \subseteq \cY
+          \right\}.
+      \end{equation}
+  \end{definition}
+
+  \begin{definition}
+      Para una función medible $T:\cX \to \cY$ se define el \emph{operador push-forward} de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
+      \begin{equation}
+          \label{eq:pushForward}
+          \int_{\cX} f(x) \dd{\Tpf\mu(x)} = \int_{\cY} f(T(x)) \dmu[x], \quad \forall f \in \mathcal{C}(\cY),
+      \end{equation}
+      para toda $\mu \in \ProbSpace[\cX]$. Adicionalmente, el operador push-forward se puede definir como aquel operador que satisface la siguiente relación:
+      \begin{equation}
+          \label{eq:pushForward2}
+          \forall A \subseteq \cY \text{ medible}, \quad \Tpf\mu(A) = \mu(T^{-1}(A)).
+      \end{equation}
+  \end{definition}
+
+  \begin{remark}
+      Se puede notar que $\Tpf$ preserva la positividad y la masa total, es decir, si $\mu \in \ProbSpace[\cX]$, entonces $\Tpf\mu \in \ProbSpace[\cY]$.
+  \end{remark}
+
+  \begin{remark}
+      Para el caso en que la medida $\mu \in \ProbSpace$ sea una medida discreta\footnote{i.e. $\mu = \sum_{i=0}^{n} m_i \delta_{x_i}$ con $m\in\Simplex$, $x_1,\ldots, x_n\in\cX$ y $\delta_x$ la medida de Dirac en $x$}, entonces el operador $\Tpf$ lo que hará será intercambiar la masa de cada punto de $\cX$ a su imagen en $\cY$, es decir,
+      \begin{equation}
+          \label{eq:pushForwardDiscreto}
+          \Tpf\mu = \sum_{i=0}^{n} m_i \delta_{T(x_i)}.
+      \end{equation}
+
+  \end{remark}
+
+
+
+ }
+
+\section{El problema de transporte}
+ {
+  En esta sección se presentará el problema de transporte óptimo clásico, o el problema de Monge. Este problema consiste en encontrar una manera óptima de transportar una medida de probabilidad $\mu$ a otra medida de probabilidad $\nu$. Para esto, se considera un costo de transporte $c(x, y)$, el cual representa el costo de transportar una unidad de masa desde $x$ a $y$. El problema de transporte óptimo consiste en encontrar una manera óptima de transportar la masa de $\mu$ a $\nu$ de manera que se minimice el costo total de transporte. Formalmente, el problema de transporte óptimo se puede definir de la siguiente manera:
+
+  Empezaremos definiendo
+ }
