@@ -3,63 +3,60 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 
 \section{Notación}
  {
+  \FM[inline]{Agregar alguna intro para lo que es una medida de probabilidad? para aquellas personas que vienen de otras áreas?}
   \begin{definition}
-      Se definen los siguientes espacios:
-      \begin{itemize}
-          \item $(\cX, d)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
-          \item $\ProbSpace[\cX]$ denotará al conjunto de medidas de probabilidad en $\cX$, utilizando la $\sigma$-álgebra de Borel.
-          \item $\ProbSpaceAC[\cX]$ denotará al conjunto de medidas de probabilidad absolutamente continuas con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
-          \item $\mathcal{C}(\cX)$ denotará al conjunto de funciones continuas en $\cX$.
-      \end{itemize}
+	  Se definen los siguientes espacios:
+	  \begin{itemize}
+		  \item $(\cX, d)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
+		  \item $\ProbSpace[\cX]$ denotará al conjunto de medidas de probabilidad en $\cX$, utilizando la $\sigma$-álgebra de Borel.
+		  \item $\ProbSpaceAC[\cX]$ denotará al conjunto de medidas de probabilidad absolutamente continuas con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
+		  \item $\mathcal{C}(\cX)$ denotará al conjunto de funciones continuas en $\cX$.
+		  \item ${\Lip}_{k}(\cX)$ denotará al conjunto de funciones $k$-Lipschitz en $\cX$. Mientras que se asumirá que $\Lip[\cX]$ denotará al conjunto de funciones $1$-Lipschitz en $\cX$. \FM[inline]{Se podría agregar una definición de función Lipschitz?}
+	  \end{itemize}
   \end{definition}
 
   \begin{definition}
-      Se definirá el \emph{simplex} de dimension $n$ como el conjunto de vectores de $\R^{n}$ cuyas componentes suman 1, es decir,
-      \begin{equation}
-          \Simplex \eqdef \left\{
-          x \in [0, 1]^{n} \colon \sum_{i=1}^{n} x_{i} = 1
-          \right\},
-      \end{equation}
-      y a los elementos pertenecientes al simplex se les llamará \emph{vectores de probabilidad}.
-  \end{definition}
-
-
-  %   \begin{definition}
-  %       Se denotará al \emph{conjunto de medidas de probabilidad} en $\cX$ por medio de $\ProbSpace$, y al \emph{conjunto de medidas de probabilidad absolutamente continuas} con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos) por medio de $\ProbSpaceAC$.
-  %   \end{definition}
-
-  \begin{definition}
-      Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se denotará por $\Cpl(\mu, \nu)$ al conjunto de medidas de probabilidad en $\cX \times \cY$ cuyas proyecciones marginales sean $\mu$ y $\nu$, es decir,
-      \begin{equation}
-          \Cpl(\mu, \nu) \eqdef \left\{
-          \pi \in \ProbSpace[\cX \times \cY] \colon \pi(A \times \cY) = \mu(A), \pi(\cX \times B) = \nu(B), \forall A \subseteq \cX, B \subseteq \cY
-          \right\}.
-      \end{equation}
+	  Se definirá el \emph{simplex} de dimension $n$ como el conjunto de vectores de $\R^{n}$ cuyas componentes suman 1, es decir,
+	  \begin{equation}
+		  \Simplex \eqdef \left\{
+		  x \in [0, 1]^{n} \colon \sum_{i=1}^{n} x_{i} = 1
+		  \right\},
+	  \end{equation}
+	  y a los elementos pertenecientes al simplex se les llamará \emph{vectores de probabilidad}.
   \end{definition}
 
   \begin{definition}
-      Para una función medible $T:\cX \to \cY$ se define el \emph{operador push-forward} de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
-      \begin{equation}
-          \label{eq:pushForward}
-          \int_{\cX} f(x) \dd{\Tpf\mu(x)} = \int_{\cY} f(T(x)) \dmu[x], \quad \forall f \in \mathcal{C}(\cY),
-      \end{equation}
-      para toda $\mu \in \ProbSpace[\cX]$. Adicionalmente, el operador push-forward se puede definir como aquel operador que satisface la siguiente relación:
-      \begin{equation}
-          \label{eq:pushForward2}
-          \forall A \subseteq \cY \text{ medible}, \quad \Tpf\mu(A) = \mu(T^{-1}(A)).
-      \end{equation}
+	  Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se denotará por $\Cpl(\mu, \nu)$ al conjunto de medidas de probabilidad en $\cX \times \cY$ cuyas proyecciones marginales sean $\mu$ y $\nu$, es decir,
+	  \begin{equation}
+		  \Cpl(\mu, \nu) \eqdef \left\{
+		  \gamma \in \ProbSpace[\cX \times \cY] \colon \gamma(A \times \cY) = \mu(A), \gamma(\cX \times B) = \nu(B), \forall A \subseteq \cX, B \subseteq \cY
+		  \right\}.
+	  \end{equation}
+  \end{definition}
+
+  \begin{definition}
+	  Para una función medible $T:\cX \to \cY$ se define el \emph{operador push-forward} de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
+	  \begin{equation}
+		  \label{eq:pushForward}
+		  \int_{\cX} f(x) \dd{\Tpf\mu(x)} = \int_{\cY} f(T(x)) \dmu[x], \quad \forall f \in \mathcal{C}(\cY),
+	  \end{equation}
+	  para toda $\mu \in \ProbSpace[\cX]$. Adicionalmente, el operador push-forward se puede definir como aquel operador que satisface la siguiente relación:
+	  \begin{equation}
+		  \label{eq:pushForward2}
+		  \forall A \subseteq \cY \text{ medible}, \quad \Tpf\mu(A) = \mu(T^{-1}(A)).
+	  \end{equation}
   \end{definition}
 
   \begin{remark}
-      Se puede notar que $\Tpf$ preserva la positividad y la masa total, es decir, si $\mu \in \ProbSpace[\cX]$, entonces $\Tpf\mu \in \ProbSpace[\cY]$.
+	  Se puede notar que $\Tpf$ preserva la positividad y la masa total, es decir, si $\mu \in \ProbSpace[\cX]$, entonces $\Tpf\mu \in \ProbSpace[\cY]$.
   \end{remark}
 
   \begin{remark}
-      Para el caso en que la medida $\mu \in \ProbSpace$ sea una medida discreta\footnote{i.e. $\mu = \sum_{i=0}^{n} m_i \delta_{x_i}$ con $m\in\Simplex$, $x_1,\ldots, x_n\in\cX$ y $\delta_x$ la medida de Dirac en $x$}, entonces el operador $\Tpf$ lo que hará será intercambiar la masa de cada punto de $\cX$ a su imagen en $\cY$, es decir,
-      \begin{equation}
-          \label{eq:pushForwardDiscreto}
-          \Tpf\mu = \sum_{i=0}^{n} m_i \delta_{T(x_i)}.
-      \end{equation}
+	  Para el caso en que la medida $\mu \in \ProbSpace$ sea una medida discreta\footnote{i.e. $\mu = \sum_{i=0}^{n} m_i \delta_{x_i}$ con $m\in\Simplex$, $x_1,\ldots, x_n\in\cX$ y $\delta_x$ la medida de Dirac en $x$}, entonces el operador $\Tpf$ lo que hará será intercambiar la masa de cada punto de $\cX$ a su imagen en $\cY$, es decir,
+	  \begin{equation}
+		  \label{eq:pushForwardDiscreto}
+		  \Tpf\mu = \sum_{i=0}^{n} m_i \delta_{T(x_i)}.
+	  \end{equation}
 
   \end{remark}
 
@@ -69,7 +66,153 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 
 \section{El problema de transporte}
  {
-  En esta sección se presentará el problema de transporte óptimo clásico, o el problema de Monge. Este problema consiste en encontrar una manera óptima de transportar una medida de probabilidad $\mu$ a otra medida de probabilidad $\nu$. Para esto, se considera un costo de transporte $c(x, y)$, el cual representa el costo de transportar una unidad de masa desde $x$ a $y$. El problema de transporte óptimo consiste en encontrar una manera óptima de transportar la masa de $\mu$ a $\nu$ de manera que se minimice el costo total de transporte. Formalmente, el problema de transporte óptimo se puede definir de la siguiente manera:
 
-  Empezaremos definiendo
+  \subsection*{El problema de Monge}
+  {
+	  En esta sección se introducirá el problema de transporte óptimo de Monge. En este problema se busca transportar la masa de la medida $\mu \in \ProbSpace[\cX]$ a la medida $\nu \in \ProbSpace[\cY]$ a través de una función medible $T: \cX \to \cY$, a la que llamaremos como \emph{función de transporte} o \emph{mapa de transporte}, utilizando una \emph{función de coste} $c(x, y)$, que representa el costo de transportar la masa del punto $x$ al punto $y$. Más formalmente, este problema se puede definir de la siguiente manera:
+
+	  \begin{definition}
+		  Dados $\mu\in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se define el \emph{problema de transporte óptimo} como el problema de encontrar una función de transporte $T: \cX \to \cY$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
+		  \begin{equation}
+			  \label{eq:problemaTransporte}
+			  \inf_{T: \Tpf \mu = \nu} \int_{\cX} c(x, T(x)) \dmu[x],
+		  \end{equation}
+	  \end{definition}
+
+	  \begin{remark}
+		  \label{remark:problemaTransporteMongeDiscreto}
+		  Cuando las medidas $\mu$ y $\nu$ son discretas, es decir, se representan de la siguiente manera:
+		  \begin{align}
+			  \mu & = \sum_{i=0}^{n} m_i \delta_{x_i}, &
+			  \nu & = \sum_{j=0}^{m} n_j \delta_{y_j},
+		  \end{align}
+		  donde $m \in \Simplex[n]$, $n \in \Simplex[m]$, $x_i \in \cX$, $y_j \in \cY$, entonces el problema de transporte óptimo se puede representar de la siguiente manera:
+		  \begin{equation}
+			  \label{eq:problemaTransporteDiscreto}
+			  \inf_{T: T(x_i) = y_j} \sum_{i=0}^{n} c(x_i, T(x_i)) m_i.
+		  \end{equation}
+
+		  Cabe destacar que este problema no siempre tiene solución (generalmente no la tiene si $m > n$), y que en caso de tenerla, no siempre es única.\FM[inline]{Se podría agregar un ejemplo, el de los cuatro puntos en el plano.}
+	  \end{remark}
+  }
+
+  \subsection*{El problema de Kantorovich}
+  {
+	  Como se mencionó en la Observación \ref*{remark:problemaTransporteMongeDiscreto}, el problema de transporte óptimo de Monge no siempre tiene solución, y en caso de tenerla, no siempre es única. Motivado por esto, Kantorovich propuso una formulación alternativa del problema de transporte óptimo, que si tiene solución (aunque puede que no sea única). Este problema se puede definir de la siguiente manera:
+	  \begin{definition}
+		  Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se define el \emph{problema de transporte óptimo de Kantorovich} como el problema de encontrar una medida de probabilidad $\gamma \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
+		  \begin{equation}
+			  \label{eq:problemaTransporteKantorovich}
+			  \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cY} c(x, y) \dgamma[x, y] .
+		  \end{equation}
+		  Al conjunto de medidas de probabilidad que resuelven este problema se le llama \emph{transportes óptimos}.\FM[inline]{Se podría agregar el típico dibujo en el que se muestra el copling}
+	  \end{definition}
+	  \FM[inline]{Tenía pensado en poner el teorema de Brenier (teo 2.1 de \cite{peyre2019computational}), pág 27 para explicar la equivalencia Kantorovich-Monge.}
+	  \FM[inline]{Incluir la formulación de Kantorovich discreto?}
+	  \FM[inline]{Mencionar que esta formulación es más general, y que permite resolver problemas en los que no se puede definir una función de transporte?}
+	  \FM[inline]{Incluir en este punto el teorema de dualidad de Kantorovich-Rubinstein?}
+
+  }
+
+  \section{La Distancia y el Espacio de Wasserstein}\label{sec:la-distancia-y-el-espacio-de-Wasserstein}
+  {
+	  \FM{Incluir subsections para la distancia, espacio, y convergencia débil?}
+	  En esta sección se demostrará que, al evaluar la expresión \eqref{eq:problemaTransporteKantorovich} para una función de coste con distancia, se obtiene una distancia entre medidas de probabilidad. Revisaremos algunas propiedades de esta distancia, para concluir que esta distancia metriza la convergencia débil entre medidas de probabilidad.
+
+	  \begin{definition}[La distancia de Wasserstein]\label{def:distanciaWasserstein}
+		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Para dos medidas $\mu, \nu$ sobre $\cX$, la distancia de Wasserstein de orden $p$ entre $\mu$ y $\nu$ es definida por medio de la fórmula
+		  \begin{equation}
+			  \label{eq:distanciaWasserstein}
+			  \Wasserstein[p]{\mu}{\nu}  \eqdef \left( \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cX} d(x, y)^{p} \dgamma[x, y] \right)^{\frac{1}{p}}.
+		  \end{equation}
+
+	  \end{definition}
+
+	  \begin{example}
+		  $\Wasserstein[1]{\delta_x}{\delta_y} = d(x, y)$. Notemos que en este ejemplo, se puede interpretar que la distancia de Wasserstein metriza el ``esfuerzo'' de llevar la masa del punto $x$ al punto $y$.
+	  \end{example}
+
+	  Notemos que, en estricto rigor, $W_p$ no es una distancia en sí, dado que puede tomar valores de $+\infty$, sin embargo, se puede demostrar que $W_p$ satisface los axiomas de ser una distancia. No se demostrará este hecho, pero se puede encontrar una demostración en \cite{villani2009optimal}, pág 94.
+
+	  Por tanto, resulta natural definir el espacio en el que la distancia de Wasserstein tome valores finitos.
+
+	  \begin{definition}[El espacio de Wasserstein]
+		  Con los mismos supuestos que en la Definición \ref{def:distanciaWasserstein}, se define el espacio de Wasserstein de orden $p$ por medio de
+		  \begin{equation}
+			  \WassersteinSpace[p]{\cX} \eqdef \left\{
+			  \mu \in \ProbSpace[\cX] \colon \int_{\cX} d(x, x_0)^{p} \dmu[x] < \infty
+			  \right\},
+		  \end{equation}
+		  donde $x_0 \in \cX$ es un punto fijo arbitrario. De esta forma, $W_p$ define una distancia (finita) sobre $\WassersteinSpace[p]{\cX}$.
+	  \end{definition}
+
+	  En palabras simples, el espacio de Wasserstein de orden $p$ es el conjunto de medidas de probabilidad en $\cX$ cuyo momento de orden $p$ es finito. A partir de ahora, se asumirá que este espacio siempre estará equipado con su respectiva distancia $W_p$.
+
+	  \begin{remark}
+		  A través de la desigualdad de Hölder, se puede demostrar que para $p \leq q$, se tiene que $\Wasserstein[p]{\mu}{\nu} \leq \Wasserstein[q]{\mu}{\nu}$, para toda $\mu, \nu \in \WassersteinSpace[p]{\cX}$. Y por tanto, las topologías inducidas por las distancias de Wasserstein se van encajonando.
+
+		  En particular, la distancia de Wasserstein de orden 1, es la más débil de todas. Como norma general, la distancia $W_1$  es la más flexible y fácil de acotar, mientras que la distancia $W_2$ posee mejores propiedades geométricas, pero es más difícil de trabajar.
+	  \end{remark}
+
+	  Vista la distancia y el espacio de Wasserstein, se presentará una caracterización de convergencia en este espacio. Para ello, se definirá la convergencia débil entre medidas de probabilidad.
+
+	  \begin{definition}[Convergencia Débil]
+		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Se dice que una sucesión de medidas de probabilidad $(\mu_n)_{n \in \N} \subset \WassersteinSpace[p]{\cX} $ converge débilmente a $\mu \in \WassersteinSpace[p]{\cX}$ si
+		  \begin{equation}
+			  \forall \phi \in \ContBoundedSpace[\cX], \quad \int_{\cX} \phi(x) \dd{\mu_n(x)} \to \int_{\cX} \phi(x) \dmu[x].
+		  \end{equation}
+		  y lo denotaremos por $\mu_n \wto \mu$.
+	  \end{definition}
+
+	  \begin{note}
+		  Intuitivamente, que una sucesión de medidas de probabilidad converjan débilmente a una medida $\mu$ significa que es la forma ``más fácil'' que tiene la sucesión de converger a $\mu$.
+	  \end{note}
+
+	  \begin{theorem}[La Distancia de Wasserstein Metriza la Convergencia Débil]
+		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Entonces, la distancia de Wasserstein $W_p$  metriza la convergencia débil en $\WassersteinSpace[p]{\cX}$.
+	  \end{theorem}
+
+	  \begin{remark}
+		  En otras palabras, si $(\mu_n)_{n\in\N}$ es una sucesión de medidas de probabilidad en $\WassersteinSpace[p]{\cX}$ y $\mu\in \WassersteinSpace[p]{\cX} $ otra medida, entonces $\mu_n \wto \mu$ si y sólo si $\Wasserstein[p]{\mu_n}{\mu} \to 0$.
+	  \end{remark}
+
+	  \begin{example}
+		  Consideremos las siguientes distancias y divergencias entre medidas de probabilidad:
+		  \begin{gather*}
+			  \TV{\mu}{\nu} \eqdef \sup_{A \subseteq \cX} \abs{\mu(A) - \nu(A)}, \\
+			  \KL{\mu}{\nu} \eqdef \int_{\cX} \log\left(\dv{\mu}{\nu}(x)\right) \dmu[x], \\
+			  \JS{\mu}{\nu} \eqdef \KL{\mu}{\frac{\mu + \nu}{2}} + \KL{\nu}{\frac{\mu + \nu}{2}},
+		  \end{gather*}
+		  donde la primera es la distancia total variación, la segunda es la divergencia de Kullback-Leibler, y la tercera es la divergencia de Jensen-Shannon.
+
+		  Si consideramos $\delta_\theta$ y $\delta_0$ medidas de Dirac centradas en $\theta$ y $0$ respectivamente, entonces se puede demostrar que
+		  \begin{align*}
+			  \Wasserstein[1]{\delta_\theta}{\delta_0} & = |\theta|                            &
+			  \TV{\delta_\theta}{\delta_0}             & = \begin{cases}
+				                                               1 & \text{si } \theta \neq 0 \\
+				                                               0 & \text{si } \theta = 0
+			                                               \end{cases}          \\
+			  \KL{\delta_\theta}{\delta_0}             & = \begin{cases}
+				                                               +\infty & \text{si } \theta \neq 0 \\
+				                                               0       & \text{si } \theta = 0
+			                                               \end{cases} &
+			  \JS{\delta_\theta}{\delta_0}             & = \begin{cases}
+				                                               \log(2) & \text{si } \theta \neq 0 \\
+				                                               0       & \text{si } \theta = 0
+			                                               \end{cases}
+		  \end{align*}
+		  Entonces, si tomamos $\theta = \frac{1}{n} $ y dejamos que $n \to \infty$, se tiene que $\Wasserstein[1]{\delta_\theta}{\delta_0} \to 0$, pero el resto de distancias y divergencias no convergen a 0.
+		  Por tanto, se puede notar que la distancia de Wasserstein es la única que es capaz de distinguir entre medidas de probabilidad que no tienen soporte en el mismo punto, gracias a que metriza la convergencia débil.
+	  \end{example}
+
+  }  % end of sec. La Distancia y el Espacio de Wasserstein
+
+  \section{El Baricentro de Wasserstein}\label{sec:el-baricentro-de-Wasserstein}
+  {
+	  \FM[inline]{Mencionar las geodésicas en el espacio de Wasserstein}
+	  \FM[inline]{Hablar sobre la media de Frechet y como generaliza la noción de promedio}
+	  \FM[inline]{Definir el baricentro de Wasserstein}
+	  \FM[inline]{Generalizar al continuo}
+	  \FM[inline]{Baricentro de Wasserstein Bayesiano}
+  }  % end of sec. El Baricentro de Wasserstein
  }
