@@ -5,6 +5,7 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
  {
   \FM[inline]{Agregar alguna intro para lo que es una medida de probabilidad? para aquellas personas que vienen de otras áreas?}
   \begin{definition}
+	  \FM[inline]{Se podría dejar notación probabilística?}
 	  Se definen los siguientes espacios:
 	  \begin{itemize}
 		  \item $(\cX, d)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
@@ -145,8 +146,16 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 		  \end{equation}
 		  donde $x_0 \in \cX$ es un punto fijo arbitrario. De esta forma, $W_p$ define una distancia (finita) sobre $\WassersteinSpace[p]{\cX}$.
 	  \end{definition}
+	  En palabras simples, el espacio de Wasserstein de orden $p$ es el conjunto de medidas de probabilidad en $\cX$ cuyo momento de orden $p$ es finito. Lo interesante del espacio de Wasserstein, es que su respectiva distancia lo metriza, como lo dice el siguiente teorema:
+	  \begin{theorem}\label{thm:espacioWassersteinEsMetrico}
+		  Si $(\cX, d)$ es un espacio Polaco, entonces el espacio de Wasserstein $\WassersteinSpace[p]{\cX} $, metrizado por la distancia de Wasserstein $W_p$, es también un espacio Polaco.
+	  \end{theorem}
 
-	  En palabras simples, el espacio de Wasserstein de orden $p$ es el conjunto de medidas de probabilidad en $\cX$ cuyo momento de orden $p$ es finito. A partir de ahora, se asumirá que este espacio siempre estará equipado con su respectiva distancia $W_p$.
+	  \begin{proof}
+		  Revisar la demostración del Teorema 6.18 en \cite[p. 105]{villani2009optimal}
+	  \end{proof}
+
+	  A partir de ahora, se asumirá que el espacio $\WassersteinSpace[p]{\cX} $ siempre estará equipado con su respectiva distancia $W_p$.
 
 	  \begin{remark}
 		  A través de la desigualdad de Hölder, se puede demostrar que para $p \leq q$, se tiene que $\Wasserstein[p]{\mu}{\nu} \leq \Wasserstein[q]{\mu}{\nu}$, para toda $\mu, \nu \in \WassersteinSpace[p]{\cX}$. Y por tanto, las topologías inducidas por las distancias de Wasserstein se van encajonando.
@@ -207,12 +216,74 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 
   }  % end of sec. La Distancia y el Espacio de Wasserstein
 
-  \section{El Baricentro de Wasserstein}\label{sec:el-baricentro-de-Wasserstein}
+  \section{El Baricentro de Wasserstein Bayesiano}\label{sec:el-baricentro-de-Wasserstein-Bayesiano}
   {
+	  \subsection*{La Media de Fréchet}\label{ssec:la-media-de-Frechet}
+	  {
+		  En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
+		  \begin{definition}[Funcional y Media de Fréchet]
+			  Sea $(\cX, d)$ un espacio Polaco. Sean $x_1,$ $\ldots, x_n$ puntos en $\cX$ y sean $w_1,\ldots,w_n\in\R$ pesos asociados a los puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
+			  \begin{equation}
+				  \label{eq:funcionalFrechet}
+				  \Psi(p) \eqdef \sum_{i=1}^{n} w_i d(p, x_i)^2.
+			  \end{equation}
+			  Y, en caso de que exista un punto $m \in \cX$ que minimice el funcional $\Psi$, entonces este se definirá como la \emph{media de Fréchet} de los puntos $x_1,\ldots, x_n$. Es decir, es aquel punto tal que minimiza el siguiente problema:
+			  \begin{equation}
+				  \label{eq:mediaFrechet}
+				  m \eqdef \argmin_{p \in \cX} \sum_{i=0}^{n} w_i d(p, x_i)^2.
+			  \end{equation}
+		  \end{definition}
+
+		  \begin{example}\label{ex:baricentro-triangulo}
+			  Tomemos $x_1, x_2, x_3 \in \R^2$ tres puntos en el plano, formando un triángulo. Si se define el promedio (o el \textit{baricentro}, en el contexto de un triángulo) de estos puntos por $\bar x = \frac{1}{3} (x_1 + x_2 + x_3)$, entonces se puede comprobar fácilmente que este es el único que minimiza el funcional de Fréchet:
+			  \begin{equation}
+				  F(p) = \frac{1}{3} \sum_{i=0}^{3} \|p - x_i\|^2.
+			  \end{equation}
+			  Dado que este funcional se puede descomponer de la siguiente manera:
+			  \begin{equation}
+				  F(p) = F(\bar x) + \|p-\bar x\|^2,
+			  \end{equation}
+			  se puede ver que la media de Fréchet generaliza la noción de promedio.
+		  \end{example}
+
+		  \begin{remark}
+			  La razón por la que resulta interesante estudiar este concepto, es que sólo utiliza nociones métricas, y se desliga de la noción vectorial. Como se vió en el Ejemplo \ref{ex:baricentro-triangulo}, el promedio utilizó nociones vectoriales (suma, ponderación) mientras que la media de Fréchet utilizó nociones métricas, resultando en el mismo promedio.
+
+			  Sin embargo, el hecho de que se pueda cambiar la distancia, hace que el baricentro cambie, y dependa de ésta.
+		  \end{remark}
+
+
+
+	  }  % end of sec. La Media de Fréchet
+
+	  \subsection*{El Baricentro de Wasserstein}\label{ssec:el-baricentro-de-Wasserstein}
+	  {
+		  Como se vió en la sección anterior, la media de Fréchet permite definir una noción de promedio, en espacios métricos. El Teorema \ref{thm:espacioWassersteinEsMetrico} nos dice que $(\WassersteinSpace[p]{\cX}, W_p)$ es un espacio métrico, y por tanto, se puede definir su respectivo ``promedio'':
+		  \begin{definition}
+			  Sean $\mu_1,\ldots, \mu_n \in \WassersteinSpace[p]{\cX} $ y sean $w = (w_1,\ldots, w_n) \in \Simplex[n]$ sus pesos asociados. El \emph{baricentro de Wasserstein} se define por medio de
+			  \begin{equation}
+				  \bar \mu \eqdef \arginf_{\nu \in \WassersteinSpace[p]{\cX} } \sum_{i=0}^{n} w_i \Wasserstein[p]{\nu}{\mu_i}^p
+			  \end{equation}
+
+		  \end{definition}
+		  \FM[inline]{Se podría poner algún ejemplo con una imagen.}
+
+		  Es posible generalizar aún más la noción de baricentro de Wasserstein a una colección infinita de medidas. Esto se puede hacer considerando una medida $\Gamma \in \ProbSpace[\ProbSpace ] $, que cumplirá el rol de los pesos $w_1,\ldots, w_n $ en la definición anterior. Esto se puede formalizar en la siguiente definición:
+
+		  \begin{definition}
+			  Sea $\Gamma \in \ProbSpace[\ProbSpace]$ una medida. El baricentro de Wasserstein se puede (re)-definir como aquel que minimice el siguiente problema:
+			  \begin{equation}
+				  \bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \int_{\ProbSpace} \Wasserstein[p]{\mu}{\nu}^p \dd{\Gamma(\nu)}
+			  \end{equation}
+
+		  \end{definition}
+
+
+	  }  % end of sec. El Baricentro de Wasserstein
+
+
 	  \FM[inline]{Mencionar las geodésicas en el espacio de Wasserstein}
-	  \FM[inline]{Hablar sobre la media de Frechet y como generaliza la noción de promedio}
-	  \FM[inline]{Definir el baricentro de Wasserstein}
-	  \FM[inline]{Generalizar al continuo}
+
 	  \FM[inline]{Baricentro de Wasserstein Bayesiano}
   }  % end of sec. El Baricentro de Wasserstein
  }
