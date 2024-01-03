@@ -24,7 +24,10 @@
         "Lipschitz",
         "metriza",
         "metrizado",
-        "Monge"
+        "Monge",
+        "Panaretos",
+        "Solucion",
+        "Zemel"
     ],
-    "cSpell.language": "en,es,es-ES"
+    "cSpell.language": "en,es"
 }
