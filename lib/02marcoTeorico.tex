@@ -39,7 +39,7 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
   \begin{definition}
 	  Para una función medible $T:\cX \to \cY$ se define el \emph{operador push-forward} de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
 	  \begin{equation}
-		  \label{eq:pushForward}
+		  %   \label{eq:pushForward}
 		  \int_{\cX} f(x) \dd{\Tpf\mu(x)} = \int_{\cY} f(T(x)) \dmu[x], \quad \forall f \in \mathcal{C}(\cY),
 	  \end{equation}
 	  para toda $\mu \in \ProbSpace[\cX]$. Adicionalmente, el operador push-forward se puede definir como aquel operador que satisface la siguiente relación:
@@ -66,53 +66,188 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 
  }
 
-\section{El problema de transporte}
+\section{El Problema de Transporte}
  {
+
+
 
   \subsection*{El problema de Monge}
   {
-	  En esta sección se introducirá el problema de transporte óptimo de Monge. En este problema se busca transportar la masa de la medida $\mu \in \ProbSpace[\cX]$ a la medida $\nu \in \ProbSpace[\cY]$ a través de una función medible $T: \cX \to \cY$, a la que llamaremos como \emph{función de transporte} o \emph{mapa de transporte}, utilizando una \emph{función de coste} $c(x, y)$, que representa el costo de transportar la masa del punto $x$ al punto $y$. Más formalmente, este problema se puede definir de la siguiente manera:
+	  En esta sección, se tomará la introducción realizada en el libro \emph{An Invitation to Statistics in Wasserstein Space}, de V. Panaretos y Y. Zemel \cite{panaretos2020invitation}. En 1781, Monge \cite{monge1781memoire} se hizo la siguiente pregunta: dada una pila de arena y un pozo de igual volumen, ¿Cuál es la forma óptima de transportar la arena al pozo?
 
-	  \begin{definition}
-		  Dados $\mu\in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se define el \emph{problema de transporte óptimo} como el problema de encontrar una función de transporte $T: \cX \to \cY$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
+	  Utilizando términos matemáticos, el problema se puede formular de la siguiente manera: dado un espacio de arena $\cX$, un espacio de pozo $\cY$ y una función de costo $c: \cX \times \cY \to \R$ que encapsula el esfuerzo de transportar una unidad de arena en el punto $x \in \cX$ a una posición $y \in \cY $ en el pozo. La distribución de la arena es representada por una medida $\mu \in \ProbSpace[\cX]$, y la forma del pozo es descrito por una medida $\nu \in \ProbSpace[\cY] $. Una representación gráfica de la montaña de arena y el pozo se puede apreciar en la Figura~\ref{fig:montanas-arena-pozo}.
+
+	  \begin{figure}[ht]
+		  \centering
+		  \includegraphics[width=0.5\textwidth]{img/transporte/montanas-arena-pozo.png}
+		  \caption{Representación de la montaña de arena, representada en rojo por la medida $\mu$, y el pozo, representada en azul por la medida $\nu$. Imagen obtenida de \cite{cuturi2017primer}.}
+		  \label{fig:montanas-arena-pozo}
+	  \end{figure}
+
+	  La decisión de cómo transportar la arena es representada por una función $T: \cX \to \cY$, que asigna a cada punto $x \in \cX$ una posición $T(x) \in \cY$ en el pozo. El costo total de transportar la arena al pozo es representado por la siguiente expresión:
+	  \begin{equation}\label{eq:costoTotalTransporteMonge}
+		  C(T) \eqdef \int_{\cX} c(x, T(x)) \dmu[x].
+	  \end{equation}
+
+	  Se puede observar que una propiedad que ha de cumplir la función $T$ es que debe de preservar la masa total de la arena: para cualquier conjunto $B \subseteq \cY$ representando una región en el pozo de volumen $\nu(b)$, debe de ser exactamente el mismo volumen de arena que debe de ir a $B$. La cantidad de arena que está situada en $B$ es $\left\{ x \in \cX : T(x) \in B \right\} = T^{-1}(B)$, y por tanto, la condición de preservación de masa requiere que se cumpla que $\mu(T^{-1}(B)) = \nu(B)$ para toda $B \subseteq \cY$. Esta condición se puede observar gráficamente en la Figura~\ref{fig:preservacion-masa}, y se formula más formalmente a través de la siguiente definición:
+
+	  \begin{definition}[Operador push-forward]
+		  Sea una función medible $T:\cX \to \cY$, se define el \emph{operador push-forward}  de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
 		  \begin{equation}
-			  \label{eq:problemaTransporte}
-			  \inf_{T: \Tpf \mu = \nu} \int_{\cX} c(x, T(x)) \dmu[x],
+			  \label{eq:pushForward}
+			  \Tpf \mu(B) \eqdef \mu (T^{-1}(B)) = \nu(B),\quad \forall B \subseteq \cY \text{ medible}.
 		  \end{equation}
 	  \end{definition}
 
-	  \begin{remark}
-		  \label{remark:problemaTransporteMongeDiscreto}
-		  Cuando las medidas $\mu$ y $\nu$ son discretas, es decir, se representan de la siguiente manera:
-		  \begin{align}
-			  \mu & = \sum_{i=0}^{n} m_i \delta_{x_i}, &
-			  \nu & = \sum_{j=0}^{m} n_j \delta_{y_j},
-		  \end{align}
-		  donde $m \in \Simplex[n]$, $n \in \Simplex[m]$, $x_i \in \cX$, $y_j \in \cY$, entonces el problema de transporte óptimo se puede representar de la siguiente manera:
-		  \begin{equation}
-			  \label{eq:problemaTransporteDiscreto}
-			  \inf_{T: T(x_i) = y_j} \sum_{i=0}^{n} c(x_i, T(x_i)) m_i.
-		  \end{equation}
+	  \begin{figure}[ht]
+		  \centering
+		  \includegraphics[width=0.5\textwidth]{img/transporte/preservacion-masa.png}
+		  \caption{Representación de como la función $T$ ha de preservar la masa total de la arena. Imagen obtenida de \cite{cuturi2017primer}.}
+		  \label{fig:preservacion-masa}
+	  \end{figure}
 
-		  Cabe destacar que este problema no siempre tiene solución (generalmente no la tiene si $m > n$), y que en caso de tenerla, no siempre es única.\FM[inline]{Se podría agregar un ejemplo, el de los cuatro puntos en el plano.}
-	  \end{remark}
+	  En este contexto, el problema de Monge consiste en encontrar una función $T: \cX \to \cY$, que minimice el costo total de transporte. Formalmente, este problema se define de la siguiente manera:
+
+	  \begin{definition}[Problema de Monge, \cite{monge1781memoire}]
+		  Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c : \cX \times \cY \to \R$, se define el \emph{problema de transporte óptimo de Monge} como el problema de encontrar una función medible $T: \cX \to \cY$ que minimice el costo total de transporte $C(T)$. Es decir, que minimice la siguiente expresión:
+		  \begin{equation}
+			  \label{eq:problemaTransporteMonge}
+			  \inf_{T: \Tpf \mu = \nu} \int_{\cX} c(x, T(x)) \dmu[x].
+		  \end{equation}
+		  Aquella función $T$ que resuelva este problema se le llamará \emph{función de transporte} o \emph{mapa de transporte}, y se denotará por $T_{\mu \to \nu}$.
+	  \end{definition}
+
+	  El problema introducido por Monge \cite{monge1781memoire} es un problema muy difícil, principalmente porque el conjunto de mapas de transporte $\left\{ T : \Tpf \mu = \nu \right\}$ es intratable. Además, puede que no exista solución alguna, o en caso de haberla, puede que este no sea única, como veremos en los siguientes ejemplos:
+
+	  \begin{example}\label{ex:problemaDeMongeSinSolucion}
+		  Consideremos $\cX = \left\{ -1, 1 \right\}$, $\cY = \left\{ 0 \right\}$, con $\mu = \frac{1}{2} \delta_{-1} + \frac{1}{2} \delta_{1}$ y $\nu = \delta_0$. En este caso, la función de transporte óptima que minimiza \eqref{eq:problemaTransporteMonge} es
+		  \begin{align*}
+			  T_{\mu \to \nu}(-1) & = 0 & T_{\mu \to \nu}(1) & = 0.
+		  \end{align*}
+		  Sin embargo, se puede notar que no existe transporte óptimo $T_{\nu \to \mu}$  que transporte la masa de $\nu$ a $\mu$, dado que la masa de $\nu$ está concentrada en un único punto, mientras que la masa de $\mu$ está distribuida en dos puntos, y no se puede ``dividir'' la masa. Este correspondería a un ejemplo en el que el problema de Monge no tiene solución.
+	  \end{example}
+
+	  \begin{example}\label{ex:problemaDeMongeMultipleSolucion}
+		  Consideremos ahora $\cX = \left\{ (1, 1), (-1, -1) \right\}$, $\cY = \left\{ (-1, 1), (1, -1) \right\}$, con $\mu = \frac{1}{2} \delta_{(1, 1)} + \frac{1}{2} \delta_{(-1, -1)}$ y $\nu = \frac{1}{2} \delta_{(-1, 1)} + \frac{1}{2} \delta_{(1, -1)}$. Este ejemplo correspondería a uno en que los puntos de $\cX$ y $\cY$ forman un cuadrado. En este caso, se puede notar que existen dos funciones de transporte óptimo que minimizan \eqref{eq:problemaTransporteMonge}, las cuales son
+		  \begin{align*}
+			  T^1_{\mu\to\nu}(1, 1) & = (1, -1) & T^1_{\mu\to\nu}(-1, -1) & = (-1, 1)  \\
+			  T^2_{\mu\to\nu}(1, 1) & = (-1, 1) & T^2_{\mu\to\nu}(-1, -1) & = (1, -1),
+		  \end{align*}
+		  comprobando que en este caso, el problema de Monge tiene más de una solución.
+	  \end{example}
+
+
+
+	  %   \begin{remark}
+	  % 	  \label{remark:problemaTransporteMongeDiscreto}
+	  % 	  Cuando las medidas $\mu$ y $\nu$ son discretas, es decir, se representan de la siguiente manera:
+	  % 	  \begin{align}
+	  % 		  \mu & = \sum_{i=1}^{n} a_i \delta_{x_i}, &
+	  % 		  \nu & = \sum_{j=1}^{m} b_j \delta_{y_j},
+	  % 	  \end{align}
+	  % 	  donde $a \in \Simplex[n]$, $b \in \Simplex[m]$, $x_1,\ldots, x_n  \in \cX$, $y_1,\ldots, y_m  \in \cY$, entonces el problema de transporte óptimo se puede representar de la siguiente manera:
+	  % 	  \begin{equation}
+	  % 		  \label{eq:problemaTransporteDiscreto}
+	  % 		  \inf_{T: T(x_i) = y_j} \sum_{i=0}^{n} a_i c(x_i, T(x_i)).
+	  % 	  \end{equation}
+
+	  % 	  Cabe destacar que este problema no siempre tiene solución (generalmente no la tiene si $m > n$), y que en caso de tenerla, no siempre es única.\FM[inline]{Se podría agregar un ejemplo, el de los cuatro puntos en el plano.}
+	  %   \end{remark}
   }
 
   \subsection*{El problema de Kantorovich}
   {
-	  Como se mencionó en la Observación \ref*{remark:problemaTransporteMongeDiscreto}, el problema de transporte óptimo de Monge no siempre tiene solución, y en caso de tenerla, no siempre es única. Motivado por esto, Kantorovich propuso una formulación alternativa del problema de transporte óptimo, que si tiene solución (aunque puede que no sea única). Este problema se puede definir de la siguiente manera:
-	  \begin{definition}
-		  Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se define el \emph{problema de transporte óptimo de Kantorovich} como el problema de encontrar una medida de probabilidad $\gamma \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
+	  Como se pudo apreciar en los Ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, el problema de Monge no siempre tiene solución, y en caso de tenerla, puede que esta no sea única.
+	  Motivado por esto, en 1942 Kantorovich \cite{kantorovich1942translocation} propuso una formulación relajada del problema de Monge.
+
+	  La idea principal de Kantorovich es el de relajar la naturaleza determinista del mapa de transporte, digamos, del hecho de que la masa de un punto $x$ sea transportada a un único punto $T(x)$. Kantorovich, en cambio, propone que la masa de un punto $x$ puede ser potencialmente transportada a múltiples destinos.
+
+	  %   Intuitivamente, a uno le gustaría tener la capacidad de que, para cada punto $x \in \cX$, se pueda construir una medida de probabilidad $\mu_x$  que describa como la masa en el punto $x$ se divide en múltiples destinos. Si $\mu_x$  fuera una medida de Dirac en algún punto $y$, entonces toda la masa en $x$ sería enviada al punto $y$.
+
+	  Para representar formalmente esta idea, consideremos una medida de probabilidad $\pi \in \ProbSpace[\cX \times \cY]$. En este caso, la cantidad $\pi(A \times B)$ correspondería a la cantidad de arena transportada desde el conjunto $A \subseteq \cX$ a la región del pozo representado por el conjunto $B \subseteq \cY$. La masa total enviada desde $A$ sería $\pi(A \times \cY)$ y la masa total enviada a $B$ sería $\pi(\cX \times B)$. En este contexto, $\pi$ estaría preservando la masa total si, y sólo si se cumple que
+	  \begin{align*}
+		  \pi(A \times \cY) & = \mu(A), \quad \forall A \subset \cX \text{ medible;} \\
+		  \pi(\cX \times B) & = \nu(B),\quad \forall B \subset \cY \text{ medible.}
+	  \end{align*}
+	  Las medidas $\pi$ que cumplen esta condición se les llama \emph{coupling}, las cuales se pueden definir más formalmente de la siguiente manera:
+
+	  \begin{definition}[Coupling]
+		  Sean $(\cX, \mu)$ y $(\cY, \nu)$ dos espacios de probabilidad. Un \emph{coupling} entre $\mu$ y $\nu$ es una medida de probabilidad $\pi \in \ProbSpace[\cX \times \cY]$ tal que sus proyecciones marginales sean $\mu$ y $\nu$, es decir, que cumpla que
+		  \begin{equation}
+			  \label{eq:coupling}
+			  \pi(A \times \cY) = \mu(A), \quad \pi(\cX \times B) = \nu(B), \quad \forall A \subseteq \cX, B \subseteq \cY \text{ medibles}.
+		  \end{equation}
+		  Al conjunto de couplings entre $\mu$ y $\nu$ se le denotará por $\Cpl(\mu, \nu)$. Usualmente se les llama a $\mu$ y $\nu$ como la primera y segunda \emph{distribución marginal}, o simplemente \emph{marginales} de $\pi$.
+	  \end{definition}
+
+	  Una primera observación, es que el conjunto de couplings es no vacío: basta tomar $\pi = \mu \otimes \nu$, es decir, el producto de las medidas $\mu$ y $\nu$. Sin embargo, este coupling no es muy interesante, dado que vagamente existe un intercambio de información entre $\mu$ y $\nu$. Otro caso extremo es cuando hay un intercambio de información total entre $\mu$ y $\nu$. Este caso correspondería a que existe una función $T$ tal que si $(X, Y) \sim \pi$, entonces $Y = T(X)$, donde esta función $T$ funciona de intermediaria entre las variables aleatoria $X$ y $Y$. En este caso, se cumple además que $\pi = \pf{(\id, T)} \mu$, y se dice que el coupling es \emph{determinista}.
+
+	  Ahora que se ha definido el concepto de coupling, se puede asociar el costo total de un coupling $\pi \in \Cpl(\mu, \nu)$ por medio de:
+	  \begin{equation}
+		  C(\pi) = \int_{\cX \times \cY} c(x, y) \dpi[x, y].
+	  \end{equation}
+
+	  Y por tanto, se puede definir el problema de transporte óptimo de Kantorovich de la siguiente manera:
+
+	  \begin{definition}[Problema de Kantorovich, \cite{kantorovich1942translocation}]
+		  Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c: \cX \times \cY \to \R$, se define el \emph{problema de transporte óptimo de Kantorovich} como el problema de encontrar un coupling $\pi \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
 		  \begin{equation}
 			  \label{eq:problemaTransporteKantorovich}
-			  \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cY} c(x, y) \dgamma[x, y] .
+			  \inf_{\pi \in \Cpl(\mu, \nu)} \int_{\cX \times \cY} c(x, y) \dpi[x, y] .
 		  \end{equation}
-		  Al conjunto de medidas de probabilidad que resuelven este problema se le llama \emph{transportes óptimos}.\FM[inline]{Se podría agregar el típico dibujo en el que se muestra el copling}
+		  Al conjunto de couplings que resuelven este problema se le llama \emph{planes de transporte} o \emph{couplings óptimos} , y dado un plan de transporte $\pi$ entre $\mu$ y $\nu$, se denotará por $\pi_{\mu \to \nu}$.
 	  \end{definition}
+
+	  Ejemplos de couplings óptimos se pueden apreciar en la Figura~\ref{fig:coupling-example}.
+
+	  \begin{figure}[htbp]
+		  \centering
+		  \includegraphics[width=0.7\textwidth]{img/transporte/coupling-example.png}
+		  \caption{Izquierda: coupling óptimo entre dos medidas 1-D continuas con densidad. El coupling está localizado a lo largo del grafo del mapa de transporte óptimo $(x, T(x))$. Derecha: coupling óptimo entre dos medidas discretas. El radio del disco negro es proporcional a la masa transportada en esa coordenada. Imagen obtenida de \cite{peyre2019computational}.
+			  \label{fig:coupling-example}}
+	  \end{figure}
+
+
+	  En diferencia con el problema de Monge, el problema de Kantorovich siempre tiene solución, si es que $(\cX, \cY)$ son espacios compactos y $c$ es continuo. En efecto, $\Cpl(\mu, \nu)$ es compacto para la topología débil de las medidas, $\pi \mapsto \int c\dd{\pi}$ es una función continua para esta topología, y la restricción $\pi\in\Cpl(\mu, \nu)$ es no vacía. Sigue que existe un coupling óptimo $\pi_{\mu \to \nu}$ que resuelve \eqref{eq:problemaTransporteKantorovich}. Continuando con los ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, podemos encontrar el coupling óptimo para estos problemas:
+
+	  \begin{example}
+		  Sean los espacios $\cX$ y $\cY$ y las medidas $\mu$ y $\nu$ como en el Ejemplo~\ref*{ex:problemaDeMongeSinSolucion}. En este caso, el coupling óptimo entre $\mu$ y $\nu$ corresponde a:
+		  \begin{align*}
+			  \pi_{\mu \to \nu}\left\{ (-1, 0) \right\} & = \frac{1}{2} & \pi_{\mu \to \nu}\left\{ (1, 0) \right\} & = \frac{1}{2}.
+		  \end{align*}
+		  Del mismo modo, el coupling óptimo entre $\nu$ y $\mu$ corresponde a:
+		  \begin{align*}
+			  \pi_{\nu \to \mu}\left\{ (0, -1) \right\} & = \frac{1}{2} & \pi_{\nu \to \mu}\left\{ (0, 1) \right\} & = \frac{1}{2}.
+		  \end{align*}
+
+	  \end{example}
+
+	  \begin{example}
+		  Del mismo modo, Sean los espacios $\cX$ y $\cY$ y las medidas $\mu$ y $\nu$ como en el Ejemplo~\ref*{ex:problemaDeMongeMultipleSolucion}. En este caso, el coupling óptimo entre $\mu$ y $\nu$ corresponde a:
+		  \begin{align*}
+			  \pi_{\mu \to \nu}\left\{ ((1, 1), (-1, 1)) \right\}   & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ ((1, 1), (1, -1)) \right\}   & = \frac{1}{4}  \\
+			  \pi_{\mu \to \nu}\left\{ ((-1, -1), (-1, 1)) \right\} & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ ((-1, -1), (1, -1)) \right\} & = \frac{1}{4}.
+		  \end{align*}
+
+	  \end{example}
+
+
+
+
+
+	  \newpage
+	  %   del problema de transporte óptimo, que si tiene solución (aunque puede que no sea única). Este problema se puede definir de la siguiente manera:
+	  %   Como se mencionó en la Observación \ref*{remark:problemaTransporteMongeDiscreto}, el problema de transporte óptimo de Monge no siempre tiene solución, y en caso de tenerla, no siempre es única. Motivado por esto, Kantorovich propuso una formulación alternativa del problema de transporte óptimo, que si tiene solución (aunque puede que no sea única). Este problema se puede definir de la siguiente manera:
+	  %   \begin{definition}
+	  % 	  Dados $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$, se define el \emph{problema de transporte óptimo de Kantorovich} como el problema de encontrar una medida de probabilidad $\gamma \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
+	  % 	  \begin{equation}
+	  % 		  \label{eq:problemaTransporteKantorovich}
+	  % 		  \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cY} c(x, y) \dgamma[x, y] .
+	  % 	  \end{equation}
+	  % 	  Al conjunto de medidas de probabilidad que resuelven este problema se le llama \emph{transportes óptimos}.\FM[inline]{Se podría agregar el típico dibujo en el que se muestra el copling}
+	  %   \end{definition}
 	  \FM[inline]{Tenía pensado en poner el teorema de Brenier (teo 2.1 de \cite{peyre2019computational}), pág 27 para explicar la equivalencia Kantorovich-Monge.}
-	  \FM[inline]{Incluir la formulación de Kantorovich discreto?}
-	  \FM[inline]{Mencionar que esta formulación es más general, y que permite resolver problemas en los que no se puede definir una función de transporte?}
-	  \FM[inline]{Incluir en este punto el teorema de dualidad de Kantorovich-Rubinstein?}
+
 
   }
 
@@ -287,4 +422,12 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 
 	  \FM[inline]{Baricentro de Wasserstein Bayesiano}
   }  % end of sec. El Baricentro de Wasserstein
+
+  \section{Baricentro }\label{sec:baricentro-}
+  {
+	  \FM[inline]{Se podría agregar una sección de baricentro de Wasserstein Bayesiano?}
+  }  % end of sec. Baricentro
+  {
+
+  }  % end of sec. Baricentro 
  }
