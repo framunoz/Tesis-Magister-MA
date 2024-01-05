@@ -37,9 +37,9 @@
 \RequirePackage[utf8]{inputenc} % Encoding
 % Hay que cambiar a la antigua geometría después!
 \if@final
-    \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper]{geometry} % Margenes
+    \RequirePackage[top=2cm, left=3cm, bottom=2cm, right=2cm, paper=letterpaper, twoside=true]{geometry} % Margenes
 \else
-    \RequirePackage[top=2cm, left=1cm, bottom=2cm, right=4cm, paper=letterpaper]{geometry} % Margenes
+    \RequirePackage[top=2cm, left=1cm, bottom=2cm, right=4cm, paper=letterpaper, twoside=true]{geometry} % Margenes
     \setlength{\marginparwidth}{3.5cm} % Ancho de la nota al margen
 \fi
 \RequirePackage{graphicx} % Varios
