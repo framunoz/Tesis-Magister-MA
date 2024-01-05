@@ -56,6 +56,7 @@
 \else
     \RequirePackage[spanish, es-nolists, es-lcroman]{babel} % Lenguaje
 \fi
+\RequirePackage{natbib}  % Estilo de citado
 \RequirePackage[pdfpagelabels,hidelinks]{hyperref} % Links y numeracion del PDF
 \RequirePackage{listings} % Codigo Fuente
 \RequirePackage{pgffor} % foreach
