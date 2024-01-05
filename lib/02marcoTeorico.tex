@@ -9,7 +9,7 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  \FM[inline]{Se podría dejar notación probabilística?}
 	  Se definen los siguientes espacios:
 	  \begin{itemize}
-		  \item $(\cX, d)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
+		  \item $(\cX, \dist)$ es un espacio Polaco, si $\cX$ es un espacio métrico, completo y separable.
 		  \item $\ProbSpace[\cX]$ denotará al conjunto de medidas de probabilidad en $\cX$, utilizando la $\sigma$-álgebra de Borel.
 		  \item $\ProbSpaceAC[\cX]$ denotará al conjunto de medidas de probabilidad absolutamente continuas con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
 		  \item $\mathcal{C}(\cX)$ denotará al conjunto de funciones continuas en $\cX$.
@@ -122,16 +122,16 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  En esta sección se demostrará que, al evaluar la expresión \eqref{eq:problemaTransporteKantorovich} para una función de coste con distancia, se obtiene una distancia entre medidas de probabilidad. Revisaremos algunas propiedades de esta distancia, para concluir que esta distancia metriza la convergencia débil entre medidas de probabilidad.
 
 	  \begin{definition}[La distancia de Wasserstein]\label{def:distanciaWasserstein}
-		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Para dos medidas $\mu, \nu$ sobre $\cX$, la distancia de Wasserstein de orden $p$ entre $\mu$ y $\nu$ es definida por medio de la fórmula
+		  Sea $(\cX, \dist)$ un espacio Polaco y sea $p \geq 1$. Para dos medidas $\mu, \nu$ sobre $\cX$, la distancia de Wasserstein de orden $p$ entre $\mu$ y $\nu$ es definida por medio de la fórmula
 		  \begin{equation}
 			  \label{eq:distanciaWasserstein}
-			  \Wasserstein[p]{\mu}{\nu}  \eqdef \left( \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cX} d(x, y)^{p} \dgamma[x, y] \right)^{\frac{1}{p}}.
+			  \Wasserstein[p]{\mu}{\nu}  \eqdef \left( \inf_{\gamma \in \Cpl(\mu, \nu)} \int_{\cX \times \cX} \dist(x, y)^{p} \dgamma[x, y] \right)^{\frac{1}{p}}.
 		  \end{equation}
 
 	  \end{definition}
 
 	  \begin{example}
-		  $\Wasserstein[1]{\delta_x}{\delta_y} = d(x, y)$. Notemos que en este ejemplo, se puede interpretar que la distancia de Wasserstein metriza el ``esfuerzo'' de llevar la masa del punto $x$ al punto $y$.
+		  $\Wasserstein[1]{\delta_x}{\delta_y} = \dist(x, y)$. Notemos que en este ejemplo, se puede interpretar que la distancia de Wasserstein metriza el ``esfuerzo'' de llevar la masa del punto $x$ al punto $y$.
 	  \end{example}
 
 	  Notemos que, en estricto rigor, $W_p$ no es una distancia en sí, dado que puede tomar valores de $+\infty$, sin embargo, se puede demostrar que $W_p$ satisface los axiomas de ser una distancia. No se demostrará este hecho, pero se puede encontrar una demostración en \cite{villani2009optimal}, pág 94.
@@ -142,14 +142,14 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 		  Con los mismos supuestos que en la Definición \ref{def:distanciaWasserstein}, se define el espacio de Wasserstein de orden $p$ por medio de
 		  \begin{equation}
 			  \WassersteinSpace[p]{\cX} \eqdef \left\{
-			  \mu \in \ProbSpace[\cX] \colon \int_{\cX} d(x, x_0)^{p} \dmu[x] < \infty
+			  \mu \in \ProbSpace[\cX] \colon \int_{\cX} \dist(x, x_0)^{p} \dmu[x] < \infty
 			  \right\},
 		  \end{equation}
 		  donde $x_0 \in \cX$ es un punto fijo arbitrario. De esta forma, $W_p$ define una distancia (finita) sobre $\WassersteinSpace[p]{\cX}$.
 	  \end{definition}
 	  En palabras simples, el espacio de Wasserstein de orden $p$ es el conjunto de medidas de probabilidad en $\cX$ cuyo momento de orden $p$ es finito. Lo interesante del espacio de Wasserstein, es que su respectiva distancia lo metriza, como lo dice el siguiente teorema:
 	  \begin{theorem}\label{thm:espacioWassersteinEsMetrico}
-		  Si $(\cX, d)$ es un espacio Polaco, entonces el espacio de Wasserstein $\WassersteinSpace[p]{\cX} $, metrizado por la distancia de Wasserstein $W_p$, es también un espacio Polaco.
+		  Si $(\cX, \dist)$ es un espacio Polaco, entonces el espacio de Wasserstein $\WassersteinSpace[p]{\cX} $, metrizado por la distancia de Wasserstein $W_p$, es también un espacio Polaco.
 	  \end{theorem}
 
 	  \begin{proof}
@@ -167,7 +167,7 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  Vista la distancia y el espacio de Wasserstein, se presentará una caracterización de convergencia en este espacio. Para ello, se definirá la convergencia débil entre medidas de probabilidad.
 
 	  \begin{definition}[Convergencia Débil]
-		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Se dice que una sucesión de medidas de probabilidad $(\mu_n)_{n \in \N} \subset \WassersteinSpace[p]{\cX} $ converge débilmente a $\mu \in \WassersteinSpace[p]{\cX}$ si
+		  Sea $(\cX, \dist)$ un espacio Polaco y sea $p \geq 1$. Se dice que una sucesión de medidas de probabilidad $(\mu_n)_{n \in \N} \subset \WassersteinSpace[p]{\cX} $ converge débilmente a $\mu \in \WassersteinSpace[p]{\cX}$ si
 		  \begin{equation}
 			  \forall \phi \in \ContBoundedSpace[\cX], \quad \int_{\cX} \phi(x) \dd{\mu_n(x)} \to \int_{\cX} \phi(x) \dmu[x].
 		  \end{equation}
@@ -179,7 +179,7 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  \end{note}
 
 	  \begin{theorem}[La Distancia de Wasserstein Metriza la Convergencia Débil]
-		  Sea $(\cX, d)$ un espacio Polaco y sea $p \geq 1$. Entonces, la distancia de Wasserstein $W_p$  metriza la convergencia débil en $\WassersteinSpace[p]{\cX}$.
+		  Sea $(\cX, \dist)$ un espacio Polaco y sea $p \geq 1$. Entonces, la distancia de Wasserstein $W_p$  metriza la convergencia débil en $\WassersteinSpace[p]{\cX}$.
 	  \end{theorem}
 
 	  \begin{remark}
@@ -223,15 +223,15 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  {
 		  En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
 		  \begin{definition}[Funcional y Media de Fréchet]
-			  Sea $(\cX, d)$ un espacio Polaco. Sean $x_1,$ $\ldots, x_n$ puntos en $\cX$ y sean $w_1,\ldots,w_n\in\R$ pesos asociados a los puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
+			  Sea $(\cX, \dist)$ un espacio Polaco. Sean $x_1,$ $\ldots, x_n$ puntos en $\cX$ y sean $w_1,\ldots,w_n\in\R$ pesos asociados a los puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
 			  \begin{equation}
 				  \label{eq:funcionalFrechet}
-				  \Psi(p) \eqdef \sum_{i=1}^{n} w_i d(p, x_i)^2.
+				  \Psi(p) \eqdef \sum_{i=1}^{n} w_i \dist(p, x_i)^2.
 			  \end{equation}
 			  Y, en caso de que exista un punto $m \in \cX$ que minimice el funcional $\Psi$, entonces este se definirá como la \emph{media de Fréchet} de los puntos $x_1,\ldots, x_n$. Es decir, es aquel punto tal que minimiza el siguiente problema:
 			  \begin{equation}
 				  \label{eq:mediaFrechet}
-				  m \eqdef \argmin_{p \in \cX} \sum_{i=0}^{n} w_i d(p, x_i)^2.
+				  m \eqdef \argmin_{p \in \cX} \sum_{i=0}^{n} w_i \dist(p, x_i)^2.
 			  \end{equation}
 		  \end{definition}
 
@@ -283,8 +283,47 @@ En este capítulo se abordará el problema de transporte óptimo, la distancia d
 	  }  % end of sec. El Baricentro de Wasserstein
 
 
-	  \FM[inline]{Mencionar las geodésicas en el espacio de Wasserstein}
+	  \subsection{Geodésicas en el Espacio de Wasserstein}\label{ssec:geodesicas-Wasserstein}
+	  {
+		  En esta sección, se utilizará la distancia de Wasserstein para definir una noción de geodésica en el espacio de Wasserstein. Esta noción será de utilidad para definir el baricentro de Wasserstein Bayesiano.
+		  \FM[inline]{Agregar la referencia del Lecture}
+		  \begin{definition}
+			  Sea $(\cX, \dist)$ un espacio métrico. Una \emph{geodésica a velocidad constante}  entre dos puntos, $x_0, x_1 \in \cX$ es una curva continua $x : [0, 1] \to \cX$  tal que para cada $s, t \in [0, 1]$, $\dist(x_s,x_t) = |s - t| \dist(x_0,x_1) $.
+		  \end{definition}
 
-	  \FM[inline]{Baricentro de Wasserstein Bayesiano}
+		  \begin{proposition}
+			  Sean $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $, con $\cX \in \R^d$  compacto y convexo. Sea $\gamma \in \Cpl(\mu_0, \mu_1)$  un plan de transporte óptimo\FM{Agregar en la def que estos se llamarán planes de transporte}. Definamos
+			  \begin{equation}
+				  \mu_t \eqdef \pf{(\pi_t)} \gamma, \quad \text{donde } \pi_t(x, y) = (1-t)x + ty.
+			  \end{equation}
+			  Entonces, la curva $\mu_t$ es una geodésica a velocidad constante entre $\mu_0$ y $\mu_1$.
+
+		  \end{proposition}
+
+		  \begin{example}
+			  Si existe un mapa de transporte óptimo $T$ entre $\mu_0$ y $\mu_1$, entonces la geodésica definida arriba es $\mu_t = \pf{((1-t)\id + tT)} \mu_0$.
+		  \end{example}
+
+		  \begin{remark}
+			  En caso en que $\mu_0 = \sum_{i=1}^{n} m_i \delta_{x_i}$ y $\mu_1 = \sum_{i=1}^{n} m_i \delta_{y_i}$, con $m\in\Simplex[n]$ y $x_1,\ldots, x_n, y_1,\ldots, y_n \in \cX$, entonces la geodésica definida arriba se puede escribir de la siguiente manera:
+			  \begin{equation}
+				  \mu_t = \sum_{i=1}^{n} m_i \delta_{(1-t)x_i + ty_i},
+			  \end{equation}
+			  lo que se puede interpretar como que la masa $m_i$ del punto $x_i$ se transporta al punto $y_i$ a velocidad constante.
+		  \end{remark}
+
+
+
+
+	  }  % end of sec. Geodésicas en el Espacio de Wasserstein
+
+	  \subsection{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
+	  {
+		  \FM[inline]{Comentar que aquí se está tomando ideas de la tesis de Gonzalo Ríos}
+		  Consideremos muestras $\Data = \left\{ x_1,\ldots, x_n  \right\}$ en un espacio $\cX$ y un conjunto de modelos factibles o medidas de probabilidad $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo, también conocido como la \emph{selección de un modelo}, de $\Data$ consiste en escoger un elemento $\mu \in \Models$ que mejor explique los datos, si es que estos hubieran sido generados por $\mu$, dado algún criterio.
+
+		  Se considerará una medida de probabilidad $\Prior \in \ProbSpace[\Models]$ sobre un espacio de modelos $\Models$  un \emph{prior} fijo.
+	  }  % end of sec. El Baricentro de Wasserstein Bayesiano
+
   }  % end of sec. El Baricentro de Wasserstein
  }

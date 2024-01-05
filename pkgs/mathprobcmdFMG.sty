@@ -30,8 +30,10 @@
 %% ====================================================================
 % Macros para operadores
 
+% Operador push-forward
+\newcommand{\pf}[1]{{#1}_{\sharp}}
 % Transporte push-forward
-\newcommand{\Tpf}{T_{\#}}
+\newcommand{\Tpf}{\pf{T}}
 % Convergencia débil
 \newcommand{\wto}{\Rightarrow}
 % Probabilidad
@@ -64,3 +66,14 @@
 \newcommand{\dmu}[1][]{\ddpar{\mu}{#1}}
 \newcommand{\dgamma}[1][]{\ddpar{\gamma}{#1}}
 \newcommand{\dnu}[1][]{\ddpar{\nu}{#1}}
+
+%% ====================================================================
+% Macros de conjuntos
+
+\newcommand{\Data}{\cD}
+\newcommand{\Models}{\cM}
+
+%% ====================================================================
+% Macros de Bayes
+
+\newcommand{\Prior}{\Pi}
