@@ -1,0 +1,38 @@
+\chapter{Modelos Generativos}\label{chap:modelos-generativos}
+{
+    Este capítulo introducirá los conceptos esenciales acerca de los modelos generativos. Para ello, se empezará por definir qué es una red neuronal.
+    \section{Redes Neuronales}\label{sec:redes-Neuronales}
+    {
+        Una red neuronal puede ser entendida como una función $f_\theta$, que es definida por medio de composición de funciones no-lineales $f^{(\ell)}_{\theta_\ell}$. Cada función $f^{(\ell)}_{\theta_\ell}$ se encuentra parametrizada por $\theta_\ell = (W_\ell, b_\ell)$, y la red neuronal $f_\theta$ se encuentra parametrizada por $\theta = (W_{1}, b_1, \ldots, W_L, b_L)$. Escrito en términos matemáticos:
+        \begin{equation}
+            f_\theta(x) = f^{(L)}_{\theta_{L}} \circ f^{(L-1)}_{\theta_{L-1}} \circ \cdots \circ f^{(1)}_{\theta_{1}} (x).
+        \end{equation}
+
+        Cada función $f^{(\ell)}_{\theta_{\ell}}$ está definida desde un espacio de partida $\R^{d_{\ell-1}}$ a un espacio de llegada $\R^{d_\ell}$. Estas funciones se encuentran definidas por medio de:
+        \begin{equation}
+            f^{(\ell)}_{\theta_{\ell}} (x_\ell) = \sigma^{(\ell)} (W_\ell \cdot x_\ell + b_\ell),
+        \end{equation}
+        donde $x_\ell \in \R^{d_{\ell-1}}$ es la entrada de la función, $\sigma^{(\ell)}$ es una función no-lineal, también llamada \emph{función de activación}, $\theta_\ell = (W_\ell, b_\ell)$ son los parámetros de la función, con $W_\ell \in \R^{d_{\ell} \times d_{\ell-1}}$ los \emph{pesos} y $b_\ell \in \R^{d_\ell}$ el \emph{bias}.
+
+        \section{Redes Neuronales Convolucionales}\label{sec:redes-neuronales-convolucionales}
+        {
+            \FM[inline]{Escribir!}
+        }  % end of sec. Redes Neuronales Convolucionales
+
+        \section{Redes Generativas Adversarias}\label{sec:redes-generativas-adversarias-GAN}
+        {
+            % Analogía ladron-policía
+            Comencemos imaginando la siguiente situación: Supongamos que hay un ladrón que desea engañar a un policía entregándole un billete falso. El ladrón, que es un inexperto, le entrega una servilleta, con una cara dibujada en ella, y que en el otro lado de la servilleta tiene escrito: ``\emph{esto vale un millón de dólares}''. El policía, que ha sido entrenado en la detección de billetes falsos, revisa el billete para comprobar que, efectivamente, es un billete falso. Sin embargo, en vez de enviar a la cárcel al ladrón, lo que hace es decirle al ladrón cuales fueron sus fallos, y de qué manera puede este mejorar en sus falsificaciones. Por su parte, el policía también se entrena más y más en la detección de billetes falsos, pues puede que en algún momento, el ladrón se vuelva tan bueno en la elaboración de billetes falsos, que llegue a engañar al policía con uno de sus billetes.
+
+            % Definición de las GANs, como un problema de clasificación reales-falsas
+            Las redes generativas adversarias (GANs) son un tipo de arquitectura de redes neuronales que se basan en la analogía del ladrón y el policía. En este caso, el ladrón es una red neuronal generativa $G$, que se encarga de generar muestras que parezcan reales, y el policía es una red neuronal discriminativa $D$, que se encarga de clasificar las muestras como reales o falsas. En este caso, la red generativa $G$ se entrena para engañar a la red discriminativa $D$, y la red discriminativa $D$ se entrena para detectar las muestras generadas por la red generativa $G$.
+
+            % Teorema de la GAN: Convergencia en divergencia Jensen-Shannon
+
+            % Ejemplos?
+        }  % end of sec. Redes Generativas Adversarias
+
+
+
+    }  % end of sec. Redes Neuronales
+}  % end of Chapter Modelos Generativos
