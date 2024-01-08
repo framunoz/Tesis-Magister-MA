@@ -60,13 +60,21 @@
 
 %% ====================================================================
 % Macros para diferenciales
-\newcommand{\ddpar}[2]{\if#2{}\dd{#1}\else\dd{#1(#2)}\fi}
+% \newcommand{\ddpar}[2]{\;\if#2{}#1\else#1(\dd #2)\fi}
+\newcommand{\ddpar}[2]{\;\ifthenelse{\isempty{#2}}{#1}{#1(\dd #2)}}
 
 \newcommand{\dP}[1][]{\ddpar{\ProbOp}{#1}}
 \newcommand{\dmu}[1][]{\ddpar{\mu}{#1}}
 \newcommand{\dgamma}[1][]{\ddpar{\gamma}{#1}}
 \newcommand{\dpi}[1][]{\ddpar{\pi}{#1}}
 \newcommand{\dnu}[1][]{\ddpar{\nu}{#1}}
+
+% \newcommand{\dP}[1][]{\;\if#1{}\dd{\ProbOp}\else\dd{\ProbOp(#1)}\fi}
+% \newcommand{\dP}[1][]{\;\ProbOp(\dd #1)}
+% \newcommand{\dmu}[1][]{\;\mu(\dd #1)}
+% \newcommand{\dgamma}[1][]{\;\gamma(\dd #1)}
+% \newcommand{\dpi}[1][]{\;\pi(\dd #1)}
+% \newcommand{\dnu}[1][]{\;\nu(\dd #1)}
 
 %% ====================================================================
 % Macros de conjuntos
