@@ -210,6 +210,8 @@
 					\forall h \in \cC(\cX \times \cY),\quad \int_{\cX\times\cY}^{} h(x, y) \dpi (\dd x, \dd y) = \int_{\cX}^{} h(x, T(x)) \dmu[x].
 				\end{equation}
 				Más aún, el mapa de transporte óptimo $T$ está únicamente definido como el gradiente de una función convexa $\phi$, i.e. $T(x) = \grad \phi(x)$, donde $\phi$ es la única función convexa (salvo una constante aditiva) tal que $\pf{(\grad \phi)} \mu = \nu$.
+
+				A aquellos mapas de transporte $\pi\in\Cpl(\mu, \nu)$ que se encuentran definidos por $\pi = \pf{(\id, T)} \mu$, para algún mapa de transporte $T$, se les llama \emph{mapas deterministas}, pues cumple con la propiedad de que si $(X, Y) \sim \pi$, entonces $Y$ queda determinado por $Y = T(X)$.
 			\end{theorem}
 
 			\begin{proof}
@@ -408,33 +410,38 @@
 		}  % end of sec. El Baricentro de Wasserstein
 
 
-		\subsection{Geodésicas en el Espacio de Wasserstein}\label{ssec:geodesicas-Wasserstein}
+		\subsection*{Geodésicas en el Espacio de Wasserstein}\label{ssec:geodesicas-Wasserstein}
 		{
 			En esta sección, se utilizará la distancia de Wasserstein para definir la interpolación geodésica en el espacio de Wasserstein. Esta noción se utilizará posteriormente en el algoritmo del descenso del gradiente estocástico sobre el espacio de Wasserstein.
 			\FM[inline]{Agregar la referencia del Lecture}
 
-			\begin{definition}[Interpolación de McCann \citep{gangbo1996geometry}]
-				Se define la interpolación de McCann entre dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ como la curva $\mu_t \in \WassersteinSpace[p]{\cX} $ definida por
-
+			\begin{definition}[Interpolación de \cite{mccann1997convexity}]
+				Se define la interpolación de McCann entre dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ como la curva $t \in [0, 1] \mapsto \mu_t \in \WassersteinSpace[p]{\cX} $ definida por
+				\FM{Podría agregar la imagen de geodésica de la presentación de Cuturi}
+				\begin{equation}
+					\mu_t \eqdef \arginf_{\mu \in \WassersteinSpace[p]{\cX} } \left\{ (1-t) \Wasserstein[p]{\mu_0}{\mu}^p + t \Wasserstein[p]{\mu}{\mu_1}^p \right\}.
+				\end{equation}
 			\end{definition}
 
+			Es claro que la interpolación de McCann es el caso particular del baricentro de Wasserstein, donde se toma $\gamma_0 = (1-t)$, $\gamma_1 = t$ y dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $. Además, la interpolación de McCann coincide con la noción de interpolación geodésica, la cuál se define a continuación:
 
-			\FM{Podría agregar la imagen de geodésica de la presentación de Cuturi}
-			\begin{definition}
+			\begin{definition}[Geodésica a velocidad constante]
 				Sea $(\cX, \dist)$ un espacio métrico. Una \emph{geodésica a velocidad constante}  entre dos puntos, $x_0, x_1 \in \cX$ es una curva continua $x : [0, 1] \to \cX$  tal que para cada $s, t \in [0, 1]$, $\dist(x_s,x_t) = |s - t| \dist(x_0,x_1) $.\FM{Debería de quitar esta definición? Nunca la ocupo directamente.}
 			\end{definition}
 
+			En nuestro contexto, el espacio métrico resulta ser $(\WassersteinSpace[p]{\cX} , W_p)$, donde ser un espacio geodésico significa que para cualquier par de puntos, existe un punto medio con respecto a la distancia $W_p$. La siguiente proposición proporciona una fórmula explícita para calcular geodésicas entre dos puntos:
+
 			\begin{proposition}
-				Sean $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $, con $\cX \in \R^d$  compacto y convexo. Sea $\gamma \in \Cpl(\mu_0, \mu_1)$  un plan de transporte óptimo\FM{Agregar en la def que estos se llamarán planes de transporte}. Definamos
+				Sean $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $, con $\cX \subseteq \R^d$  compacto y convexo. Sea $\pi \in \Cpl(\mu_0, \mu_1)$  un plan de transporte óptimo\FM{Agregar en la def que estos se llamarán planes de transporte}. Definamos
 				\begin{equation}
-					\mu_t \eqdef \pf{(\pi_t)} \gamma, \quad \text{donde } \pi_t(x, y) = (1-t)x + ty.
+					\mu_t \eqdef \pf{(P_t)} \pi, \quad \text{donde } P_t(x, y) = (1-t)x + ty.
 				\end{equation}
-				Entonces, la curva $\mu_t$ es una geodésica a velocidad constante entre $\mu_0$ y $\mu_1$.
+				Entonces, la curva $\mu_t$ es la interpolación geodésica entre $\mu_0$ y $\mu_1$.
 
 			\end{proposition}
 
 			\begin{example}
-				Si existe un mapa de transporte óptimo $T$ entre $\mu_0$ y $\mu_1$, entonces la geodésica definida arriba es $\mu_t = \pf{((1-t)\id + tT)} \mu_0$.
+				En el caso en que el plan de transporte sea determinista, es decir, si $\pi = \pf{(\id, T)} \mu_0$, para algún mapa de transporte $T$, entonces la geodésica definida arriba es $\mu_t = \pf{((1-t)\id + tT)} \mu_0$.
 			\end{example}
 
 			\FM[inline]{Creo que esta observación no es tan importante por ahora}
@@ -451,28 +458,33 @@
 
 		}  % end of sec. Geodésicas en el Espacio de Wasserstein
 
-		\subsection{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
+		\subsection*{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
 		{
-			En esta sección se definirá el baricentro de Wasserstein Bayesiano, el cual es una generalización del baricentro de Wasserstein, que permite incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. En esta sección se utilizará como referencia principal \cite{rios2020contributions} y \cite{backhoff2022bayesian}.
+			En esta sección se definirá el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro es que permite incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. En esta sección se utilizará como referencia principal \cite{rios2020contributions} y \cite{backhoff2022bayesian}.
 
-			Se considerarán muestras $\Data = \left(x_1,\ldots, x_n \right)$ en un espacio $\cX$ y un conjunto de modelos factibles, o medidas de probabilidad $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo, también conocido como la \emph{selección de un modelo}, utilizando los datos $\Data$ consiste en escoger un elemento $\mu$ de $\Models$ que mejor explique los datos, si es que estos hubieran sido generados por $\mu$.
+			Se considerará una muestra $\Data = \left(x_1,\ldots, x_n \right)$ que pertenecen a un espacio $\cX$ y un conjunto de modelos factibles, o medidas de probabilidad $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo (también conocido como la \emph{selección de un modelo}) utilizando los datos $\Data$  consiste en escoger un elemento $\mu$ de $\Models$ que mejor explique los datos, si es que estos hubieran sido generados por $\mu$.
 
-			Para ello, se adoptará un enfoque Bayesiano, el cuál provee de un marco probabilística para manejar la incertidumbre sobre los modelos. Por tanto, se empezará considerando una medida de probabilidad $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $, entendida con una distribución a \textit{priori} sobre un espacio de modelos $\Models$. En particular, se tiene que el prior se encuentra soportada en el espacio de modelos $\Models$, es decir, $\Pi(\Models) = \Pi(\ProbSpaceAC[\cX] ) = 1$.
+			Para este objetivo, se adoptará un enfoque Bayesiano, el cuál provee de un marco probabilística para manejar la incertidumbre sobre los modelos. Por tanto, se empezará considerando una medida de probabilidad $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $, entendida con una distribución a \textit{priori} sobre un espacio de modelos $\Models$. En particular, se tiene que el prior se encuentra soportada en el espacio de modelos $\Models$, es decir, $\Pi(\Models) = \Pi(\ProbSpaceAC[\cX] ) = 1$.
 
-			Para cada $n \in \N\setminus\left\{ 0 \right\}$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de un modelo $\mu$ escogida de acuerdo a $\Pi$ y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generada por $\mu$. Esto es
+			Para cada $n \in \N\setminus\left\{ 0 \right\}$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de escoger un modelo $\mu$ de acuerdo a la ley $\Pi$, y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generadas por $\mu$. Esto es
+			% \begin{equation}
+			% 	\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
+			% 	\eqdef \dPi[\pi] \dmu[x_1] \cdots \dmu[x_n]
+			% 	= \dPi[\mu] \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i)
+			% \end{equation}
+			\begin{align*}
+				\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
+				 & \eqdef \dPi[\mu] \dmu[x_1] \cdots \dmu[x_n]                                      \\
+				 & = \dPi[\mu] \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i),
+			\end{align*}
+			donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym de $\mu$ con respecto a la medida de referencia $\lambda$. Considerando que $\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu) = \Pi(\dd \mu) \bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$, donde $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ es su respectivo kernel de transición, se deduce entonces que la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
 			\begin{equation}
-				\dd{\bPi(x_1,\ldots, x_n, \mu)}
-				\eqdef \dd{\Pi(\mu)} \dd{\mu(x_1)} \cdots \dd{\mu(x_n)}
-				= \dd{\Pi(\mu)} \dd{\lambda(x_1)} \cdots \dd{\lambda(x_n)} \prod_{i=1}^{n} \dv{\mu}{\lambda} \qty(x_i),
+				\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)
+				\eqdef \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i),
 			\end{equation}
-			donde $\dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym de $\mu$ con respecto a $\lambda$. Considerando que $\dd{\bPi(x_1,\ldots, x_n, \mu)} = \bPi(\dd x_1,\ldots, \dd x_n \mid \mu) \dd{\Pi(\mu)}$, la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
-			\begin{equation}
-				\dd{\bPi(x_1,\ldots, x_n, \mu)}
-				\eqdef \prod_{i=1}^{n} \dv{\mu}{\lambda} \qty(x_i)  \dd{\lambda(x_1)} \cdots \dd{\lambda(x_n)} \dd\Pi(\mu),
-			\end{equation}
-			donde la densidad marginal de $\Data$ con respecto a $\lambda^{\otimes n}$ es
+			donde su densidad marginal con respecto a $\lambda^{\otimes n}$ es
 			\begin{equation*}
-				\dv{\bPi}{\lambda^{\otimes n}}\qty(x_1,\ldots, x_n) = \int_{\Models} \prod_{i=1}^{n} \dv{\nu}{\lambda}\qty(x_1) \dd{\Pi(\nu)}.
+				\dv{\bPi}{\lambda^{\otimes n}}\qty(x_1,\ldots, x_n) = \int_{\Models} \prod_{i=1}^{n} \rho_{\tilde\mu}\qty(x_i) \dd{\Pi(\tilde\mu)}.
 			\end{equation*}
 
 			La \textit{distribución posterior} $\bPi(\dd \mu \mid x_1, \ldots, x_n )$ dada la data $\Data$ es también un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, el cuál se denotará por $\Pi_n$ por simplicidad y el cuál, en virtud a la regla de Bayes, está dado por
