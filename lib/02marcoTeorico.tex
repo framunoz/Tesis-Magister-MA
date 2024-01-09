@@ -396,6 +396,7 @@
 			\begin{definition}[Baricentro de Wasserstein, versión general]
 				Sea $\Gamma \in \ProbSpace[\ProbSpace]$ una medida. El baricentro de Wasserstein se puede (re)-definir como aquel que minimice el siguiente problema:
 				\begin{equation}
+					\label{eq:baricentroWassersteinGeneral}
 					\bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \int_{\ProbSpace} \Wasserstein[p]{\mu}{\nu}^p \dGamma[\nu].
 				\end{equation}
 
@@ -404,6 +405,15 @@
 			\begin{remark}
 				Se puede notar que la definición anterior es una generalización, pues si se considera $\Gamma = \sum_{i=1}^{n} \gamma_i \delta_{\mu_i}$, entonces se recupera la primera definición.
 			\end{remark}
+
+			\begin{remark}
+				Notemos también que en la definición anterior, el baricentro de Wasserstein es la medida que minimiza el promedio de las medidas generadas por $\Gamma$. De esta forma, la Ecuación \eqref{eq:baricentroWassersteinGeneral} se puede reescribir como:
+				\begin{equation}
+					\bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \Exp_{\nu \sim \Gamma} \big[ \Wasserstein[p]{\mu}{\nu}^p \big].
+				\end{equation}
+
+			\end{remark}
+
 
 
 
@@ -467,34 +477,60 @@
 			Para este objetivo, se adoptará un enfoque Bayesiano, el cuál provee de un marco probabilística para manejar la incertidumbre sobre los modelos. Por tanto, se empezará considerando una medida de probabilidad $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $, entendida con una distribución a \textit{priori} sobre un espacio de modelos $\Models$. En particular, se tiene que el prior se encuentra soportada en el espacio de modelos $\Models$, es decir, $\Pi(\Models) = \Pi(\ProbSpaceAC[\cX] ) = 1$.
 
 			Para cada $n \in \N\setminus\left\{ 0 \right\}$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de escoger un modelo $\mu$ de acuerdo a la ley $\Pi$, y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generadas por $\mu$. Esto es
-			% \begin{equation}
-			% 	\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
-			% 	\eqdef \dPi[\pi] \dmu[x_1] \cdots \dmu[x_n]
-			% 	= \dPi[\mu] \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i)
-			% \end{equation}
-			\begin{align*}
+			\begin{align}
 				\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
 				 & \eqdef \dPi[\mu] \dmu[x_1] \cdots \dmu[x_n]                                      \\
 				 & = \dPi[\mu] \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i),
-			\end{align*}
-			donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym de $\mu$ con respecto a la medida de referencia $\lambda$. Considerando que $\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu) = \Pi(\dd \mu) \bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$, donde $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ es su respectivo kernel de transición, se deduce entonces que la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
+			\end{align}
+			donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym de $\mu$ con respecto a la medida de referencia $\lambda$.
+			Considerando que $\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu) = \Pi(\dd \mu) \bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$, donde $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ es su respectivo kernel de transición, se deduce entonces que la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
 			\begin{equation}
 				\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)
 				\eqdef \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i),
 			\end{equation}
-			donde su densidad marginal con respecto a $\lambda^{\otimes n}$ es
-			\begin{equation*}
-				\dv{\bPi}{\lambda^{\otimes n}}\qty(x_1,\ldots, x_n) = \int_{\Models} \prod_{i=1}^{n} \rho_{\tilde\mu}\qty(x_i) \dd{\Pi(\tilde\mu)}.
-			\end{equation*}
+			donde se define la \emph{verosimilitud} como la densidad de $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ con respecto a $\lambda^{\otimes n}$, la cual se denotará por $\LikelihoodN[\mu]$:
+			\begin{equation}
+				\LikelihoodN[\mu] \eqdef \rho_\bPi(x_1,\ldots, x_n \mid \mu) = \prod_{i=1}^n \rho_\mu(x_i)
+			\end{equation}
+			y la verosimilitud marginal, también conocido como la \emph{evidencia}, se define por:
+			\begin{equation}
+				\rho_\bPi(x_1,\ldots, x_n) = \int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu].
+			\end{equation}
 
-			La \textit{distribución posterior} $\bPi(\dd \mu \mid x_1, \ldots, x_n )$ dada la data $\Data$ es también un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, el cuál se denotará por $\Pi_n$ por simplicidad y el cuál, en virtud a la regla de Bayes, está dado por
+			La densidad posterior $\bPi(\dd\mu \mid x_1,\ldots, x_n )$, denotada por $\Pi_n(\dd\mu)$ por simplicidad, es un elemento de $\ProbSpace[\ProbSpace[\cX] ] $,y en virtud a la regla de Bayes, está dado por
 			\begin{equation}
 				\label{eq:distribucionPosterior}
-				\dd{\Pi_n(\mu)}
-				\eqdef \frac{\bPi(x_1,\ldots, x_n \mid\mu)}{\bPi(x_1,\ldots, x_n)} \dd{\Pi(\mu)}
-				= \frac{\prod_{i=1}^{n} \dv{\mu}{\lambda}\qty(x_i)}
-				{\int_{\Models} \prod_{i=1}^{n} \dv{\nu}{\lambda}\qty(x_1) \dd{\Pi(\nu)}} \dd{\Pi(\mu)}.
+				\dPiN[\mu] = \dPi[\mu] \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} = \dPi[\mu] \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}.
 			\end{equation}
+
+			La derivada de Radon-Nikodym de $\dPiN[\mu]$ con respecto a $\dPi[\mu]$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
+
+			Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$ correspondería al modelo que minimice el promedio de la distancia de Wasserstein con respecto a la distribución posterior. La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
+
+			\begin{definition}
+				\label{def:baricentroWassersteinBayesiano}
+				Sea $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $ una medida de probabilidad sobre un espacio de modelos $\Models \subseteq \ProbSpace[\cX]$. Sea $\Data = \left(x_1,\ldots, x_n \right)$ una muestra de tamaño $n$. El \emph{baricentro de Wasserstein Bayesiano} se define como aquel que minimice el siguiente problema:
+				\begin{equation}
+					\label{eq:baricentroWassersteinBayesiano}
+					\bar \mu \eqdef \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
+				\end{equation}
+			\end{definition}
+
+
+			% \newpage
+			% donde su densidad marginal con respecto a $\lambda^{\otimes n}$ es
+			% \begin{equation*}
+			% 	\dv{\bPi}{\lambda^{\otimes n}}\qty(x_1,\ldots, x_n) = \int_{\Models} \prod_{i=1}^{n} \rho_{\tilde\mu}\qty(x_i) \dd{\Pi(\tilde\mu)}.
+			% \end{equation*}
+
+			% La \textit{distribución posterior} $\bPi(\dd \mu \mid x_1, \ldots, x_n )$ dada la data $\Data$ es también un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, el cuál se denotará por $\Pi_n$ por simplicidad y el cuál, en virtud a la regla de Bayes, está dado por
+			% \begin{equation}
+			% 	\label{eq:distribucionPosterior}
+			% 	\dd{\Pi_n(\mu)}
+			% 	\eqdef \frac{\bPi(x_1,\ldots, x_n \mid\mu)}{\bPi(x_1,\ldots, x_n)} \dd{\Pi(\mu)}
+			% 	= \frac{\prod_{i=1}^{n} \dv{\mu}{\lambda}\qty(x_i)}
+			% 	{\int_{\Models} \prod_{i=1}^{n} \dv{\nu}{\lambda}\qty(x_1) \dd{\Pi(\nu)}} \dd{\Pi(\mu)}.
+			% \end{equation}
 
 
 
