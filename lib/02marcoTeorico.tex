@@ -1,7 +1,8 @@
 \chapter{Transporte Óptimo de Masas}\label{chap:transporte-optimo-de-masas}
 {
 
-	En este capítulo se abordará el problema de transporte óptimo, la distancia de Wasserstein, y el problema de los baricentros de Wasserstein. Además, se presentarán algunas propiedades de la distancia de Wasserstein que serán de utilidad en el desarrollo de este trabajo. La notación, definiciones y explicaciones utilizadas están basadas principalmente en \cite{villani2009optimal}, \cite{peyre2019computational} y \cite{panaretos2020invitation}.
+	En este capítulo se abordará el problema de transporte óptimo, la distancia de Wasserstein, y el problema de los baricentros de Wasserstein. Además, se presentarán algunas propiedades de la distancia de Wasserstein que serán de utilidad en el desarrollo de este trabajo.
+	% La notación, definiciones y explicaciones utilizadas están basadas principalmente en \cite[\S 3]{villani2009optimal}, \cite{peyre2019computational} y \cite{panaretos2020invitation}.
 
 	\section*{Notación}\label{sec:notacion}
 	{
@@ -11,11 +12,11 @@
 			Se definen los siguientes espacios:
 			\begin{itemize}
 				\item Si $(\cX, \dist)$ es un espacio métrico, completo y separable, entonces se dice que este es un \emph{espacio Polaco}.
-				\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpace[\cX]$ denotará al conjunto de medidas de probabilidad en $\cX$, utilizando la $\sigma$-álgebra de Borel.
-				\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpaceAC[\cX]$ denotará al conjunto de medidas de probabilidad absolutamente continuas con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
-				\item $\mathcal{C}(\cX)$ denotará al conjunto de funciones continuas en $\cX$.
-				\item $\mathcal{C}_b(\cX)$ denotará al conjunto de funciones continuas y acotadas en $\cX$.
-				\item ${\Lip}_{k}(\cX)$ denotará al conjunto de funciones $k$-Lipschitz en $\cX$. Mientras que se asumirá que $\Lip[\cX]$ denotará al conjunto de funciones $1$-Lipschitz en $\cX$. \FM{Se podría agregar una definición de función Lipschitz?}
+				\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpace[\cX]$ denotará al \emph{conjunto de medidas de probabilidad} en $\cX$, utilizando la $\sigma$-álgebra de Borel.
+				\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpaceAC[\cX]$ denotará al \emph{conjunto de medidas de probabilidad absolutamente continuas} con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
+				\item $\mathcal{C}(\cX)$ denotará al \emph{conjunto de funciones continuas} en $\cX$.
+				\item $\mathcal{C}_b(\cX)$ denotará al \emph{conjunto de funciones continuas y acotadas} en $\cX$.
+				\item ${\Lip}_{k}(\cX)$ denotará al \emph{conjunto de funciones $k$-Lipschitz} en $\cX$. Mientras que se asumirá que $\Lip[\cX]$ denotará al \emph{conjunto de funciones $1$-Lipschitz} en $\cX$. \FM{Se podría agregar una definición de función Lipschitz?}
 			\end{itemize}
 		\end{definition}
 
@@ -34,18 +35,12 @@
 
 	\section{El Problema de Transporte}\label{sec:el-problema-de-transporte}
 	{
-		A lo largo de esta sección, se presentarán distintas formulaciones del problema de transporte, comenzando con sus orígenes \cite{monge1781memoire}, seguido de su formulación relajada \cite{kantorovich1942translocation}, y concluyendo al destacar que, en realidad, ambos problemas son dos caras de una misma moneda \cite{brenier1991polar}. Es notable señalar que muchos ejemplos han sido tomados e inspirados de \cite{panaretos2020invitation}, \cite{peyre2019computational} y \cite{cuturi2017primer}.
-
-		%   A lo largo de esta sección se presentarán distintas formulaciones de lo que es el problema de transporte, empezando con sus orígenes \cite{monge1781memoire}, pasando con su formulación relajada \cite{kantorovich1942translocation}, y finalizando comentando que, realmente, ambos problemas son dos caras de una misma moneda \cite{brenier1991polar}. Cabe destacar que muchos ejemplos en esta sección han sido tomados e inspirados de \cite{panaretos2020invitation}, \cite{peyre2019computational} y \cite{cuturi2017primer}.
+		A lo largo de esta sección se presentarán distintas formulaciones del problema de transporte, comenzando con sus orígenes \cite{monge1781memoire}, seguido de su formulación relajada \cite{kantorovich1942translocation}, y concluyendo al destacar que, en realidad, ambos problemas son dos caras de una misma moneda \cite{brenier1991polar}. Es notable señalar que esta sección está basada en \cite[\S 1.1]{panaretos2020invitation} y \cite[\S 2]{peyre2019computational}.
 
 		\subsection*{El problema de Monge}
 		{
 
-			%   En esta sección, se tomará la introducción realizada en el libro \emph{An Invitation to Statistics in Wasserstein Space}, de \cite{panaretos2020invitation}.
-
 			Supongamos que hay un trabajador que debe de transportar una pila de arena a un pozo de igual volumen, situación que se puede ver representada en la Figura~\ref{fig:montanas-arena-pozo}. Dada esta situación, \cite{monge1781memoire} se preguntó: ¿Cuál es la manera de transportar la arena al pozo con \emph{el menor esfuerzo} para el trabajador?, o dicho de otra manera, ¿Cuál es la forma \emph{óptima} de transportar la arena al pozo?
-
-			%   \cite{monge1781memoire} un día se preguntó: dada una pila de arena y un pozo de igual volumen como en la Figura~\ref{fig:montanas-arena-pozo}, ¿Cuál es la forma óptima de transportar la arena al pozo? o dicho de otra manera, ¿Cuál es la manera de transportar la arena al pozo con el menor esfuerzo?
 
 			\begin{figure}[ht]
 				\centering
@@ -54,9 +49,9 @@
 				\label{fig:montanas-arena-pozo}
 			\end{figure}
 
-			Utilizando términos matemáticos, este problema se formula de la siguiente manera: dado un espacio de arena $\cX$, un espacio de pozo $\cY$, y una función de costo $c: \cX \times \cY \to \R$, que representa el esfuerzo necesario para transportar una unidad de arena del punto $x \in \cX$ a una posición en el pozo $y \in \cY$. La distribución de la arena se describe mediante una medida $\mu \in \ProbSpace[\cX]$, mientras que la forma del pozo se caracteriza mediante una medida $\nu \in \ProbSpace[\cY]$.
+			Utilizando términos matemáticos, este problema se formula de la siguiente manera: sea un espacio de arena $\cX$, un espacio de pozo $\cY$, y una función de costo $c: \cX \times \cY \to \R$, donde la función de costo representa el \emph{esfuerzo} necesario para transportar una unidad de arena del punto $x \in \cX$ a una posición en el pozo $y \in \cY$. La distribución de la arena se describe mediante una medida $\mu \in \ProbSpace[\cX]$, mientras que la forma del pozo se caracteriza mediante una medida $\nu \in \ProbSpace[\cY]$.
 
-			La \emph{decisión} sobre cómo transportar la arena se representa mediante una función $T: \cX \to \cY$, que asigna a cada punto $x \in \cX$ una posición $T(x) \in \cY$ en el pozo. El ``esfuerzo total'' que el trabajador debe realizar corresponde a ``sumar'' el costo asociado al transporte de la arena desde $x$ hasta la posición correspondiente en el pozo $T(x)$. Más formalmente, el \emph{costo total} de transportar la arena al pozo se obtiene integrando el costo mencionado anteriormente sobre todo el espacio de arena:
+			La \emph{decisión} sobre cómo transportar la arena se representa mediante una función $T: \cX \to \cY$, que asigna a cada punto $x \in \cX$ una posición $T(x) \in \cY$ en el pozo. El ``esfuerzo total'' que el trabajador debe realizar corresponde a ``sumar'' todos los costos asociados al transporte de la arena desde $x$ hasta la posición correspondiente en el pozo $T(x)$. Más formalmente, el \emph{costo total} de transportar la arena al pozo se obtiene integrando el costo $c$ sobre todo el espacio de arena $\cX$:
 			\begin{equation}\label{eq:costoTotalTransporteMonge}
 				C(T) \eqdef \int_{\cX} c(x, T(x)) \dmu[x].
 			\end{equation}
@@ -70,7 +65,7 @@
 
 			Una primera propiedad que se debe exigir a la función $T$ es que preserve la masa total de la arena. Es decir, para cualquier conjunto $B \subseteq \cY$ que represente una región en el pozo con volumen $\nu(B)$, se requiere que el volumen de arena asignado a la región $B$ por la ``decisión'' $T$ sea exactamente el mismo volumen que se rellenará en $B$. La cantidad de arena que ocupará $B$ bajo la ``decisión'' $T$ se expresa como $\left\{ x \in \cX : T(x) \in B \right\} = T^{-1}(B)$, y por lo tanto, la condición de preservación de masa implica que $\mu(T^{-1}(B)) = \nu(B)$ para todo $B \subseteq \cY$.
 
-			Esta condición se ilustra gráficamente en la Figura~\ref{fig:preservacion-masa} y se formula de manera más precisa mediante la siguiente definición:
+			Esta condición se ilustra gráficamente en la Figura~\ref{fig:preservacion-masa} y se formula de manera más precisa mediante la definición del operador push-forward:
 
 			\begin{definition}[Operador push-forward]
 				Sea una función medible $T:\cX \to \cY$, se define el \emph{operador push-forward}  de $T$ como la aplicación $\Tpf:\ProbSpace[\cX] \to \ProbSpace[\cY]$ que satisface la siguiente relación:
@@ -80,7 +75,7 @@
 				\end{equation}
 			\end{definition}
 
-			Ahora que disponemos de todas las herramientas matemáticas necesarias, podemos definir este problema como el de encontrar una función $T$ que representa la manera de transportar la arena al pozo, tal que minimice el ``esfuerzo'' de transporte $C(T)$, sujeto a la condición de que la masa total de la arena sea preservada. De manera más formal:
+			Ahora que disponemos de todas las herramientas matemáticas necesarias, podemos definir este problema como el de encontrar una función $T$, que representa la manera de transportar la arena al pozo, tal que minimice el costo total de transporte $C(T)$, sujeto a la condición de que la masa total de la arena sea preservada. De manera más formal:
 
 			\begin{definition}[Problema de \cite{monge1781memoire}]
 				Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c : \cX \times \cY \to \R$, el \emph{problema de transporte óptimo de Monge} se define como el problema de encontrar una función medible $T: \cX \to \cY$ que minimice el costo total de transporte $C(T)$. Es decir, que minimice la siguiente expresión:
@@ -107,7 +102,7 @@
 					T^1_{\mu\to\nu}(1, 1) & = (1, -1) & T^1_{\mu\to\nu}(-1, -1) & = (-1, 1)  \\
 					T^2_{\mu\to\nu}(1, 1) & = (-1, 1) & T^2_{\mu\to\nu}(-1, -1) & = (1, -1).
 				\end{align*}
-				Este ejemplo demuestra que en ciertos casos, el problema de Monge puede tener más de una solución.
+				Este ejemplo muestra que, en ciertos casos, el problema de Monge puede tener más de una solución.
 			\end{example}
 
 
@@ -124,9 +119,6 @@
 			% 		  \label{eq:problemaTransporteDiscreto}
 			% 		  \inf_{T: T(x_i) = y_j} \sum_{i=0}^{n} a_i c(x_i, T(x_i)).
 			% 	  \end{equation}
-
-			% 	  Cabe destacar que este problema no siempre tiene solución (generalmente no la tiene si $m > n$), y que en caso de tenerla, no siempre es única.\FM[inline]{Se podría agregar un ejemplo, el de los cuatro puntos en el plano.}
-			%   \end{remark}
 		}
 
 		\subsection*{El problema de Kantorovich}
@@ -140,8 +132,7 @@
 				\pi(A \times \cY) & = \mu(A), \quad \forall A \subset \cX \text{ medible;} \\
 				\pi(\cX \times B) & = \nu(B),\quad \forall B \subset \cY \text{ medible.}
 			\end{align*}
-			Las medidas $\pi$ que cumplen esta condición se conocen como \emph{couplings}, y se pueden definir de manera más formal de la siguiente manera:
-
+			Las medidas $\pi$ que cumplen esta condición se conocen como \emph{couplings}, y se pueden definir de manera más formal de la siguiente manera:\FM{Quizás no sea necesaria la definición si lo definí en esta línea.}
 
 			\begin{definition}[Coupling]
 				Sean $(\cX, \mu)$ y $(\cY, \nu)$ dos espacios de probabilidad. Un \emph{coupling} entre $\mu$ y $\nu$ es una medida de probabilidad $\pi \in \ProbSpace[\cX \times \cY]$ tal que sus proyecciones marginales sean $\mu$ y $\nu$, es decir, que cumpla que
@@ -164,20 +155,18 @@
 					\label{fig:coupling-example}}
 			\end{figure}
 
-			Y utilizando esta definición, se puede definir el problema de transporte óptimo de Kantorovich:
+			Y utilizando esta definición, se puede definir el problema de transporte óptimo de Kantorovich de forma análoga al problema de Monge:
 			\begin{definition}[Problema de \cite{kantorovich1942translocation}]
 				Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c: \cX \times \cY \to \R$, el \emph{problema de transporte óptimo de Kantorovich} se define como el problema de encontrar un coupling $\pi \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
 				\begin{equation}
 					\label{eq:problemaTransporteKantorovich}
 					\inf_{\pi \in \Cpl(\mu, \nu)} \int_{\cX \times \cY} c(x, y) \dpi (\dd x, \dd y).
 				\end{equation}
-				Al conjunto de couplings que resuelven este problema se le llama \emph{planes de transporte} o \emph{couplings óptimos}, y se denotará por $\pi_{\mu \to \nu}$, o simplemente $\pi$ si es que no existe confusión.
+				Al conjunto de couplings que resuelven este problema se le llama \emph{planes de transporte} o \emph{couplings óptimos}, y un coupling que minimice este problema se denotará por $\pi_{\mu \to \nu}$, o simplemente $\pi$ si es que no existe confusión.
 			\end{definition}
 
 
 			En diferencia con el problema de Monge, el problema de Kantorovich siempre tiene solución, si es que $(\cX, \cY)$ son espacios compactos y $c$ es continuo. En efecto, $\Cpl(\mu, \nu)$ es compacto para la topología débil de las medidas,  $\pi \mapsto \int c\dd{\pi}$ es una función continua para esta topología, y la restricción $\pi\in\Cpl(\mu, \nu)$ es no vacía (la medida producto $\mu \otimes \nu$ pertenece a $\Cpl(\mu, \nu)$). Como se busca un ínfimo en un compacto de una función continua, se sigue que existe un coupling óptimo $\pi_{\mu \to \nu}$ que resuelve \eqref{eq:problemaTransporteKantorovich}.
-
-			%   Ejemplos de couplings óptimos se pueden apreciar en la Figura~\ref{fig:coupling-example}.
 
 			Continuando con los ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, podemos encontrar el coupling óptimo para cada uno de estos problemas:
 
@@ -196,8 +185,8 @@
 			\begin{example}
 				Del mismo modo, Sean los espacios $\cX$ y $\cY$ y las medidas $\mu$ y $\nu$ como en el Ejemplo~\ref*{ex:problemaDeMongeMultipleSolucion}. En este caso, el coupling óptimo entre $\mu$ y $\nu$ corresponde a:
 				\begin{align*}
-					\pi_{\mu \to \nu}\left\{ ((1, 1), (-1, 1)) \right\}   & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ ((1, 1), (1, -1)) \right\}   & = \frac{1}{4}  \\
-					\pi_{\mu \to \nu}\left\{ ((-1, -1), (-1, 1)) \right\} & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ ((-1, -1), (1, -1)) \right\} & = \frac{1}{4}.
+					\pi_{\mu \to \nu}\left\{ \qty\Big((1, 1), (-1, 1)) \right\}   & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ \qty\Big((1, 1), (1, -1)) \right\}   & = \frac{1}{4}  \\
+					\pi_{\mu \to \nu}\left\{ \qty\Big((-1, -1), (-1, 1)) \right\} & = \frac{1}{4} & \pi_{\mu \to \nu}\left\{ \qty\Big((-1, -1), (1, -1)) \right\} & = \frac{1}{4}.
 				\end{align*}
 
 			\end{example}
@@ -205,7 +194,7 @@
 			Para finalizar esta sección, una pregunta que surge naturalmente es: ¿Cuál es relación entre los problemas de Monge y Kantorovich? ¿Si encuentro una solución para el problema de Kantorovich, puedo tener una solución para el problema de Monge? La respuesta es que, bajo algunas condiciones particulares, estos dos problemas están estrechamente relacionados, como lo establece el teorema de \cite{brenier1991polar}:
 
 			\begin{theorem}[\cite{brenier1991polar}]
-				Sea $\cX = \cY = \R^d$, $c(x, y) = \|x - y\|^2$, $\mu\in \ProbSpace[\cX] $ y $\nu\in \ProbSpace[\cY] $. Si al menos una de las dos medidas (que s.p.g. supondremos que es $\mu$) tiene densidad con respecto a la medida de Lebesgue, entonces el plan de transporte óptimo $\pi$ es único y esta soportado en el grafo $(x, T(x))$ de un mapa de transporte óptimo $T:\cX \to \cY$. Esto significa que $\pi = \pf{(\id, T)}\mu$, y que cumple la siguiente ecuación:
+				Sea $\cX = \cY = \R^d$, $c(x, y) = \|x - y\|^2$, $\mu\in \ProbSpace[\cX] $ y $\nu\in \ProbSpace[\cY] $. Si al menos una de las dos medidas (que s.p.g. supondremos que es $\mu$) tiene densidad con respecto a la medida de Lebesgue, entonces el plan de transporte óptimo $\pi$ es único y esta soportado en el grafo $(x, T(x))$ de un mapa de transporte óptimo $T:\cX \to \cY$. Esto significa que el plan de transporte es $\pi = \pf{(\id, T)}\mu$, y cumple la siguiente ecuación:
 				\begin{equation}
 					\forall h \in \cC(\cX \times \cY),\quad \int_{\cX\times\cY}^{} h(x, y) \dpi (\dd x, \dd y) = \int_{\cX}^{} h(x, T(x)) \dmu[x].
 				\end{equation}
@@ -226,10 +215,9 @@
 
 		Como se revisó en la sección anterior, cuando se considera el problema de Kantorovich, este problema usualmente tiene solución.
 		Si es que consideramos $(\cX, \dist)$ un espacio métrico, se podría considerar la distancia como una forma de representar el costo de transportar la masa de un punto $x$ a un punto $y$.
-		Pero una vez que se hace esto, naturalmente surge la pregunta: ¿Qué propiedades pueden surgir al considerar la distancia como una función de coste? ¿Qué propiedades surgirán?
-		% Ahora bien, nos podemos pregunta: ¿Qué sucede si la función de coste se reemplaza con una distancia? ¿Qué propiedades surgirán? 
+		Pero una vez que se hace esto, naturalmente surge la pregunta: ¿Qué propiedades pueden surgir al considerar la distancia como una función de coste?
 		En esta sección se responderá a estas preguntas. Para ello, se empezará definiendo la distancia de Wasserstein, para luego revisar algunas de sus propiedades.
-		%   En esta sección se presentará que, al evaluar la expresión \eqref{eq:problemaTransporteKantorovich} del problema de Kantorovich para una función de coste con distancia, se obtiene una distancia entre medidas de probabilidad. Revisaremos algunas propiedades de esta distancia, para concluir que esta distancia metriza la convergencia débil entre medidas de probabilidad.
+		Esta sección estará basada en \cite[\S 6]{villani2009optimal}.
 		\FM{Incluir subsections para la distancia, espacio, y convergencia débil?}
 
 		\begin{definition}[La distancia de Wasserstein]\label{def:distanciaWasserstein}
@@ -243,7 +231,6 @@
 
 		\begin{example}
 			$\Wasserstein[p]{\delta_x}{\delta_y} = \dist(x, y)$. Notemos que en este ejemplo, se puede interpretar que la distancia de Wasserstein metriza el ``esfuerzo'' de llevar la masa del punto $x$ al punto $y$, y que además, es independiente del valor de $p$.
-			% , como se comentó en los problemas de Kantorovich y de Monge.
 		\end{example}
 
 		Como el nombre de $W_p$ puede sugerir, esta es una distancia sobre medidas de probabilidad. Sin embargo, si esta es definida sobre todo el espacio $\ProbSpace[\cX]$, entonces puede tomar valores de $+\infty$, de forma que en estricto rigor, $W_p$ aún no puede ser considerada una distancia.
@@ -338,18 +325,18 @@
 
 	\section{El Baricentro de Wasserstein Bayesiano}\label{sec:el-baricentro-de-Wasserstein-Bayesiano}
 	{
-		En esta sección se presentará el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empezará revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de \cite{panaretos2020invitation} y definiciones de \cite{peyre2019computational}.
+		En esta sección se presentará el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empezará revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de \cite[\S 3]{panaretos2020invitation} y definiciones de \cite[\S 9.2]{peyre2019computational}.
 
 		\subsection*{La Media de Fréchet}\label{ssec:la-media-de-Frechet}
 		{
 			%   En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
 			\begin{definition}[Funcional y Media de \cite{frechet1948elements}]
-				Sea $(\cX, \dist)$ un espacio Polaco. Sean $x_1, \ldots, x_n$ puntos en $\cX$ y sean $\gamma_1,\ldots,\gamma_n\in\R_+$ los pesos asociados a esos puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
+				Sea $(\cX, \dist)$ un espacio Polaco. Sean $(x_{i})_{i=1}^{n}\in\cX^n$ puntos en $\cX$ y sean $(\gamma_{i})_{i=1}^{n}\in\R_+^n$ los pesos asociados a esos puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
 				\begin{equation}
 					\label{eq:funcionalFrechet}
 					\Psi(p) \eqdef \sum_{i=1}^{n} \gamma_i \dist(p, x_i)^2.
 				\end{equation}
-				Y, en caso de que exista un punto $m \in \cX$ que minimice el funcional $\Psi$, entonces este se definirá como la \emph{media de Fréchet} de los puntos $x_1,\ldots, x_n$. Es decir, es aquel punto tal que minimiza el siguiente problema:
+				Y, en caso de que exista un punto $m \in \cX$ que minimice el funcional $\Psi$, entonces este se definirá como la \emph{media de Fréchet} de los puntos $(x_{i})_{i=1}^{n}$. Es decir, es aquel punto tal que minimiza el siguiente problema:
 				\begin{equation}
 					\label{eq:mediaFrechet}
 					m \eqdef \argmin_{p \in \cX} \sum_{i=1}^{n} \gamma_i \dist(p, x_i)^2.
@@ -369,32 +356,44 @@
 			\end{example}
 
 			\begin{remark}
-				La razón por la que resulta interesante estudiar este concepto, es que únicamente utiliza nociones métricas, desligándose de nociones vectoriales. Como se vió en el Ejemplo~\ref{ex:baricentro-triangulo}, el promedio $\bar x$ utilizó conceptos vectoriales (suma y ponderación de vectores) mientras que la media de Fréchet utilizó nociones métricas, resultando en el mismo promedio.
+				La razón por la que resulta interesante estudiar este concepto, es que únicamente utiliza nociones métricas, desligándose de nociones vectoriales. Como se vió en el Ejemplo~\ref{ex:baricentro-triangulo}, el promedio $\bar x$ utilizó conceptos vectoriales (suma y ponderación de vectores) mientras que la media de Fréchet utilizó nociones métricas (a través de la distancia $\dist(x, y) = \|x - y\|$), resultando en el mismo promedio.
 
-				Aunque igualmente se hizo algo de ``trampa'', pues se utilizó la norma para definir una distancia. Sin embargo, el concepto es mucho más general, pues este baricentro depende de la distancia que se esté utilizando, de forma que el baricentro cambiará conforme a esta.
+				Lo interesante de la media de Fréchet, es que este concepto es mucho más general, pues la media dependerá ahora de la distancia que se esté utilizando.
+
+				% Aunque igualmente se hizo algo de ``trampa'', pues se utilizó la norma para definir una distancia. Sin embargo, el concepto es mucho más general, pues este baricentro depende de la distancia que se esté utilizando, de forma que el baricentro cambiará conforme a esta.
 			\end{remark}
 
 		}  % end of sec. La Media de Fréchet
 
 		\subsection*{El Baricentro de Wasserstein}\label{ssec:el-baricentro-de-Wasserstein}
 		{
-			Como se vió en la sección anterior, la media de Fréchet permite definir una noción de promedio para espacios métricos. Como se vió en la sección anterior, el Teorema~\ref{thm:espacioWassersteinEsMetrico} establece que $(\WassersteinSpace[p]{\cX}, W_p)$ es un espacio métrico, y por tanto, se puede definir su respectivo ``promedio'':
+			Como se vió en la sección anterior, la media de Fréchet permite definir una noción de promedio para espacios métricos. Además, en la sección anterior, el Teorema~\ref{thm:espacioWassersteinEsMetrico} establece que si $(\cX, \dist)$ es un espacio Polaco, entonces $(\WassersteinSpace[p]{\cX}, W_p)$ es un espacio Polaco, y en particular, un espacio métrico. Por tanto, se puede definir su respectivo ``promedio'' utilizando la media de Fréchet:
 
-			\begin{definition}[Baricentro de Wasserstein, \citep{agueh2011barycenters}]
-				Sean $\mu_1,\ldots, \mu_n \in \WassersteinSpace[p]{\cX} $ y sean $\gamma_1,\ldots, \gamma_n \in \R_+$ sus pesos asociados. El \emph{baricentro de Wasserstein} se define por medio de
+			\begin{definition}[Baricentro de Wasserstein \citep{agueh2011barycenters}]
+				Sean $(\mu_{i})_{i=1}^{n}$ medidas en $\WassersteinSpace[p]{\cX} $ y sean $(\gamma_{i})_{i=1}^{n} \in \R_+^n$ sus pesos asociados. El \emph{baricentro de Wasserstein} se define por medio de
 				\begin{equation}
 					\bar \mu \eqdef \arginf_{\nu \in \WassersteinSpace[p]{\cX} } \sum_{i=1}^{n} \gamma_i \Wasserstein[p]{\nu}{\mu_i}^p.
 				\end{equation}
 
 			\end{definition}
 
-			\FM[inline]{Se podría agregar el teorema que dice que el baricentro existe y es único, aunque no lo cacho mucho.}
-			\FM[inline]{Se podría poner algún ejemplo con una imagen.}
+			Un ejemplo de distintos baricentros, variando los pesos $(\gamma_i)_i$, se puede ver en la Figura~\ref{fig:baricentro-Wass-3d}.
 
-			Es posible generalizar aún más la noción de baricentro de Wasserstein a una colección infinita de medidas. Esto se puede hacer considerando una medida $\Gamma \in \ProbSpace[\ProbSpace ] $, que cumplirá el rol de los pesos $\gamma_1,\ldots, \gamma_n $ en la definición anterior. Esto se puede formalizar en la siguiente definición:
+			\begin{figure}[htbp]
+				\centering
+				\includegraphics[width=0.5\textwidth]{img/transporte/baricentro-Wass-3d.png}
+				\caption{Baricentro entre tres figuras en 3 dimensiones, donde se variaron los pesos $\gamma_i$ de forma bilineal. Imagen obtenida de \cite{solomon2015convolutional}.}
+				\label{fig:baricentro-Wass-3d}
+			\end{figure}
+
+
+			\FM[inline]{Se podría agregar el teorema que dice que el baricentro existe y es único, aunque no lo cacho mucho. Sé que es de Agueh y Carlier.}
+
+
+			Es posible generalizar aún más la noción de baricentro de Wasserstein a una colección infinita de medidas. Esto se puede hacer considerando una medida $\Gamma \in \ProbSpace[\ProbSpace ] $, que cumplirá el rol de los pesos $(\gamma_{i})_{i}$ en la definición anterior. Esto se puede formalizar en la siguiente definición:
 
 			\begin{definition}[Baricentro de Wasserstein, versión general]
-				Sea $\Gamma \in \ProbSpace[\ProbSpace]$ una medida. El baricentro de Wasserstein se puede (re)-definir como aquel que minimice el siguiente problema:
+				Sea $\Gamma \in \ProbSpace[\ProbSpace]$ una medida. El \emph{baricentro de Wasserstein} se (re-)define por medio de:
 				\begin{equation}
 					\label{eq:baricentroWassersteinGeneral}
 					\bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \int_{\ProbSpace} \Wasserstein[p]{\mu}{\nu}^p \dGamma[\nu].
@@ -403,13 +402,13 @@
 			\end{definition}
 
 			\begin{remark}
-				Se puede notar que la definición anterior es una generalización, pues si se considera $\Gamma = \sum_{i=1}^{n} \gamma_i \delta_{\mu_i}$, entonces se recupera la primera definición.
+				Se puede notar que la definición anterior es una generalización, pues si se considera $\Gamma = \sum_{i=1}^{n} \gamma_i \delta_{\mu_i}$, entonces se recupera la primera definición. Además, cabe destacar que no es necesario especificar las medidas $(\mu_i)_{i=1}^{n}$, pues se encuentran implícitas en la medida $\Gamma$.
 			\end{remark}
 
 			\begin{remark}
 				Notemos también que en la definición anterior, el baricentro de Wasserstein es la medida que minimiza el promedio de las medidas generadas por $\Gamma$. De esta forma, la Ecuación \eqref{eq:baricentroWassersteinGeneral} se puede reescribir como:
 				\begin{equation}
-					\bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \Exp_{\nu \sim \Gamma} \big[ \Wasserstein[p]{\mu}{\nu}^p \big].
+					\bar \mu \eqdef \arginf_{\mu \in \ProbSpace} \Big\{ \Exp_{\nu \sim \Gamma} \big[ \Wasserstein[p]{\mu}{\nu}^p \big] \Big\}.
 				\end{equation}
 
 			\end{remark}
@@ -426,7 +425,7 @@
 			\FM[inline]{Agregar la referencia del Lecture}
 
 			\begin{definition}[Interpolación de \cite{mccann1997convexity}]
-				Se define la interpolación de McCann entre dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ como la curva $t \in [0, 1] \mapsto \mu_t \in \WassersteinSpace[p]{\cX} $ definida por
+				Se define la \emph{interpolación de McCann} entre dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ como la curva $\mu_t \colon t \in [0, 1] \mapsto \mu_t \in \WassersteinSpace[p]{\cX} $ definida por
 				\FM{Podría agregar la imagen de geodésica de la presentación de Cuturi}
 				\begin{equation}
 					\mu_t \eqdef \arginf_{\mu \in \WassersteinSpace[p]{\cX} } \left\{ (1-t) \Wasserstein[p]{\mu_0}{\mu}^p + t \Wasserstein[p]{\mu}{\mu_1}^p \right\}.
@@ -439,7 +438,7 @@
 				Sea $(\cX, \dist)$ un espacio métrico. Una \emph{geodésica a velocidad constante}  entre dos puntos, $x_0, x_1 \in \cX$ es una curva continua $x : [0, 1] \to \cX$  tal que para cada $s, t \in [0, 1]$, $\dist(x_s,x_t) = |s - t| \dist(x_0,x_1) $.\FM{Debería de quitar esta definición? Nunca la ocupo directamente.}
 			\end{definition}
 
-			En nuestro contexto, el espacio métrico resulta ser $(\WassersteinSpace[p]{\cX} , W_p)$, donde ser un espacio geodésico significa que para cualquier par de puntos, existe un punto medio con respecto a la distancia $W_p$. La siguiente proposición proporciona una fórmula explícita para calcular geodésicas entre dos puntos:
+			En nuestro contexto, el espacio métrico resulta ser $(\WassersteinSpace[p]{\cX} , W_p)$, donde ser un espacio geodésico\FM{La definición de espacio geodésico quedó muy al aire, creo que debería de dar contexto al respecto, pero no sé cómo}  significa que para cualquier par de puntos, existe un punto medio con respecto a la distancia $W_p$. La siguiente proposición proporciona una fórmula explícita para calcular geodésicas entre dos puntos:
 
 			\begin{proposition}
 				Sean $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $, con $\cX \subseteq \R^d$  compacto y convexo. Sea $\pi \in \Cpl(\mu_0, \mu_1)$  un plan de transporte óptimo\FM{Agregar en la def que estos se llamarán planes de transporte}. Definamos
@@ -470,9 +469,13 @@
 
 		\subsection*{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
 		{
-			En esta sección se definirá el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro es que permite incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. En esta sección se utilizará como referencia principal \cite{rios2020contributions} y \cite{backhoff2022bayesian}.
+			En esta sección se definirá el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) explique las muestras tomadas.
+			%  conseguir  incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. 
+			En esta sección se utilizará como referencia principal \cite[\S 5]{rios2020contributions} y \cite{backhoff2022bayesian}.
 
-			Se considerará una muestra $\Data = \left(x_1,\ldots, x_n \right)$ que pertenecen a un espacio $\cX$ y un conjunto de modelos factibles, o medidas de probabilidad $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo (también conocido como la \emph{selección de un modelo}) utilizando los datos $\Data$  consiste en escoger un elemento $\mu$ de $\Models$ que mejor explique los datos, si es que estos hubieran sido generados por $\mu$.
+			Se considerará una muestra $\Data = \left(x_1,\ldots, x_n \right)$ que pertenecen a un espacio $\cX$ y un conjunto de modelos factibles
+			% , o medidas de probabilidad, 
+			$\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo (también conocido como la \emph{selección de un modelo}) utilizando los datos $\Data$  consiste en escoger un elemento $\mu$ de $\Models$ que \emph{mejor explique los datos}, si es que estos hubieran sido generados por $\mu$.
 
 			Para este objetivo, se adoptará un enfoque Bayesiano, el cuál provee de un marco probabilística para manejar la incertidumbre sobre los modelos. Por tanto, se empezará considerando una medida de probabilidad $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $, entendida con una distribución a \textit{priori} sobre un espacio de modelos $\Models$. En particular, se tiene que el prior se encuentra soportada en el espacio de modelos $\Models$, es decir, $\Pi(\Models) = \Pi(\ProbSpaceAC[\cX] ) = 1$.
 
@@ -492,12 +495,12 @@
 			\begin{equation}
 				\LikelihoodN[\mu] \eqdef \rho_\bPi(x_1,\ldots, x_n \mid \mu) = \prod_{i=1}^n \rho_\mu(x_i)
 			\end{equation}
-			y la verosimilitud marginal, también conocido como la \emph{evidencia}, se define por:
+			y la verosimilitud marginal, también conocido como la \emph{evidencia}, que se define por:
 			\begin{equation}
-				\rho_\bPi(x_1,\ldots, x_n) = \int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu].
+				\rho_\bPi(x_1,\ldots, x_n) \eqdef \int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu].
 			\end{equation}
 
-			La densidad posterior $\bPi(\dd\mu \mid x_1,\ldots, x_n )$, denotada por $\Pi_n(\dd\mu)$ por simplicidad, es un elemento de $\ProbSpace[\ProbSpace[\cX] ] $,y en virtud a la regla de Bayes, está dado por
+			La \emph{densidad posterior} $\bPi(\dd\mu \mid x_1,\ldots, x_n )$, denotada por $\Pi_n(\dd\mu)$ por simplicidad, es un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, y en virtud a la regla de Bayes, está dado por
 			\begin{equation}
 				\label{eq:distribucionPosterior}
 				\dPiN[\mu] = \dPi[\mu] \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} = \dPi[\mu] \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}.
@@ -505,11 +508,16 @@
 
 			La derivada de Radon-Nikodym de $\dPiN[\mu]$ con respecto a $\dPi[\mu]$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
 
-			Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$ correspondería al modelo que minimice el promedio de la distancia de Wasserstein con respecto a la distribución posterior. La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
+			Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$, correspondería al modelo que minimice el riesgo Bayesiano que utiliza como función de pérdida la distancia de Wasserstein:
+			\begin{equation}
+				\label{eq:riesgoBayesiano}
+				\mu_n = \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
+			\end{equation}
+			La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein con respecto a $\dPiN$, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
 
-			\begin{definition}
+			\begin{definition}[Baricentro de Wasserstein Bayesiano, \cite{backhoff2022bayesian}]
 				\label{def:baricentroWassersteinBayesiano}
-				Sea $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $ una medida de probabilidad sobre un espacio de modelos $\Models \subseteq \ProbSpace[\cX]$. Sea $\Data = \left(x_1,\ldots, x_n \right)$ una muestra de tamaño $n$. El \emph{baricentro de Wasserstein Bayesiano} se define como aquel que minimice el siguiente problema:
+				Sea $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $ una medida de probabilidad sobre un espacio de modelos $\Models \subseteq \ProbSpace[\cX]$. Sea $\Data = \left(x_1,\ldots, x_n \right) \in \cX^n$ una muestra de tamaño $n$. El \emph{baricentro de Wasserstein Bayesiano} se define como aquel modelo que minimice el siguiente problema:
 				\begin{equation}
 					\label{eq:baricentroWassersteinBayesiano}
 					\bar \mu \eqdef \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
