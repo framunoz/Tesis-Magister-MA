@@ -207,6 +207,7 @@
 				Se puede encontrar una demostración de este teorema en \cite[p. 27]{peyre2019computational}
 			\end{proof}
 
+            \FM[inline]{Pensaba en agregar otra sección con la interpretación probabilista, como en \cite[\S 1.2]{panaretos2020invitation}}
 
 		}
 	}
@@ -506,14 +507,14 @@
 				\dPiN[\mu] = \dPi[\mu] \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} = \dPi[\mu] \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}.
 			\end{equation}
 
-			La derivada de Radon-Nikodym de $\dPiN[\mu]$ con respecto a $\dPi[\mu]$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
+			La derivada de Radon-Nikodym de $\Pi_n(\dd \mu)$ con respecto a $\Pi(\dd \mu)$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
 
 			Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$, correspondería al modelo que minimice el riesgo Bayesiano que utiliza como función de pérdida la distancia de Wasserstein:
 			\begin{equation}
 				\label{eq:riesgoBayesiano}
 				\mu_n = \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
 			\end{equation}
-			La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein con respecto a $\dPiN$, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
+			La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein con respecto a $\Pi_n$, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
 
 			\begin{definition}[Baricentro de Wasserstein Bayesiano, \cite{backhoff2022bayesian}]
 				\label{def:baricentroWassersteinBayesiano}
