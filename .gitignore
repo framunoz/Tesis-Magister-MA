@@ -14,7 +14,7 @@
 */main.pdf
 
 ## Main file
-*.pdf
+# *.pdf
 
 ## Intermediate documents:
 *.dvi

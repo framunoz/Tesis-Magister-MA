@@ -3,11 +3,37 @@
 Este capítulo introducirá los conceptos esenciales acerca de los modelos generativos. Para ello, se empezará por definir lo qué es una red neuronal.
 \section{Redes Neuronales}\label{sec:redes-Neuronales}
 {
-En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros. En este capítulo, se introducirán los conceptos básicos de las redes neuronales, aunque no se profundizará en los detalles de su funcionamiento. Para ello, se recomienda al lector revisar la literatura especializada en el tema.
+En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros.
+
+En este capítulo, se introducirán los conceptos básicos de las redes neuronales, aunque no se profundizará en los detalles de su funcionamiento. Para ello, se recomienda al lector revisar la literatura especializada en el tema.
+
+Una red neuronal (feedforward) es simplemente una composición de funciones lineales y no lineales. Más precisamente, dado un número natural $L$, el cuál denominaremos como la \emph{profundidad} de la red neuronal, se definen las funciones lineales $g^{(\ell)}_{\vth_\ell}$, con $\ell \in \left\{ 1, \ldots, L \right\}$. Cada una de estas funciones se encuentran parametrizadas por $\vth_\ell = (\vW_\ell, b_\ell)$, donde $\vW_\ell \in \R^{d_{\ell} \times d_{\ell-1}}$ corresponden a los \emph{pesos} y $b_\ell \in \R^{d_\ell}$ corresponde al \emph{bias}. Estas funciones se definen de la siguiente manera:
+\begin{align*}
+    g^{(\ell)}_{\vth_\ell} \colon \R^{d_{\ell-1}} & \to \R^{d_\ell}                                                        \\
+    \vx_\ell                                      & \mapsto g^{(\ell)}_{\vth_\ell}(\vx_\ell) = \vW_\ell \vx_\ell + b_\ell,
+\end{align*}
+que, junto con una familia de funciones no-lineales $\sigma^{(\ell)},\ \ell \in \left\{ 1, \ldots, L \right\}$, a las cuales llamaremos por \emph{funciones de activación}, se pueden componer para formar una red neuronal:
+% , se pueden componer para formar una red neuronal:
+\begin{equation}
+    f_{\vth}(\vx) = \sigma^{(L)} \circ g^{(L)}_{\vth_L} \circ \sigma^{(L-1)} \circ g^{(L-1)}_{\vth_{L-1}} \circ \cdots \circ \sigma^{(1)} \circ g^{(1)}_{\vth_{1}}(\vx).
+\end{equation}
+
+A este tipo de modelos se les suele representar como grafos dirigidos acíclicos, describiendo cómo las funciones se encuentran compuestas entre sí. En la Figura~\ref{fig:ejemplo-red-neuronal} se muestra un ejemplo de una red neuronal con dos capas ocultas.
+
+\begin{figure}[htbp]
+    \centering
+    % \missingfigure{Ejemplo de una red neuronal}
+    \includegraphics[width=0.5\textwidth]{img/neural_network/neural_network_feed_forward.pdf}
+    \caption{caption}
+    \label{fig:ejemplo-red-neuronal}
+\end{figure}
+
+
+donde $\sigma^{(\ell)}$ corresponde a la función de activación de la capa $\ell$, la cuál generalmente es una función no-lineal.
 
 \section{Redes Neuronales Feedforward}\label{sec:redes-neuronales-feedforward}
 {
-A pesar del éxito que han tenido las redes neuronales, y que se puede pensar que son modelos muy complejos, en realidad, las redes neuronales son modelos muy simples. La idea detrás de las redes neuronales es la de aproximar alguna función objetivo $f^\ast$, con la intención de realizar alguna clasificación o regresión. Sin embargo, la tarea puede ser más amplia, como el objetivo de esta sección: que la red aprenda a generar muestras realistas de algún conjunto de datos.
+    A pesar del éxito que han tenido las redes neuronales, y que se puede pensar que son modelos muy complejos, en realidad, las redes neuronales son modelos muy simples. La idea detrás de las redes neuronales es la de aproximar alguna función objetivo $f^\ast$, con la intención de realizar alguna clasificación o regresión. Sin embargo, la tarea puede ser más amplia, como el objetivo de esta sección: que la red aprenda a generar muestras realistas de algún conjunto de datos.
 
 
 }
@@ -18,13 +44,13 @@ Las redes neuronales feedforward, también llamadas perceptrones multicapa, son 
 
 A estos modelos se les llama redes neuronales porque están inspiradas en la forma en que las neuronas del cerebro se comunican entre sí: en como una neurona recibe una señal, la procesa, y luego envía esta señal a otras neuronas para procesar información aún más compleja. Esta analogía se puede ver en la Figura~\ref{fig:ejemplo-red-neuronal}.
 
-\begin{figure}[htbp]
-    \centering
-    \missingfigure{Ejemplo de una red neuronal}
-    % \includegraphics[width=0.5\textwidth]{}
-    \caption{caption}
-    \label{fig:ejemplo-red-neuronal}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \missingfigure{Ejemplo de una red neuronal}
+%     % \includegraphics[width=0.5\textwidth]{}
+%     \caption{caption}
+%     \label{fig:ejemplo-red-neuronal}
+% \end{figure}
 
 
 % Estos modelos se llaman feedforward porque la información $\vx$ fluye a través de la red. Mientras que se les denomina redes porque suelen estar representadas por la combinación de varias funciones distintas. Usualmente se les ilustra como grafos dirigidos acíclicos, describiendo cómo las funciones se encuentran compuestas entre sí.
