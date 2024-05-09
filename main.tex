@@ -2,6 +2,8 @@
 %  memorias o tesis en inglés (borrando el archivo .aux)
 \documentclass[]{umemoria} 
 
+\addbibresource{bibliografia.bib}
+
 \usepackage[]{pkgs/theoremenvFMG}
 \usepackage[swapeps,swapphi]{pkgs/mathcmdFMG}
 \usepackage{pkgs/mathprobcmdFMG}
@@ -39,7 +41,7 @@
 
 \usepackage{lipsum}
 
-% \includeonly{lib/01intro}
+% \includeonly{lib/03redesNeuronales}
 
 \begin{document}
 
@@ -83,9 +85,13 @@
 % \input{lib/glosario.tex} % opcional
 
 \nocite{*}
-\bibliographystyle{unsrtnat}
+%%%%%%%% CITADO ANTIGUO %%%%%%%%%
+% \bibliographystyle{unsrtnat}
 % \bibliographystyle{IEEEtran}
-\bibliography{bibliografia.bib}
+% \bibliography{bibliografia.bib}
+
+%%%%%%%% CITADO NUEVO %%%%%%%%%
+\printbibliography
 
 % opcional ...
 \begin{appendices}

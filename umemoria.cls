@@ -17,6 +17,8 @@
 \@enfalse
 \newif\if@final
 \@finalfalse
+\newif\if@draft
+\@draftfalse
 
 %% Declaracion de Opciones
 \DeclareOption{contnum}{\@contnumtrue}
@@ -27,6 +29,7 @@
 \DeclareOption{uprighti}{\AtEndOfPackage{\DeclareMathSymbol{i}{\mathalpha}{operators}{`i}}}
 \DeclareOption{upright}{\ExecuteOptions{uprightd,uprighte,uprighti}}
 \DeclareOption{final}{\@finaltrue}
+\DeclareOption{draft}{\@drafttrue}
 
 %% Pasar Opciones a clase Book
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
@@ -56,7 +59,19 @@
 \else
     \RequirePackage[spanish, es-nolists, es-lcroman]{babel} % Lenguaje
 \fi
-\RequirePackage[numbers,sort]{natbib}  % Estilo de citado
+
+% \RequirePackage[numbers,sort]{natbib}  % Estilo de citado (antiguo)
+\if@draft
+    \RequirePackage[
+        sorting=none,
+        style=draft,
+    ]{biblatex}  % Estilo de citado
+\else
+    \RequirePackage[
+        style=ieee,
+    ]{biblatex}  % Estilo de citado
+\fi
+% \bibliography{bibliografia}  % Archivo de bibliografía
 \RequirePackage[pdfpagelabels,hidelinks]{hyperref} % Links y numeracion del PDF
 \RequirePackage{listings} % Codigo Fuente
 \RequirePackage{pgffor} % foreach
