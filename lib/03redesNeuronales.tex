@@ -1,6 +1,6 @@
 \chapter{Redes Neuronales y Modelos Generativos}\label{chap:redes-neuronales-y-modelos-generativos}
 {
-Este capítulo introducirá los conceptos esenciales acerca de los modelos generativos. Para ello, se empezará por definir lo qué es una red neuronal.
+Este capítulo introduce los conceptos esenciales acerca de los modelos generativos. Para ello, se empieza por definir qué es una red neuronal.
 \section{Redes Neuronales}\label{sec:redes-Neuronales}
 {
 En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros.
@@ -42,7 +42,7 @@ donde $\sigma^{(\ell)}$ corresponde a la función de activación de la capa $\el
 
 Las redes neuronales feedforward, también llamadas perceptrones multicapa, son los modelos de \textit{deep learning} por excelencia. La tarea de estas redes es la de aproximar alguna función objetivo $f^\ast$, con la intención de realizar alguna clasificación o regresión, aunque la tarea puede ser más amplia, como el objetivo de esta sección: que la red aprenda a generar muestras realistas de algún conjunto de datos.
 
-A estos modelos se les llama redes neuronales porque están inspiradas en la forma en que las neuronas del cerebro se comunican entre sí: en como una neurona recibe una señal, la procesa, y luego envía esta señal a otras neuronas para procesar información aún más compleja. Esta analogía se puede ver en la Figura~\ref{fig:ejemplo-red-neuronal}.
+A estos modelos se les llama redes neuronales porque están inspiradas en la forma en que las neuronas del cerebro se comunican entre sí: en cómo una neurona recibe una señal, la procesa, y luego envía esta señal a otras neuronas para procesar información aún más compleja. Esta analogía se puede ver en la Figura~\ref{fig:ejemplo-red-neuronal}.
 
 % \begin{figure}[htbp]
 %     \centering
@@ -55,7 +55,7 @@ A estos modelos se les llama redes neuronales porque están inspiradas en la for
 
 % Estos modelos se llaman feedforward porque la información $\vx$ fluye a través de la red. Mientras que se les denomina redes porque suelen estar representadas por la combinación de varias funciones distintas. Usualmente se les ilustra como grafos dirigidos acíclicos, describiendo cómo las funciones se encuentran compuestas entre sí.
 
-Formalmente, las redes neuronales se definen como una composición de funciones no-lineales $f^{(\ell)}_{\vth_\ell}$. Cada función $f^{(\ell)}_{\vth_\ell}$ se encuentra parametrizada por $\vth_\ell = (\vW_\ell, b_\ell)$, donde $\vW_\ell \in \R^{d_{\ell} \times d_{\ell-1}}$ corresponden a los pesos y $b_\ell \in \R^{d_\ell}$ corresponde al bias. Estas redes se encuentran definidas de la siguiente manera:
+Formalmente, las redes neuronales se definen como una composición de funciones no-lineales $f^{(\ell)}_{\vth_\ell}$\FM{Quitar esto, lo defino más abajo}. Cada función $f^{(\ell)}_{\vth_\ell}$ se encuentra parametrizada por $\vth_\ell = (\vW_\ell, b_\ell)$, donde $\vW_\ell \in \R^{d_{\ell} \times d_{\ell-1}}$ corresponden a los pesos y $b_\ell \in \R^{d_\ell}$ corresponde al bias\FM{Cambiar los bias a sesgo}. Estas redes se encuentran definidas de la siguiente manera:
 \begin{align*}
     f^{(\ell)}_{\vth_\ell} \colon \R^{d_{\ell-1}} & \to \R^{d_\ell}                                                                         \\
     \vx_\ell                                      & \mapsto f^{(\ell)}_{\vth_\ell}(\vx_\ell) = \sigma^{(\ell)}(\vW_\ell \vx_\ell + b_\ell),

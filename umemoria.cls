@@ -56,10 +56,11 @@
 \else
     \RequirePackage[spanish, es-nolists, es-lcroman]{babel} % Lenguaje
 \fi
-\RequirePackage[authoryear,sort]{natbib}  % Estilo de citado
+\RequirePackage[numbers,sort]{natbib}  % Estilo de citado
 \RequirePackage[pdfpagelabels,hidelinks]{hyperref} % Links y numeracion del PDF
 \RequirePackage{listings} % Codigo Fuente
 \RequirePackage{pgffor} % foreach
+\RequirePackage{enumitem} % Listas
 
 %% Lenguaje
 \addto\captionsspanish{\renewcommand\tablename{Tabla}}
@@ -87,6 +88,8 @@
 \let\olditem\itemize
 \let\oldenditem\enditemize
 \renewenvironment{itemize}{\olditem\setlength{\parskip}{\smallskipamount}}{\oldenditem}
+
+\newenvironment{myitemize}{\vspace{-0.4cm}\olditem\setlength{\parskip}{\smallskipamount}}{\oldenditem}
 
 %% Entornos nuevos
 \newenvironment{abstract}{%

@@ -1,7 +1,8 @@
 \chapter{Transporte Óptimo de Masas}\label{chap:transporte-optimo-de-masas}
 {
 
-	En este capítulo se abordará el problema de transporte óptimo, la distancia de Wasserstein, y el problema de los baricentros de Wasserstein. Además, se presentarán algunas propiedades de la distancia de Wasserstein que serán de utilidad en el desarrollo de este trabajo.
+	En este capítulo se aborda el problema de transporte óptimo, la distancia de Wasserstein, y el problema de los baricentros de Wasserstein. Además, se presentan algunas propiedades de la distancia de Wasserstein que serán de utilidad en el desarrollo de este trabajo.
+	Es notable señalar que esta sección está basada en la Sección 1.1 del libro de Panaretos y Zemel \cite{panaretos2020invitation}, y en la Sección 2 del libro de Peyré y Cuturi \cite{peyre2019computational}.
 	% La notación, definiciones y explicaciones utilizadas están basadas principalmente en \cite[\S 3]{villani2009optimal}, \cite{peyre2019computational} y \cite{panaretos2020invitation}.
 
 	\section*{Notación}\label{sec:notacion}
@@ -35,12 +36,12 @@
 
 	\section{El Problema de Transporte}\label{sec:el-problema-de-transporte}
 	{
-		A lo largo de esta sección se presentarán distintas formulaciones del problema de transporte, comenzando con sus orígenes \cite{monge1781memoire}, seguido de su formulación relajada \cite{kantorovich1942translocation}, y concluyendo al destacar que, en realidad, ambos problemas son dos caras de una misma moneda \cite{brenier1991polar}. Es notable señalar que esta sección está basada en \cite[\S 1.1]{panaretos2020invitation} y \cite[\S 2]{peyre2019computational}.
+		A lo largo de esta sección se presentan distintas formulaciones del problema de transporte, comenzando con sus orígenes en el trabajo de Monge \cite{monge1781memoire}, seguido de la formulación relajada de Kantorovich \cite{kantorovich1942translocation}, y concluyendo al destacar que, en realidad, ambos problemas son equivalentes, como lo establece el teorema de Brenier \cite{brenier1991polar}. Es notable señalar que esta sección está basada en la Sección 1.1 del libro de Panaretos y Zemel \cite{panaretos2020invitation}, y en la Sección 2 del libro de Peyré y Cuturi \cite{peyre2019computational}.
 
 		\subsection*{El problema de Monge}
 		{
 
-			Supongamos que hay un trabajador que debe de transportar una pila de arena a un pozo de igual volumen, situación que se puede ver representada en la Figura~\ref{fig:montanas-arena-pozo}. Dada esta situación, \cite{monge1781memoire} se preguntó: ¿Cuál es la manera de transportar la arena al pozo con \emph{el menor esfuerzo} para el trabajador?, o dicho de otra manera, ¿Cuál es la forma \emph{óptima} de transportar la arena al pozo?
+			Supongamos que hay un trabajador que debe de transportar una pila de arena a un pozo de igual volumen, situación que se puede ver representada en la Figura~\ref{fig:montanas-arena-pozo}. En esta situación, Monge \cite{monge1781memoire} en el 1781 se preguntó: ¿Cuál es la manera de transportar la arena al pozo con \emph{el menor esfuerzo} para el trabajador?, o dicho de otra manera, ¿Cuál es la forma \emph{óptima} de transportar la arena al pozo?
 
 			\begin{figure}[ht]
 				\centering
@@ -75,9 +76,9 @@
 				\end{equation}
 			\end{definition}
 
-			Ahora que disponemos de todas las herramientas matemáticas necesarias, podemos definir este problema como el de encontrar una función $T$, que representa la manera de transportar la arena al pozo, tal que minimice el costo total de transporte $C(T)$, sujeto a la condición de que la masa total de la arena sea preservada. De manera más formal:
+			Ahora que se disponen de todas las herramientas matemáticas necesarias, se puede definir este problema como el de encontrar una función $T$, que representa la manera de transportar la arena al pozo, tal que minimice el costo total de transporte $C(T)$, sujeto a la condición de que la masa total de la arena sea preservada. De manera más formal:
 
-			\begin{definition}[Problema de \cite{monge1781memoire}]
+			\begin{definition}[Problema de Monge \cite{monge1781memoire}]
 				Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c : \cX \times \cY \to \R$, el \emph{problema de transporte óptimo de Monge} se define como el problema de encontrar una función medible $T: \cX \to \cY$ que minimice el costo total de transporte $C(T)$. Es decir, que minimice la siguiente expresión:
 				\begin{equation}
 					\label{eq:problemaTransporteMonge}
@@ -86,7 +87,7 @@
 				A aquella función $T$ que resuelva este problema se le llamará \emph{función de transporte} o \emph{mapa de transporte}, y se denotará por $T_{\mu \to \nu}$, o simplemente $T$ si es que no existe confusión.
 			\end{definition}
 
-			El problema introducido por \cite{monge1781memoire} es, en general, considerablemente difícil. Esto se debe principalmente a que el conjunto de mapas de transporte $\left\{ T : \Tpf \mu = \nu \right\}$ es intratable. Además, puede suceder que no exista ninguna solución, o en el caso de que exista, esta podría no ser única, como veremos en los siguientes ejemplos:
+			El problema introducido por Monge \cite{monge1781memoire} es, en general, considerablemente difícil. Esto se debe principalmente a que el conjunto de mapas de transporte $\left\{ T : \Tpf \mu = \nu \right\}$ es intratable. Además, puede suceder que no exista ninguna solución, o en el caso de que exista, esta podría no ser única, como veremos en los siguientes ejemplos:
 
 			\begin{example}\label{ex:problemaDeMongeSinSolucion}
 				Consideremos $\cX = \left\{ -1, 1 \right\}$, $\cY = \left\{ 0 \right\}$, con $\mu = \frac{1}{2} \delta_{-1} + \frac{1}{2} \delta_{1}$ y $\nu = \delta_0$. En este caso, la función de transporte óptima que minimiza \eqref{eq:problemaTransporteMonge} es
@@ -123,7 +124,7 @@
 
 		\subsection*{El problema de Kantorovich}
 		{
-			Como se pudo apreciar en los Ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, el problema de Monge no siempre tiene solución y, en caso de tenerla, puede que esta no sea única. Motivado por esto, \cite{kantorovich1942translocation} propuso una formulación relajada del problema de Monge.
+			Como se pudo apreciar en los Ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, el problema de Monge no siempre tiene solución y, en caso de tenerla, puede que esta no sea única. Motivado por esto, Kantorovich \cite{kantorovich1942translocation} propuso una formulación relajada del problema de Monge.
 
 			La idea principal de Kantorovich es relajar la naturaleza determinista del mapa de transporte, es decir, el hecho de que la masa de un punto $x$ sea transportada a un único punto $T(x)$, como se ilustró en el Ejemplo~\ref{ex:problemaDeMongeSinSolucion}. En cambio, Kantorovich propone que la masa de un punto $x$ puede ser potencialmente transportada a múltiples destinos.
 
@@ -156,7 +157,7 @@
 			\end{figure}
 
 			Y utilizando esta definición, se puede definir el problema de transporte óptimo de Kantorovich de forma análoga al problema de Monge:
-			\begin{definition}[Problema de \cite{kantorovich1942translocation}]
+			\begin{definition}[Problema de Kantorovich \cite{kantorovich1942translocation}]
 				Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c: \cX \times \cY \to \R$, el \emph{problema de transporte óptimo de Kantorovich} se define como el problema de encontrar un coupling $\pi \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
 				\begin{equation}
 					\label{eq:problemaTransporteKantorovich}
@@ -191,9 +192,9 @@
 
 			\end{example}
 
-			Para finalizar esta sección, una pregunta que surge naturalmente es: ¿Cuál es relación entre los problemas de Monge y Kantorovich? ¿Si encuentro una solución para el problema de Kantorovich, puedo tener una solución para el problema de Monge? La respuesta es que, bajo algunas condiciones particulares, estos dos problemas están estrechamente relacionados, como lo establece el teorema de \cite{brenier1991polar}:
+			Para finalizar esta sección, una pregunta que surge naturalmente es: ¿Cuál es relación entre los problemas de Monge y Kantorovich? ¿Si encuentro una solución para el problema de Kantorovich, puedo tener una solución para el problema de Monge? La respuesta es que, bajo algunas condiciones particulares, estos dos problemas están estrechamente relacionados, como lo establece el teorema de Brenier \cite{brenier1991polar}:
 
-			\begin{theorem}[\cite{brenier1991polar}]
+			\begin{theorem}[Brenier \cite{brenier1991polar}]
 				Sea $\cX = \cY = \R^d$, $c(x, y) = \|x - y\|^2$, $\mu\in \ProbSpace[\cX] $ y $\nu\in \ProbSpace[\cY] $. Si al menos una de las dos medidas (que s.p.g. supondremos que es $\mu$) tiene densidad con respecto a la medida de Lebesgue, entonces el plan de transporte óptimo $\pi$ es único y esta soportado en el grafo $(x, T(x))$ de un mapa de transporte óptimo $T:\cX \to \cY$. Esto significa que el plan de transporte es $\pi = \pf{(\id, T)}\mu$, y cumple la siguiente ecuación:
 				\begin{equation}
 					\forall h \in \cC(\cX \times \cY),\quad \int_{\cX\times\cY}^{} h(x, y) \dpi (\dd x, \dd y) = \int_{\cX}^{} h(x, T(x)) \dmu[x].
@@ -215,10 +216,10 @@
 	{
 
 		Como se revisó en la sección anterior, cuando se considera el problema de Kantorovich, este problema usualmente tiene solución.
-		Si es que consideramos $(\cX, \dist)$ un espacio métrico, se podría considerar la distancia como una forma de representar el costo de transportar la masa de un punto $x$ a un punto $y$.
+		Si es que se considera $(\cX, \dist)$ un espacio métrico, se podría interpretar la distancia como una forma de representar el costo de transportar la masa de un punto $x$ a un punto $y$.
 		Pero una vez que se hace esto, naturalmente surge la pregunta: ¿Qué propiedades pueden surgir al considerar la distancia como una función de coste?
-		En esta sección se responderá a estas preguntas. Para ello, se empezará definiendo la distancia de Wasserstein, para luego revisar algunas de sus propiedades.
-		Esta sección estará basada en \cite[\S 6]{villani2009optimal}.
+		Esta sección responde a estas preguntas. Para ello, se empieza definiendo la distancia de Wasserstein, para luego revisar algunas de sus propiedades.
+		Esta sección estará basada en la Sección 6 del libro de Villani \cite{villani2009optimal}.
 		\FM{Incluir subsections para la distancia, espacio, y convergencia débil?}
 
 		\begin{definition}[La distancia de Wasserstein]\label{def:distanciaWasserstein}
@@ -250,7 +251,7 @@
 		En palabras simples, el espacio de Wasserstein de orden $p$ es el conjunto de medidas de probabilidad en $\cX$ cuyo momento de orden $p$ es finito.\FM{Será necesario este último comentario?}
 
 		En \cite[p. 94]{villani2009optimal} se puede encontrar una demostración de que $\WassersteinSpace[p]{\cX}$ satisface con los tres axiomas de una distancia. Es más, se puede demostrar que $\WassersteinSpace[p]{\cX}$ puede heredar varias propiedades del espacio base $\cX$, como lo presenta el siguiente teorema:
-		\begin{theorem}[Topología del espacio de Wasserstein, \cite{villani2009optimal}]
+		\begin{theorem}[Topología del espacio de Wasserstein \cite{villani2009optimal}]
 			\label{thm:espacioWassersteinEsMetrico}
 			Si $(\cX, \dist)$ es un espacio Polaco, entonces el espacio de Wasserstein $\WassersteinSpace[p]{\cX} $, metrizado por la distancia de Wasserstein $W_p$, es también un espacio Polaco.
 		\end{theorem}
@@ -326,12 +327,12 @@
 
 	\section{El Baricentro de Wasserstein Bayesiano}\label{sec:el-baricentro-de-Wasserstein-Bayesiano}
 	{
-		En esta sección se presentará el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empezará revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de \cite[\S 3]{panaretos2020invitation} y definiciones de \cite[\S 9.2]{peyre2019computational}.
+		Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empieza revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de la Sección 3 de Panaretos y Zemel \cite{panaretos2020invitation} y en definiciones de la Sección 9.2 de Peyré y Cuturi \cite{peyre2019computational}.
 
 		\subsection*{La Media de Fréchet}\label{ssec:la-media-de-Frechet}
 		{
 			%   En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
-			\begin{definition}[Funcional y Media de \cite{frechet1948elements}]
+			\begin{definition}[Funcional y Media de Fréchet \cite{frechet1948elements}]
 				Sea $(\cX, \dist)$ un espacio Polaco. Sean $(x_{i})_{i=1}^{n}\in\cX^n$ puntos en $\cX$ y sean $(\gamma_{i})_{i=1}^{n}\in\R_+^n$ los pesos asociados a esos puntos. Para cada $p\in\cX$, se define el \emph{funcional de Fréchet} por
 				\begin{equation}
 					\label{eq:funcionalFrechet}
@@ -425,7 +426,7 @@
 			En esta sección, se utilizará la distancia de Wasserstein para definir la interpolación geodésica en el espacio de Wasserstein. Esta noción se utilizará posteriormente en el algoritmo del descenso del gradiente estocástico sobre el espacio de Wasserstein.
 			\FM[inline]{Agregar la referencia del Lecture}
 
-			\begin{definition}[Interpolación de \cite{mccann1997convexity}]
+			\begin{definition}[Interpolación de McCann \cite{mccann1997convexity}]
 				Se define la \emph{interpolación de McCann} entre dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ como la curva $\mu_t \colon t \in [0, 1] \mapsto \mu_t \in \WassersteinSpace[p]{\cX} $ definida por
 				\FM{Podría agregar la imagen de geodésica de la presentación de Cuturi}
 				\begin{equation}
@@ -470,9 +471,9 @@
 
 		\subsection*{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
 		{
-			En esta sección se definirá el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) explique las muestras tomadas.
+			En esta sección se define el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) explique las muestras tomadas.
 			%  conseguir  incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. 
-			En esta sección se utilizará como referencia principal \cite[\S 5]{rios2020contributions} y \cite{backhoff2022bayesian}.
+			En esta sección se utilizará como referencia principal la sección 5 de la Tesis de G. Ríos \cite{rios2020contributions} y del paper de J. Backhoff et al.  \cite{backhoff2022bayesian}.
 
 			Se considerará una muestra $\Data = \left(x_1,\ldots, x_n \right)$ que pertenecen a un espacio $\cX$ y un conjunto de modelos factibles
 			% , o medidas de probabilidad, 
@@ -516,7 +517,7 @@
 			\end{equation}
 			La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein con respecto a $\Pi_n$, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
 
-			\begin{definition}[Baricentro de Wasserstein Bayesiano, \cite{backhoff2022bayesian}]
+			\begin{definition}[Baricentro de Wasserstein Bayesiano \cite{backhoff2022bayesian}]
 				\label{def:baricentroWassersteinBayesiano}
 				Sea $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $ una medida de probabilidad sobre un espacio de modelos $\Models \subseteq \ProbSpace[\cX]$. Sea $\Data = \left(x_1,\ldots, x_n \right) \in \cX^n$ una muestra de tamaño $n$. El \emph{baricentro de Wasserstein Bayesiano} se define como aquel modelo que minimice el siguiente problema:
 				\begin{equation}
