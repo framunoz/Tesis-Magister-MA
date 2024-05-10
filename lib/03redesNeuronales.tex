@@ -218,13 +218,20 @@ En la práctica, la forma de implementar la generadora es a través de un \emph{
 \end{equation}
 donde $\cZ$ es el espacio de las variables latentes, y $\Prob_Z \in \ProbSpace[\cZ] $ es la distribución del espacio latente (típicamente se utiliza la distribución Gaussiana o Uniforme).
 
-Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, a utilizando una función $G\colon \cZ \to \cX$, la cuál la estimaremos a través de una red neuronal $G_\theta$. Por otro lado, el Teorema~\ref{thm:gan-optimal-discriminator} nos dice que, en el óptimo, el discriminador toma una forma determinista, de forma que bastaría con sólo buscar una función $D\colon\cX\to [0, 1]$, la cual también la estimaremos a través de una red neuronal $D_\varphi$.
+Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, utilizando una función $G\colon \cZ \to \cX$, la cuál la estimaremos a través de una red neuronal $G_\theta$. Por otro lado, el Teorema~\ref{thm:gan-optimal-discriminator} nos dice que, en el óptimo, el discriminador toma una forma determinista, de forma que bastaría con buscar una función $D\colon\cX\to [0, 1]$, la cual también la estimaremos a través de una red neuronal $D_\varphi$.
 %  tal que la aproxime. Para ello, utilizaremos una red neuronal $D_\phi$.
 % el discriminador óptimo toma una forma determinista, de forma que bastaría con sólo buscar una función $D\colon\cX\to [0, 1]$ tal que la aproxime. En la práctica, esta función $D$ se implementa a través de una red neuronal $D_\phi$.
 
 \FM{Agregar una explicación de las funciones de pérdida para este caso, explicar qué cosas buscan minimizar/maximizar y describir el algoritmo de entrenamiento.}
-De esta forma, el algoritmo para estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente, es el siguiente:\FM{Agregar aquí los detalles del algoritmo: cómo se deduce las losses, por ejemplo}
 
+Con el fin de definir un algoritmo para entrenar una GAN, se definen las siguientes funciones de pérdida para la generadora y la discriminadora:
+\begin{align}
+    \cL_{\mathrm{disc}} & = -\frac{1}{N}\sum_{i=1}^{N} \Big[ \ln D_\varphi(x_i) + \ln \qty\big(1 - D_\varphi(G_\theta(z_i))) \Big], \\
+    \cL_{\mathrm{gen}}  & = - \frac{1}{N}\sum_{i=1}^{N} \ln \qty\big(D_\varphi(G_\theta(z_i))),
+\end{align}
+donde $\{x_i\}_{i=1}^{N} \sim \Prob_X$ y $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ son muestras del conjunto de entrenamiento y del espacio latente, respectivamente. La función de pérdida $\cL_{\mathrm{disc}}$ proviene de buscar maximizar la función objetivo \eqref{eq:gan-objective}, mientras que la función de pérdida $\cL_{\mathrm{gen}}$ se deriva de buscar minimizar la misma función objetivo.
+
+De esta manera, el Algoritmo~\ref*{alg:GAN} describe las instrucciones para estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente. Usualmente, el flujo de este algoritmo se realiza en dos pasos: primero se actualiza la discriminadora $D_\varphi$ por $N_d$ iteraciones, y luego se actualiza la generadora $G_\theta$ por una iteración. Este proceso se repite hasta que los parámetros $\theta$ converjan.
 \begin{algorithm}[tbhp]
     \caption{GAN}\label{alg:GAN}
     \begin{algorithmic}
