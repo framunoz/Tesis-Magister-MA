@@ -11,6 +11,11 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de \ALG@name s}
+\makeatother
+
 \depto{Departamento de Ingeniería Matemática}
 \author{Francisco Muñoz Guajardo}
 \title{Título de la Memoria/Tesis}
@@ -70,6 +75,7 @@
 \tableofcontents
 \listoftables % opcional
 \listoffigures % opcional
+\listofalgorithms % opcional
 \listoftodos
 
 \mainmatter
