@@ -235,7 +235,7 @@ donde $\{x_i\}_{i=1}^{N} \sim \Prob_X$ y $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ son mu
 
 De esta manera, el Algoritmo~\ref*{alg:GAN} describe la forma de estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente. Usualmente, el flujo de este algoritmo se realiza en dos pasos: primero se actualiza la discriminadora $D_\varphi$ por $N_d$ iteraciones, y luego se actualiza la generadora $G_\theta$ por una iteración. Este proceso se repite hasta que los parámetros $\theta$ converjan.
 \begin{algorithm}[tbhp]
-    \caption{GAN}\label{alg:GAN}
+    \caption{Red Generativa Adversaria}\label{alg:GAN}
     \begin{algorithmic}
         \Require Tamaño del batch $N$ y número de iteraciones para el discriminador $N_d$.
         % Penalization coefficients $\lambda_1, \lambda_2 > 0$, the number of critic iterations $n_{\text{critic}}$, the batch size $m$.
@@ -299,6 +299,51 @@ Es común que las arquitecturas de tipo GAN sean representadas como en la Figura
 % Ejemplos?
 }  % end of sec. Redes Generativas Adversarias
 
+
+\section{Auto-Encoders}\label{sec:auto-Encoders}
+{
+    Un tipo de arquitectura que ha sido muy popular por la comunidad del aprendizaje profundo son los Auto-Encoders (AE). Los AE son una arquitectura de redes neuronales que se utilizan para aprender una codificación eficiente de datos no etiquetados. O de forma más coloquial, aprende a ``comprimir la información'' de los datos de entrada.
+
+    Al igual que en la sección anterior, se presentará una definición formal de un AE en el contexto no paramétrico, y utilizando medidas de probabilidad generales. En este caso, esta sección se basa en \cite{tolstikhin2017wasserstein}, aunque ha sido modificado en el contexto de los AE ``vainilla'' (y no en su versión Wasserstein como se presenta en el \textit{paper}).
+
+    Un AE se compone de dos partes: un codificador $Q(\dz \mid x)$ que corresponde a un kernel de transición tal que a cada $x$ le asigna una distribución en el espacio latente, y un decodificador $P_G(\dx \mid z)$ que corresponde a un kernel de transición tal que a cada $z$ le asigna una distribución en el espacio de referencia. En este trabajo, se asume que el decodificador es determinista por simplicidad, es decir, que $P_G(\dx \mid z) = \delta_{G(z)}(\dx)$, donde $G\colon \cZ \to \cX$ es una función.
+
+    Para cumplir con la tarea del aprendizaje de una codificación eficiente, el AE busca minimizar el error de reconstrucción dada una muestra $x\sim \Prob_X$ a través de obtener $\tilde z \sim Q(\dz \mid x)$ y obtener $\tilde x \sim P_G(\dx \mid \tilde z)$. El AE busca minimizar entonces el error de reconstrucción $c(x, \tilde x)$. En este caso, la función de pérdida del AE se define como:
+    \begin{equation}\label{eq:ae-loss}
+        \cL_{\mathrm{AE}} = \Exp_{X \sim \Prob_X} \Exp_{\tilde Z \sim Q(\dz \mid X)} \left[ c(X, G(\tilde Z)) \right].
+    \end{equation}
+
+    En la práctica, uno puede asumir que el codificador es determinista, es decir, que $Q_E(\dz \mid x) = \delta_{E(x)}(\dz)$, donde $E\colon \cX \to \cZ$ es una función que se estima a través de una red neuronal $E_\phi$. Aunque también se puede utilizar un codificador estocástico.
+    Por otro lado, el decodificador $P_G(\dx \mid z)$, que se asume determinista en este caso, se estima a través de una red neuronal $G_\theta$.
+
+    De esta manera, el algoritmo para un AE (en su versión más general) se presenta a continuación:
+    \begin{algorithm}[tbhp]
+        \caption{Auto-Encoder}\label{alg:AE}
+        \begin{algorithmic}
+            \Require Tamaño del batch $N$.
+            \State Inicializar los parámetros del codificador $E_{\phi}$ y del decodificador $G_\theta$.
+            \While{$\phi$ y $\theta$ no han convergido}
+            \State Muestrear $\{x_i\}_{i=1}^{N} \sim \Prob_X$ desde el conjunto de entrenamiento.
+            \State $\tilde z_i \gets E_\phi(x_i)$ para $i=1,\ldots,N$.
+            \State $\tilde x_i \gets G_\theta(\tilde z_i)$ para $i=1,\ldots,N$.
+            \State Calcular la función de pérdida $\cL_{\mathrm{AE}} = \frac{1}{N}\sum_{i=1}^{N} c(x_i, \tilde x_i)$.
+            \State Actualizar $E_\phi$ y $G_\theta$ por medio de descenso de gradiente en $\pdv{\phi} \cL_{\mathrm{AE}}$ y $\pdv{\theta} \cL_{\mathrm{AE}}$.
+            \EndWhile
+        \end{algorithmic}
+
+    \end{algorithm}
+
+
+
+
+    % En este caso, el AE busca aprender una función $f_{\vth} \colon \cX \to \cX$ tal que $f_{\vth}(x)$ sea parecido a $x$.
+
+    % En este trabajo, se asumirá que el decodificador es determinista, es decir, que $P_G(\dd x \mid z) = \delta_{G(z)}(\dd x)$, donde $G\colon \cZ \to \cX$ es una función que se estima a través de una red neuronal $G_\theta$. Por otro lado, el codificador $Q(\dz \mid x)$ se estima a través de una red neuronal $Q_\phi$.
+
+    % la compresión de datos, la reducción de dimensionalidad, y la generación de datos. En esencia, un AE se compone de dos partes: un codificador $E$ y un decodificador $D$. El objetivo del codificador $E$ es el de mapear una muestra $x$ a un espacio latente $z$, mientras que el objetivo del decodificador $D$ es el de mapear una muestra $z$ de vuelta al espacio original $x$. En otras palabras, el AE busca aprender una función $f_{\vth} \colon \cX \to \cX$ tal que $f_{\vth}(x) \approx x$.
+
+    % Otro tipo de arquitectura que ha sido muy popular en los últimos años son los Auto-Encoders (AE). Los AE son una arquitectura de redes neuronales que se utilizan para la compresión de datos, la reducción de dimensionalidad, y la generación de datos. En esencia, un AE se compone de dos partes: un codificador $E$ y un decodificador $D$. El objetivo del codificador $E$ es el de mapear una muestra $x$ a un espacio latente $z$, mientras que el objetivo del decodificador $D$ es el de mapear una muestra $z$ de vuelta al espacio original $x$. En otras palabras, el AE busca aprender una función $f_{\vth} \colon \cX \to \cX$ tal que $f_{\vth}(x) \approx x$.
+}  % end of sec. Auto-Encoders
 
 
 }  % end of Chapter Modelos Generativos
