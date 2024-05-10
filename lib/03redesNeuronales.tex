@@ -93,7 +93,14 @@ Comencemos esta sección imaginando la siguiente situación\footnote{Este ejempl
     \textit{Sin embargo, en vez de enviar a la cárcel al ladrón, lo que hace es decirle al ladrón cuales fueron sus fallos, y de qué manera puede este mejorar en sus falsificaciones. Por su parte, el policía también se entrena más y más en la detección de billetes falsos, pues puede que en algún momento, el ladrón se vuelva tan bueno en la elaboración de billetes falsos, que llegue a engañar al policía con uno de sus billetes.}
 \end{quotation}
 
-\FM[inline]{Agregar las imágenes de los billetes de este link: \url{https://developers.google.com/machine-learning/gan/gan_structure}}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/gan/bad_gan.pdf}\vspace{0.6cm}
+    \includegraphics[width=0.7\textwidth]{img/gan/ok_gan.pdf}
+    \includegraphics[width=0.7\textwidth]{img/gan/good_gan.pdf}
+    \caption{Visualización gráfica de la analogía del ladrón y el policía en las GAN. Imagen obtenida de \cite{googlegan}.}
+    \label{fig:gan-analogy}
+\end{figure}
 
 El marco de las Redes Generativas Adversarias (GAN), introducidos por \cite{goodfellow2014generative}, es en esencia, la analogía del ladrón y el policía.
 La GAN define un juego donde el objetivo de la \emph{generadora} (el ladrón) es la de generar muestras que parezcan reales, mientras que el objetivo de la \emph{discriminadora} (el policía) es el de clasificar las muestras como verdaderas o falsas.
@@ -252,7 +259,17 @@ De esta forma, el algoritmo para estimar los parámetros $\theta$ y $\varphi$ de
     Notemos que este algoritmo lo primero que hace intentar encontrar el óptimo de $\max_D V(G, D)$, el cuál proporciona una aproximación para la divergencia de Jensen-Shannon entre $\Prob_X$ y $\Prob_G$. Luego, se actualiza la generadora $G$ para minimizar la divergencia de Jensen-Shannon entre $\Prob_X$ y $\Prob_G$. Con este procedimiento, la generadora $G$ se aproxima a la distribución de referencia $\Prob_X$ utilizando la divergencia de Jensen-Shannon.
 \end{remark}
 
-\FM[inline]{Agregar la imágen del diagrama de una GAN de este link: \url{https://developers.google.com/machine-learning/gan/gan_structure}}
+Es común que las arquitecturas de tipo GAN sean representadas como en la Figura~\ref{fig:gan-diagram}. En esta figura, se puede observar que la generadora $G$ toma una variable latente $z$ y la mapea a una muestra $\hat x$, mientras que la discriminadora $D$ toma una muestra $x$ y la clasifica como verdadera o falsa.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/gan/gan_diagram.pdf}
+    \caption{Representación gráfica de la arquitectura de una GAN. Imagen obtenida de \cite{googlegan}.}
+    \label{fig:gan-diagram}
+\end{figure}
+
+
+\FM[inline]{Si es que en el futuro se puede, modificar esta figura para que coincida más con la descripción}
 
 
 
