@@ -9,7 +9,7 @@
 
 % Si se le entrega otra opción, que retorne una advertencia.
 \DeclareOption*{
-	\PassOptionsToPackage{\CurrentOption}{mathcmdFMG}
+    \PassOptionsToPackage{\CurrentOption}{mathcmdFMG}
 }
 \ProcessOptions\relax
 
@@ -42,6 +42,8 @@
 % Probabilidad
 \DeclareMathOperator{\ProbOp}{\mathbb{P}}
 \newcommand{\Prob}[1][]{\opparent{\ProbOp}{#1}{\left(#1\right)}}
+\DeclareMathOperator{\ProbQOp}{\mathbb{Q}}
+\newcommand{\ProbQ}[1][]{\opparent{\ProbQOp}{#1}{\left(#1\right)}}
 % Esperanza
 \DeclareMathOperator{\ExpOp}{\mathbb{E}}
 \newcommand{\Exp}[1][]{\opparent{\ExpOp}{#1}{\left[#1\right]}}
