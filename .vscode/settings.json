@@ -24,6 +24,7 @@
         "feedforward",
         "FFNN",
         "Fréchet",
+        "Goodfellow",
         "Hölder",
         "Hornik",
         "Kantorovich",

@@ -5,9 +5,9 @@ Este capítulo introduce los conceptos esenciales acerca de los modelos generati
 {
     En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros.
 
-    Este capítulo introduce los conceptos básicos de las redes neuronales, aunque no se profundiza\FM{Me suena raro profundiza. Está bien utilizado?} en los detalles de su funcionamiento. Para ello, se recomienda al lector revisar la literatura especializada en el tema, tales como \cite{goodfellow2016deep,calin2020deep}\FM{En este caso están bien referenciados?}.\FM{Esta sección lo hice de mis propios conocimientos y no tomé referencia de ninguna fuente. ¿Cómo podría decir esto?}
+    Este capítulo introduce los conceptos básicos de las redes neuronales, aunque no se profundiza en los detalles de su funcionamiento. Para ello, se recomienda al lector revisar la literatura especializada en el tema, tales como ``Deep learning'' \cite{goodfellow2016deep} y ``Deep learning architectures'' \cite{calin2020deep}.
 
-    El proceso de definición de una red neuronal comienza estableciendo algunas constantes preliminares. El origen de los nombres de las siguientes definiciones se entenderán con el Ejemplo~\ref{ex:ejemplo-red-neuronal}. Se define por $L\in\N$ la \emph{profundidad} de la red, el cuál determina el número de \textit{capas ocultas} y la \textit{capa de salida} que tiene la red. Para $\ell \in \left\{ 0,\ldots, L \right\}$, se define $d_\ell\in\N$ como el \emph{número de neuronas de la capa $\ell$}.
+    El proceso de definición de una red neuronal comienza estableciendo algunas constantes preliminares. El origen de los nombres de las siguientes definiciones se entienden con el Ejemplo~\ref{ex:ejemplo-red-neuronal}. Se define por $L\in\N$ la \emph{profundidad} de la red, la cuál determina el número de \textit{capas ocultas} y la \textit{capa de salida} que tiene la red. Para $\ell \in \left\{ 0,\ldots, L \right\}$, se define $d_\ell\in\N$ como el \emph{número de neuronas de la capa $\ell$}.
 
     De esta manera, una red neuronal prealimentada (FFNN por sus siglas en inglés: \textit{feed-forward neural net}) es simplemente una composición de funciones lineales y no lineales. Más precisamente, para $L$ funciones lineales $\{ g^{(\ell)}_{\vth_\ell} \colon \R^{d_{\ell-1}} \to \R^{d_{\ell}} \mid \ell = 1, \ldots, L \}$, definidas por
     \begin{align*}
@@ -24,7 +24,7 @@ Este capítulo introduce los conceptos esenciales acerca de los modelos generati
     A este tipo de modelos se les suele representar como grafos dirigidos acíclicos, describiendo cómo las funciones se encuentran compuestas entre sí.
 
     \begin{remark}
-        Cabe destacar que es necesario que las funciones de activación $\sigma$ sean no lineales. Pues si lo fueran, entonces la red sería una composición de funciones lineales, lo que resulta en una única función lineal. La problemática que se tendría con esta definición es que no habría ninguna ganancia con hacer la red más profunda, pues todo colapsaría a una única capa. Es por este motivo que a estas funciones se les llama \textbf{funciones de activación}, pues ``activan'' la no-linealidad de la red, permitiendo que esta pueda aprender funciones más complejas.\FM{Quizás se pueda dividir este párrafo en dos.}
+        Cabe destacar que es necesario que las funciones de activación $\sigma$ sean no lineales. Pues si lo fueran, entonces la red sería una composición de funciones lineales, lo que resulta en una única función lineal. La problemática que se tendría con esta definición es que no habría ninguna ganancia con hacer la red más profunda, pues todo colapsaría a una única capa. Es por este motivo que a estas funciones se les llama \textbf{funciones de activación}, pues ``activan'' la no-linealidad de la red, permitiendo que esta pueda aprender funciones más complejas.
     \end{remark}
 
 
@@ -50,12 +50,13 @@ Este capítulo introduce los conceptos esenciales acerca de los modelos generati
             \end{cases}
             \quad \forall \ell = 0, \ldots, L.
         \end{equation}
-        Es fácil comprobar que la salida de la red neuronal es $f_{\vth}(\vx) = x^{(L)}$.\FM{Es posible que esta línea no sea necesaria.}
+        Es evidente concluir que la salida de la red neuronal es $f_{\vth}(\vx) = x^{(L)}$.
     \end{example}
 
-    La razón por la que las redes neuronales han tenido tanto éxito en los últimos años se debe a que estas son capaces de aprender funciones muy complejas, siempre y cuando se les entregue suficiente cantidad de datos y tengan la capacidad\FM{No me gusta la palabra capacidad, quisiera cambiarlo por otro nombre} de neuronas suficiente. Esto se debe a que las redes neuronales son capaces de aproximar una gran familia de funciones continuas, como lo establece George Cybenko en el 1989 en su Teorema de Aproximación Universal (UAT por sus siglas en inglés) \cite{cybenko1989approximation}.
+    La razón por la que las redes neuronales han tenido tanto éxito en los últimos años se debe a que estas son capaces de aprender funciones muy complejas, siempre y cuando estas posean el número de parámetros suficientes y la cantidad de datos necesario.
+    Este hecho es demostrado por George Cybenko en 1989 en su Teorema de Aproximación Universal (UAT por sus siglas en inglés) \cite{cybenko1989approximation}.
 
-    A pesar de que la primera versión del UAT fue propuesta por Cybenko en 1989, el teorema fue popularizado por Kurt Hornik en 1991 \cite{hornik1991approximation}. Esto debe a que en el teorema de Cybenko utiliza una función de activación sigmoide, mientras que en la versión de Hornik lo extiende a una función de activación continua. Por este motivo, es que a continuación se presenta la versión de Hornik del UAT.
+    A pesar de que la primera versión del UAT fue propuesta por Cybenko en 1989, el teorema fue popularizado por Kurt Hornik en 1991 \cite{hornik1991approximation}, debido a que en el teorema de Cybenko utiliza una función de activación sigmoide, mientras que en la versión de Hornik lo extiende a una función de activación continua. Por este motivo, es que a continuación se presenta la versión de Hornik del UAT.
     \begin{theorem}[Teorema de Aproximación Universal \cite{hornik1991approximation}]\label{thm:universal-approximation-theorem}
         Sea $\sigma \in \ContSpace[\R, \R]$ una función de activación continua.
         Sean $d_0, d_2 \in \N$, números naturales, $K \subseteq \R^{d_0}$ un conjunto compacto y $f \in \ContSpace[K, \R^{d_2}]$ la función a aproximar.
@@ -69,20 +70,17 @@ Este capítulo introduce los conceptos esenciales acerca de los modelos generati
         El Teorema~\ref{thm:universal-approximation-theorem} establece que una red neuronal de una única capa oculta con una función de activación no polinomial (como por ejemplo, una sigmoide) es capaz de aproximar cualquier función continua en un conjunto compacto $K$ con un error arbitrariamente pequeño. Sin embargo, este teorema no establece cuántas neuronas en la capa oculta son necesarias para aproximar dicha función, ni tampoco establece cómo se deben de escoger los parámetros de la red neuronal.
     \end{remark}
 
-    A lo largo de los años, más versiones del UAT han sido propuestas, aunque el Teorema~\ref{thm:universal-approximation-theorem} ya ejemplifica\FM{No me gusta que se diga ``ejemplifica''} la idea de porqué las redes neuronales son tan efectivas en la aproximación de funciones.\FM{Este párrafo siento que es muy pequeño}
+    Con el paso de los años, se han propuesto diversas versiones del UAT. Sin embargo, el Teorema~\ref{thm:universal-approximation-theorem} ya ilustra de manera efectiva por qué las redes neuronales son tan efectivas en la aproximación de funciones.
 
-    Se terminará este capítulo mencionando que existen múltiples variantes de las redes neuronales, como las redes neuronales convolucionales (CNN por sus siglas en inglés) y las redes neuronales recurrentes (RNN por sus siglas en inglés). Estas variantes se han vuelto muy populares en el área de la visión computacional y del procesamiento de lenguaje natural, respectivamente. En lo particular, en este trabajo se hará uso \FM{En este caso, ¿debería ser ``se hará uso'' o debería ser ``se usa''?}  de las redes neuronales convolucionales.
-
-
-
+    Este capítulo concluye destacando la existencia de múltiples variantes de las redes neuronales, entre las que se incluyen las Redes Neuronales Convolucionales (CNN por sus siglas en inglés) y las Redes Neuronales Recurrentes (RNN por sus siglas en inglés). Estas variantes han ganado popularidad en los campos de la visión computacional y del procesamiento de lenguaje natural, respectivamente. Específicamente, en el presente trabajo se emplean las Redes Neuronales Convolucionales.
 
 }  % end of sec. Redes Neuronales
 
 
-\section{Redes Neuronales Convolucionales}\label{sec:redes-neuronales-convolucionales}
-{
-    \FM[inline]{Escribir! (será necesario?)}
-}  % end of sec. Redes Neuronales Convolucionales
+% \section{Redes Neuronales Convolucionales}\label{sec:redes-neuronales-convolucionales}
+% {
+%     \FM[inline]{Escribir! (será necesario?)}
+% }  % end of sec. Redes Neuronales Convolucionales
 
 
 \section{Redes Generativas Adversarias}\label{sec:redes-generativas-adversarias-GAN}
@@ -104,14 +102,14 @@ Comencemos esta sección imaginando la siguiente situación\footnote{Este ejempl
     \label{fig:gan-analogy}
 \end{figure}
 
-El marco de las Redes Generativas Adversarias (GAN), introducidos por \cite{goodfellow2014generative}, es en esencia, la analogía del ladrón y el policía.
+El marco de las Redes Generativas Adversarias (GAN), introducido en el trabajo de Goodfellow et al. \cite{goodfellow2014generative}, es en esencia, la analogía del ladrón y el policía.
 La GAN define un juego donde el objetivo de la \emph{generadora} (el ladrón) es la de generar muestras que parezcan reales, mientras que el objetivo de la \emph{discriminadora} (el policía) es el de clasificar las muestras como verdaderas o falsas.
 En este caso, la generadora se entrena para engañar a la discriminadora, y la discriminadora se entrena para detectar la falsedad de las muestras generadas.
 
 En este trabajo de tesis se plantea una definición formal de una GAN, en el contexto no paramétrico, y utilizando medidas de probabilidades generales. Este enfoque es diferente al que se plantea en el \textit{paper} original \cite{goodfellow2014generative}, donde se utiliza una formulación no paramétrica, pero asumiendo que las medidas de probabilidad son absolutamente continuas con respecto a la medida de Lebesgue.
 
 Por tanto, esta sección se basa en \cite{wikipediagan}\footnote{Nota del Autor: En este artículo, se menciona que las Definiciones y Teoremas planteados provienen del \textit{paper} original \cite{goodfellow2014generative}. Sin embargo, este artículo realiza una formulación diferente a tal \textit{paper}, como se mencionó anteriormente. He intentado investigar, tanto en este artículo como en la \textit{web} si es que existía algún libro o \textit{paper} del cuál se pudo haber basado el autor del artículo, pero todo parece indicar que esta formulación es original de tal autor (el cuál, además, lo realizó de forma anónima), y por tanto, considero poco ético no hacer referencia al artículo del cuál genuinamente se basa esta sección.},
-el cuál senta\FM{Quiero cambiar esta palabra} las bases necesarias utilizando medidas de probabilidad generales. Sin embargo, las demostraciones y teoremas presentadas en esta sección han sido validadas y modificadas para asegurar la formalidad y correctitud de los resultados. Por este motivo, en esta sección se presentan demostraciones más detalladas que en el resto del trabajo.
+el cuál establece las bases necesarias utilizando medidas de probabilidad generales. Sin embargo, las demostraciones y teoremas presentadas en esta sección han sido validadas y modificadas para asegurar la formalidad y correctitud de los resultados. Por este motivo, en esta sección se presentan demostraciones más detalladas que en el resto del trabajo.
 
 Desde el punto de vista de la teoría de juegos, la GAN se define como un juego de dos jugadores: una \textit{generadora} $\Prob_G$, donde su conjunto de estrategias es $\ProbSpace[\cX]$ (con $\cX$ el \textit{conjunto de referencia}, e.g. $\cX=[0, 1]^{n_1\times n_2}$ para un conjunto de imágenes), y una \textit{discriminadora} $\Prob_D(\dd y \mid x)$, donde su conjunto de estrategias es el conjunto de kernels Markovianos.\FM{Creo que aquí podría haber un punto aparte en vez de un punto seguido.} Con esto, la GAN es un juego de suma cero con la siguiente función valor objetivo:
 \begin{equation}
@@ -123,12 +121,6 @@ Desde el punto de vista de la teoría de juegos, la GAN se define como un juego 
 donde la generadora busca minimizar la función valor, mientras que la discriminadora busca maximizar esta cantidad.
 
 El objetivo final de la generadora es el de encontrar una distribución $\Prob_G$ tal que se aproxime a una distribución de referencia $\Prob_X \in \ProbSpace[\cX]$ (del cuál se tiene acceso a través de una medida empírica $\hat \Prob_X = \frac{1}{N} \sum_{i=1}^{N} \delta_{x_i}$). Por el otro lado, el objetivo de la discriminadora es el de clasificar las muestras verdaderas y falsas, asignándole valores cercano a 1 y 0 respectivamente.
-
-% En la práctica, la forma de implementar la generadora es a través de un \emph{modelo generativo de espacio latente}. Esto es,
-% \begin{equation}
-%     \Prob_G (\dd x) \eqdef \int_\cZ \Prob_G(\dd x \mid z) \; \Prob_Z \left( \dd z\right),
-% \end{equation}
-% donde $\cZ$ es el espacio de las variables latentes, y $\Prob_Z \in \ProbSpace[\cZ] $ es la distribución del espacio latente (típicamente se utiliza distribución Gaussiana o Uniforme). Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, a través de una función $G\colon \cZ \to \cX$.
 
 El siguiente teorema nos habla acerca de la naturaleza del discriminador óptimo:
 
@@ -155,12 +147,8 @@ La siguiente demostración se basa en \cite{wikipediagan}, el cuál se han agreg
         \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ \ln \qty\big(1 - Y) \right]
         \leq \ln \left( \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ 1 - Y \right] \right).
     \end{equation}
-    Por el lema de Doob \cite[Ver pág. 316, Cor. 9.4.11]{san2018teoria}, se sabe que existe una función $D \colon \cX \to [0, 1]$ tal que $\Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right]
+    Por el lema de Doob \cite[ver Cor. 9.4.11]{sanmartin2018teoria}, se sabe que existe una función $D \colon \cX \to [0, 1]$ tal que $\Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right]
         = D(X)$,
-    % \begin{equation}
-    %     \Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right]
-    %     = D(X),
-    % \end{equation}
     es decir, que el discriminador toma una forma determinista $\Prob_D \left( \dd y \mid x \right) = \delta_{D(x)}(\dd y)$. Utilizando esta propiedad en las desigualdades \eqref{eq:gan-jensen-inequality-1} y \eqref{eq:gan-jensen-inequality-2} y sumando, se tiene que:
     \begin{equation}
         V(\Prob_G, \Prob_D) \leq \Exp_{X \sim \Prob_X} \Big[ \ln D(X) \Big] + \Exp_{\tilde X \sim \Prob_G} \Big[ \ln \qty\big(1 - D(\tilde X)) \Big],
@@ -220,9 +208,7 @@ En la práctica, la forma de implementar la generadora es a través de un \emph{
 \end{equation}
 donde $\cZ$ es el espacio de las variables latentes, y $\Prob_Z \in \ProbSpace[\cZ] $ es la distribución del espacio latente (típicamente se utiliza la distribución Gaussiana o Uniforme).
 
-Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, utilizando una función $G\colon \cZ \to \cX$, la cuál la estimaremos a través de una red neuronal $G_\theta$. Por otro lado, el Teorema~\ref{thm:gan-optimal-discriminator} nos dice que, en el óptimo, el discriminador toma una forma determinista, de forma que bastaría con buscar una función $D\colon\cX\to [0, 1]$, la cual también la estimaremos a través de una red neuronal $D_\varphi$.
-%  tal que la aproxime. Para ello, utilizaremos una red neuronal $D_\phi$.
-% el discriminador óptimo toma una forma determinista, de forma que bastaría con sólo buscar una función $D\colon\cX\to [0, 1]$ tal que la aproxime. En la práctica, esta función $D$ se implementa a través de una red neuronal $D_\phi$.
+Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, utilizando una función $G\colon \cZ \to \cX$, la cuál se estima a través de una red neuronal $G_\theta$. Por otro lado, el Teorema~\ref{thm:gan-optimal-discriminator} dice que, en el óptimo, el discriminador toma una forma determinista, de forma que basta con buscar una función $D\colon\cX\to [0, 1]$, la cual también se estima a través de una red neuronal $D_\varphi$.
 
 \FM{Agregar una explicación de las funciones de pérdida para este caso, explicar qué cosas buscan minimizar/maximizar y describir el algoritmo de entrenamiento.}
 
@@ -233,10 +219,9 @@ Con el fin de definir un algoritmo para entrenar una GAN, se definen las siguien
 \end{align}
 donde $\{x_i\}_{i=1}^{N} \sim \Prob_X$ y $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ son muestras del conjunto de entrenamiento y del espacio latente, respectivamente. La función de pérdida $\cL_{\mathrm{disc}}$ proviene de buscar maximizar la función objetivo \eqref{eq:gan-objective}, mientras que la función de pérdida $\cL_{\mathrm{gen}}$ se deriva de buscar minimizar la misma función objetivo.
 
-De esta manera, el Algoritmo~\ref*{alg:GAN} describe la forma de estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente. Usualmente, el flujo de este algoritmo se realiza en dos pasos: primero se actualiza la discriminadora $D_\varphi$ por $N_d$ iteraciones, y luego se actualiza la generadora $G_\theta$ por una iteración. Este proceso se repite hasta que los parámetros $\theta$ converjan.
-\begin{algorithm}[tbhp]
-    \caption{Red Generativa Adversaria}\label{alg:GAN}
-    \begin{algorithmic}
+\begin{algorithm}[t!]
+    \caption{Entrenamiento de una Red Generativa Adversaria}\label{alg:GAN}
+    \begin{algorithmic}[1]
         \Require Tamaño del batch $N$ y número de iteraciones para el discriminador $N_d$.
         % Penalization coefficients $\lambda_1, \lambda_2 > 0$, the number of critic iterations $n_{\text{critic}}$, the batch size $m$.
         \State Inicializar los parámetros de la generadora $G_\theta$ y la discriminadora $D_\varphi$.
@@ -264,13 +249,15 @@ De esta manera, el Algoritmo~\ref*{alg:GAN} describe la forma de estimar los par
     \end{algorithmic}
 \end{algorithm}
 
+De esta manera, el Algoritmo~\ref*{alg:GAN} describe la forma de estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente. Usualmente, el flujo de este algoritmo se realiza en dos pasos: primero se actualiza la discriminadora $D_\varphi$ por $N_d$ iteraciones, y luego se actualiza la generadora $G_\theta$ por una iteración. Este proceso se repite hasta que los parámetros $\theta$ converjan.
+
 \begin{remark}
     Notemos que este algoritmo empieza por intentar encontrar el óptimo de $\max_D V(G, D)$, el cuál proporciona una aproximación para la divergencia de Jensen-Shannon entre $\Prob_X$ y $\Prob_G$. Luego, actualiza la generadora $G$ para minimizar la divergencia de Jensen-Shannon entre $\Prob_X$ y $\Prob_G$. Con este procedimiento, la generadora $G$ se aproxima a la distribución de referencia $\Prob_X$ \textbf{utilizando la divergencia de Jensen-Shannon}.
 \end{remark}
 
 Es común que las arquitecturas de tipo GAN sean representadas como en la Figura~\ref{fig:gan-diagram}. En esta figura, se puede observar que la generadora $G$ toma una variable latente $z$ y la mapea a una muestra $\hat x$, mientras que la discriminadora $D$ toma una muestra $x$ y la clasifica como verdadera o falsa.
 
-\begin{figure}[htbp]
+\begin{figure}[thb!]
     \centering
     \includegraphics[width=0.75\textwidth]{img/gan/gan_diagram.pdf}
     \caption{Representación gráfica de la arquitectura de una GAN. Imagen obtenida de \cite{googlegan}.}
@@ -285,14 +272,7 @@ Es común que las arquitecturas de tipo GAN sean representadas como en la Figura
 
 
 
-% El objetivo entonces de la generadora es el de maximizar la función objetivo, mientras que el objetivo de la discriminadora es el de minimizar la función objetivo. En otras palabras, la generadora se entrena para engañar a la discriminadora, y la discriminadora se entrena para clasificar la falsedad de las muestras generadas por la generadora.
 
-
-
-
-% Las Redes Generativas Adversarias (GAN por sus siglas en inglés) son un tipo de arquitectura que se componen de dos partes: un generador $G$ y un discriminador $D$. El objetivo de la generadora $G$ es el de generar muestras que parezcan reales, mientras que el objetivo del discriminador $D$ es el de clasificar las muestras como reales o falsas. En este caso, la red generativa $G$ se entrena para engañar a la red discriminativa $D$, y la red discriminativa $D$ se entrena para detectar las muestras generadas por la red generativa $G$. En la analogía anterior, el ladrón corresponde a la red generativa $G$, y el policía corresponde a la red discriminativa $D$.
-
-% Para lograr este objetivo, la generadora $G$ define una ley $\Prob_G$
 
 % Teorema de la GAN: Convergencia en divergencia Jensen-Shannon
 
@@ -302,18 +282,18 @@ Es común que las arquitecturas de tipo GAN sean representadas como en la Figura
 
 \section{Auto-Encoders}\label{sec:auto-Encoders}
 {
-    Un tipo de arquitectura que ha sido muy popular por la comunidad del aprendizaje profundo son los Auto-Encoders (AE). Los AE son una arquitectura de redes neuronales que se utilizan para aprender una codificación eficiente de datos no etiquetados. O de forma más coloquial, aprende a ``comprimir la información'' de los datos de entrada.
+    Un tipo de arquitectura que ha sido muy popular en la comunidad del aprendizaje profundo son los Auto-Encoders (AE). Los AE son una arquitectura de redes neuronales que se utiliza para aprender una codificación eficiente de datos no etiquetados. En otras palabras, aprende a ``comprimir la información'' de los datos de entrada.
 
-    Al igual que en la sección anterior, se presentará una definición formal de un AE en el contexto no paramétrico, y utilizando medidas de probabilidad generales. En este caso, esta sección se basa en \cite{tolstikhin2017wasserstein}, aunque ha sido modificado en el contexto de los AE ``vainilla'' (y no en su versión Wasserstein como se presenta en el \textit{paper}).
+    Al igual que en la sección anterior, se presenta una definición formal de un AE en el contexto no paramétrico, y utilizando medidas de probabilidad generales. En este caso, esta sección se basa en \cite{tolstikhin2017wasserstein}, aunque ha sido modificado en el contexto de los AE ``vainilla'' (y no en su versión Wasserstein como se presenta en el \textit{paper}).
 
     Un AE se compone de dos partes: un codificador $Q(\dz \mid x)$ que corresponde a un kernel de transición tal que a cada $x$ le asigna una distribución en el espacio latente, y un decodificador $P_G(\dx \mid z)$ que corresponde a un kernel de transición tal que a cada $z$ le asigna una distribución en el espacio de referencia. En este trabajo, se asume que el decodificador es determinista por simplicidad, es decir, que $P_G(\dx \mid z) = \delta_{G(z)}(\dx)$, donde $G\colon \cZ \to \cX$ es una función.
 
-    Para cumplir con la tarea del aprendizaje de una codificación eficiente, el AE busca minimizar el error de reconstrucción dada una muestra $x\sim \Prob_X$ a través de obtener $\tilde z \sim Q(\dz \mid x)$ y obtener $\tilde x \sim P_G(\dx \mid \tilde z)$. El AE busca minimizar entonces el error de reconstrucción $c(x, \tilde x)$. En este caso, la función de pérdida del AE se define como:
+    Para cumplir con la tarea del aprendizaje de una codificación eficiente, el AE busca minimizar el error de reconstrucción dada una muestra $x\sim \Prob_X$ a través de obtener $\tilde z \sim Q(\dz \mid x)$ y obtener $\tilde x \sim P_G(\dx \mid \tilde z)$. El AE busca minimizar entonces el error de reconstrucción $c(x, \tilde x)$. En este caso, la función de pérdida del AE se define de la siguiente forma:
     \begin{equation}\label{eq:ae-loss}
         \cL_{\mathrm{AE}} = \Exp_{X \sim \Prob_X} \Exp_{\tilde Z \sim Q(\dz \mid X)} \left[ c(X, G(\tilde Z)) \right].
     \end{equation}
 
-    En la práctica, uno puede asumir que el codificador es determinista, es decir, que $Q_E(\dz \mid x) = \delta_{E(x)}(\dz)$, donde $E\colon \cX \to \cZ$ es una función que se estima a través de una red neuronal $E_\phi$. Aunque también se puede utilizar un codificador estocástico.
+    En la práctica, uno puede asumir que el codificador es determinista, es decir, que $Q_E(\dz \mid x) = \delta_{E(x)}(\dz)$, donde $E\colon \cX \to \cZ$ es una función que se estima a través de una red neuronal $E_\phi$, aunque también se puede utilizar un codificador estocástico.
     Por otro lado, el decodificador $P_G(\dx \mid z)$, que se asume determinista en este caso, se estima a través de una red neuronal $G_\theta$.
 
     De esta manera, el algoritmo para un AE (en su versión más general) se presenta a continuación:
