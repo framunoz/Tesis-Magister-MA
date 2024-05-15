@@ -2,12 +2,19 @@
 %  memorias o tesis en inglés (borrando el archivo .aux)
 \documentclass[]{umemoria} 
 
+\addbibresource{bibliografia.bib}
+
 \usepackage[]{pkgs/theoremenvFMG}
 \usepackage[swapeps,swapphi]{pkgs/mathcmdFMG}
 \usepackage{pkgs/mathprobcmdFMG}
 \usepackage[colorinlistoftodos]{pkgs/todonotesFMG}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\renewcommand{\listalgorithmname}{Índice de \ALG@name s}
+\makeatother
 
 \depto{Departamento de Ingeniería Matemática}
 \author{Francisco Muñoz Guajardo}
@@ -35,11 +42,11 @@
 %\auspicio{Nombre Institución} % incluir en caso de recibir financiamiento
 
 % tiene que ser el año en que se da el examen de título/grado (defensa)
-%\anho{2021} % incluir solo para reemplazar el año actual
+\anho{2024} % incluir solo para reemplazar el año actual
 
 \usepackage{lipsum}
 
-% \includeonly{lib/01intro}
+% \includeonly{lib/03redesNeuronales}
 
 \begin{document}
 
@@ -68,6 +75,7 @@
 \tableofcontents
 \listoftables % opcional
 \listoffigures % opcional
+\listofalgorithms % opcional
 \listoftodos
 
 \mainmatter
@@ -83,9 +91,13 @@
 % \input{lib/glosario.tex} % opcional
 
 \nocite{*}
-\bibliographystyle{unsrtnat}
+%%%%%%%% CITADO ANTIGUO %%%%%%%%%
+% \bibliographystyle{unsrtnat}
 % \bibliographystyle{IEEEtran}
-\bibliography{bibliografia.bib}
+% \bibliography{bibliografia.bib}
+
+%%%%%%%% CITADO NUEVO %%%%%%%%%
+\printbibliography
 
 % opcional ...
 \begin{appendices}
