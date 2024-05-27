@@ -31,6 +31,7 @@
         "Kullback",
         "Leibler",
         "Lipschitz",
+        "Lipschitzianidad",
         "Markovianos",
         "metriza",
         "metrizado",
@@ -41,6 +42,7 @@
         "recursivamente",
         "sigmoide",
         "Solucion",
+        "WGAN",
         "Zemel"
     ],
     "cSpell.language": "en,es"
