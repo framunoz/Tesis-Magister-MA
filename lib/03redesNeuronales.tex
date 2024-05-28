@@ -106,14 +106,9 @@ El marco de las Redes Generativas Adversarias (GAN), introducido en el trabajo d
 La GAN define un juego donde el objetivo de la \emph{generadora} (el ladrón) es la de generar muestras que parezcan reales, mientras que el objetivo de la \emph{discriminadora} (el policía) es el de clasificar las muestras como verdaderas o falsas.
 En este caso, la generadora se entrena para engañar a la discriminadora, y la discriminadora se entrena para detectar la falsedad de las muestras generadas.
 
-En este trabajo de tesis se plantea una definición formal de una GAN, en el contexto no paramétrico, y utilizando medidas de probabilidades generales. Este enfoque es diferente al que se plantea en el \textit{paper} original \cite{goodfellow2014generative}, donde se utiliza una formulación no paramétrica, pero asumiendo que las medidas de probabilidad son absolutamente continuas con respecto a la medida de Lebesgue.
+En este trabajo de tesis se plantea una definición formal de una GAN, en el contexto no paramétrico, y utilizando medidas de probabilidades generales. Este enfoque es diferente al que se plantea en el \textit{paper} original \cite{goodfellow2014generative}, donde se utiliza una formulación no paramétrica, pero asumiendo que las medidas de probabilidad poseen densidad. Por tanto, se utiliza la formulación presentada en \cite{wikipediagan}, la cuál se basa en medidas de probabilidad generales, aunque se reescriben los teoremas y demostraciones para mayor detalle y comprensión.
 
-\FM[inline]{HAY QUE MEJORAR LA FORMA EN QUE ESTOY REFERENCIANDO \cite{wikipediagan}}
-
-Por tanto, esta sección se basa en \cite{wikipediagan}\footnote{Nota del Autor: En este artículo, se menciona que las Definiciones y Teoremas planteados provienen del \textit{paper} original \cite{goodfellow2014generative}. Sin embargo, este artículo realiza una formulación diferente a tal \textit{paper}, como se mencionó anteriormente. He intentado investigar, tanto en este artículo como en la \textit{web} si es que existía algún libro o \textit{paper} del cuál se pudo haber basado el autor del artículo, pero todo parece indicar que esta formulación es original de tal autor (el cuál, además, lo realizó de forma anónima), y por tanto, considero poco ético no hacer referencia al artículo del cuál genuinamente se basa esta sección.},
-el cuál establece las bases necesarias utilizando medidas de probabilidad generales. Sin embargo, las demostraciones y teoremas presentadas en esta sección han sido validadas y modificadas para asegurar la formalidad y correctitud de los resultados. Por este motivo, en esta sección se presentan demostraciones más detalladas que en el resto del trabajo.
-
-Desde el punto de vista de la teoría de juegos, la GAN se define como un juego de dos jugadores: una \textit{generadora} $\Prob_G$, donde su conjunto de estrategias es $\ProbSpace[\cX]$ (con $\cX$ el \textit{conjunto de referencia}, e.g. $\cX=[0, 1]^{n_1\times n_2}$ para un conjunto de imágenes), y una \textit{discriminadora} $\Prob_D(\dd y \mid x)$, donde su conjunto de estrategias es el conjunto de kernels Markovianos.\FM{Creo que aquí podría haber un punto aparte en vez de un punto seguido.} Con esto, la GAN es un juego de suma cero con la siguiente función valor objetivo:
+Desde el punto de vista de la teoría de juegos, la GAN se define como un juego de dos jugadores: una \textit{generadora} $\Prob_G$, donde su conjunto de estrategias es $\ProbSpace[\cX]$ (con $\cX$ el \textit{conjunto de referencia}, e.g. $\cX=[0, 1]^{n_1\times n_2}$ para un conjunto de imágenes), y una \textit{discriminadora} $\Prob_D(\dd y \mid x)$, donde su conjunto de estrategias es el conjunto de kernels Markovianos. Con esto, la GAN es un juego de suma cero con la siguiente función valor objetivo:
 \begin{equation}
     \label{eq:gan-objective}
     V(\Prob_G, \Prob_D)
@@ -136,7 +131,7 @@ El siguiente teorema nos habla acerca de la naturaleza del discriminador óptimo
 
 Este teorema nos dice que el discriminador óptimo es aquel que calcula la divergencia de Jensen-Shannon entre la distribución de referencia $\Prob_X$ y la distribución generada $\Prob_G$, salvo una constante. Además, nos dice que el discriminador toma una forma determinista, de forma que bastaría con buscar una función (como por ejemplo, una red neuronal) $D\colon\cX\to [0, 1]$ tal que la aproxime.
 
-La siguiente demostración se basa en \cite{wikipediagan}, el cuál se han agregado detalles para mayor comprensión y formalidad.
+La siguiente demostración se basa en \cite{wikipediagan}.
 
 \begin{proof}[Demostración del Teorema~\ref{thm:gan-optimal-discriminator}]
     Dado $X \sim \Prob_X$, por la desigualdad de Jensen se tiene que:
@@ -329,8 +324,6 @@ donde $\{x_i\}_{i=1}^{N} \sim \Prob_X$ son muestras del conjunto de entrenamient
 \end{algorithm}
 
 Dado lo anterior, el Algoritmo~\ref{alg:AE} describe la forma de estimar los parámetros $\varphi$ y $\theta$ del codificador y decodificador, respectivamente. Usualmente, el flujo de este algoritmo se realiza de forma iterativa hasta que los parámetros $\varphi$ y $\theta$ converjan.
-
-sdfgsdfg sdfgdsfgsdf gsdfgsdfg
 
 }  % end of sec. Auto-Encoders
 
