@@ -98,7 +98,62 @@ De este modo, el algoritmo de entrenamiento de la WGAN se resume en el Algoritmo
 
     }  % end of sec. Wasserstein GAN con Gradiente Penalizado
 }  % end of sec. Variantes de la Wasserstein GAN
+\section{Wasserstein GAN}\label{sec:WGAN}
 {
+    La Wasserstein GAN (WGAN) \cite{arjovsky2017wasserstein} es una variante de las GANs que propone una nueva función de pérdida basada en la distancia de Wasserstein, en lugar de la divergencia de Jensen-Shannon utilizada en las GANs tradicionales. La principal ventaja de la WGAN es que es más estable y efectiva en la generación de datos, evitando problemas como el colapso del modo y el desvanecimiento del gradiente.
 
-}  % end of sec. Variantes de la Wasserstein GAN
+    La función de pérdida se basa en el teorema de dualidad de Kantorovich-Rubinstein, el cuál se enuncia a continuación:
+    \begin{theorem}[Teorema de dualidad de Kantorovich-Rubinstein \cite{villani2009optimal}]\label{thm:dualidad-kantorovich-rubinstein}
+        Sean $\Prob, \ProbQ \in \WassersteinSpace[1]{\cX}$ dos medidas de probabilidad en un espacio métrico $\cX$. Entonces, la distancia de Wasserstein entre $\Prob$ y $\ProbQ$ se puede expresar como:
+        \begin{equation}\label{eq:dualidad-kantorovich-rubinstein}
+            \Wasserstein[1]{\Prob}{\ProbQ} = \sup_{f \in \Lip[\cX]} \left\{ \Exp_{X\sim \Prob} [f(X)] - \Exp_{\tilde X \sim \ProbQ} [f(\tilde X)] \right\}.
+        \end{equation}
+    \end{theorem}
+
+    Inspirados por el Teorema~\ref{thm:dualidad-kantorovich-rubinstein}, los autores de la WGAN definen dos redes neuronales: una red generadora $G_\theta\colon\cZ\to\cX$ y la función crítica $f_\omega \colon \cX \to \R$, donde $\omega$ y $\theta$ son los parámetros de las redes. La función crítica $f_\omega$ busca aproximar la función que maximiza la expresión en~\eqref{eq:dualidad-kantorovich-rubinstein}, con la restricción de que sea $1$-Lipschitz. Este procedimiento define una estimación de la distancia de Wasserstein de la siguiente manera:
+    \begin{equation}\label{eq:wasserstein-estimation}
+        \widehat W_\omega^{(1)} (\Prob, \ProbQ) \eqdef \Exp_{X\sim \Prob} [f_\omega(X)] - \Exp_{\tilde X \sim \ProbQ} [f_\omega(\tilde X)].
+    \end{equation}
+
+    Sin embargo, con el fin de asegurarse que la función crítica $f_\omega$ sea $1$-Lipschitz, en el trabajo original se proponía la restricción de que los pesos de la red fueran acotados. Esta restricción termina empeorando el desempeño de la red, por lo que se han propuesto otras alternativas para garantizar la función $f_\omega$ sea $1$-Lipschitz.
+
+    Paso seguido, la generadora utiliza la aproximación de la distancia de Wasserstein para minimizar la distancia entre la distribución real y la generada (recordando que esta se obtiene a través de un modelo generativo de espacio latente).
+
+    De este modo, el algoritmo de entrenamiento de la WGAN se resume en el Algoritmo~\ref{alg:WGAN}.
+
+    \begin{algorithm}[ht!]
+        \caption{Entrenamiento de una Wasserstein GAN}\label{alg:WGAN}
+        \begin{algorithmic}[1]
+            \Require Tamaño del batch $N$ y número de iteraciones para el discriminador $N_d$, el parámetro de clipping $c$.
+            % Penalization coefficients $\lambda_1, \lambda_2 > 0$, the number of critic iterations $n_{\text{critic}}$, the batch size $m$.
+            \State Inicializar los parámetros de la generadora $G_\theta$ y la función crítica $f_\omega$.
+            % Initialize the parameters of the encoder $Q_\phi$, \\generator/decoder $G_\theta$ and the critic function $f_\omega$.
+            \While{$\theta$ no ha convergido}
+            \For{$t=1,\ldots,N_d$}
+            \State Muestrear $\{x_i\}_{i=1}^{N} \sim \Prob_X$ desde el conjunto de entrenamiento.
+            \State Muestrear $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ desde el espacio latente.
+            \State $\widehat W_{\omega}^{(1)} \gets - \left( \frac{1}{N}\sum_{i=1}^{N} f_{\omega}(x_i) - \frac{1}{N}\sum_{i=1}^{N} f_{\omega}(G_{\theta}(z_i)) \right)$
+            \State Actualizar $f_{\omega}$ por medio de descenso de gradiente en $\pdv{\omega} \widehat W_{\omega}^{(1)}$.
+            \State $\omega \gets \text{clip}(\omega, -c, c)$
+            % \State $\cL_{\mathrm{disc}} \gets -\frac{1}{N}\sum_{i=1}^{N} \Big[ \ln D_\varphi(x_i) + \ln \qty\big(1 - D_\varphi(G_\theta(z_i))) \Big]$
+            % \State Actualizar $D_\varphi$ por medio de descenso de gradiente en $\pdv{\varphi} \cL_{\mathrm{disc}}$.
+            % \State $\widehat W^{(1)}_{\omega}(\theta) \gets \frac{1}{m}\sum_{i=1}^{m} f_\omega(x_i) - \frac{1}{m}\sum_{i=1}^{m} f_\omega(G_\theta(z_i))$
+            % \State $\cL_{\text{critic}} \gets -\widehat W^{(1)}_{\omega}(\theta) + \lambda_1 \cP(f_\omega)$
+            % \State Update $f_\omega$ by descending $\pdv{\omega} \cL_{\text{critic}}$.
+            \EndFor
+            \State Muestrear $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ desde el espacio latente.
+            \State $\cL_{\mathrm{gen}} \gets - \frac{1}{N}\sum_{i=1}^{N} f_\omega(G_\theta(z_i))$
+            % \State $\cL_{\mathrm{gen}} \gets - \frac{1}{N}\sum_{i=1}^{N} \ln \qty\big(D_\varphi(G_\theta(z_i)))$
+            \State Actualizar $G_\theta$ por medio de descenso de gradiente en $\pdv{\theta} \cL_{\mathrm{gen}}$.
+            % \State Update $G_\theta$ by descending $\pdv{\theta} \widehat W^{(1)}_{\omega}(\theta)$.
+            % \State Sample $\tilde z_i \sim Q_\phi(dz | x_i)$ for $i=1,\ldots, m$.
+            % \State $\widehat W^{(2)}_{\phi}(\theta) \gets \frac{1}{m}\sum_{i=1}^{m} |x_i - G_\theta(\tilde z_i)|$
+            % \State $\cL_{\text{WAE}} \gets \widehat W^{(2)}_{\phi}(\theta) + \lambda_2 \cD(\{z_i\}_{i=1}^{m}, \{\tilde z_i\}_{i=1}^{m})$
+            % \State Update $Q_\phi$ by descending $\pdv{\phi} \cL_{\text{WAE}}$.
+            % \State Update $G_\theta$ by descending $\pdv{\theta} \widehat W^{(2)}_{\phi}(\theta)$.
+            \EndWhile
+        \end{algorithmic}
+    \end{algorithm}
+
+}  % end of sec. Wasserstein GAN
 }  % end of Chapter Modelos generativos basados en Wasserstein

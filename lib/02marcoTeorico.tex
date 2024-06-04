@@ -38,7 +38,7 @@
 	{
 		A lo largo de esta sección se presentan distintas formulaciones del problema de transporte, comenzando con sus orígenes en el trabajo de Monge \cite{monge1781memoire}, seguido de la formulación relajada de Kantorovich \cite{kantorovich1942translocation}, y concluyendo al destacar que, en realidad, ambos problemas son equivalentes, como lo establece el teorema de Brenier \cite{brenier1991polar}. Es notable señalar que esta sección está basada en la Sección 1.1 del libro de Panaretos y Zemel \cite{panaretos2020invitation}, y en la Sección 2 del libro de Peyré y Cuturi \cite{peyre2019computational}.
 
-		\subsection*{El problema de Monge}
+		\subsection{El problema de Monge}
 		{
 
 			Supongamos que hay un trabajador que debe de transportar una pila de arena a un pozo de igual volumen, situación que se puede ver representada en la Figura~\ref{fig:montanas-arena-pozo}. En esta situación, Monge \cite{monge1781memoire} en el 1781 se preguntó: ¿Cuál es la manera de transportar la arena al pozo con \emph{el menor esfuerzo} para el trabajador?, o dicho de otra manera, ¿Cuál es la forma \emph{óptima} de transportar la arena al pozo?
@@ -122,7 +122,7 @@
 			% 	  \end{equation}
 		}
 
-		\subsection*{El problema de Kantorovich}
+		\subsection{El problema de Kantorovich}
 		{
 			Como se pudo apreciar en los Ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, el problema de Monge no siempre tiene solución y, en caso de tenerla, puede que esta no sea única. Motivado por esto, Kantorovich \cite{kantorovich1942translocation} propuso una formulación relajada del problema de Monge.
 
@@ -329,7 +329,7 @@
 	{
 		Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empieza revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de la Sección 3 de Panaretos y Zemel \cite{panaretos2020invitation} y en definiciones de la Sección 9.2 de Peyré y Cuturi \cite{peyre2019computational}.
 
-		\subsection*{La Media de Fréchet}\label{ssec:la-media-de-Frechet}
+		\subsection{La Media de Fréchet}\label{ssec:la-media-de-Frechet}
 		{
 			%   En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
 			\begin{definition}[Funcional y Media de Fréchet \cite{frechet1948elements}]
@@ -367,7 +367,7 @@
 
 		}  % end of sec. La Media de Fréchet
 
-		\subsection*{El Baricentro de Wasserstein}\label{ssec:el-baricentro-de-Wasserstein}
+		\subsection{El Baricentro de Wasserstein}\label{ssec:el-baricentro-de-Wasserstein}
 		{
 			Como se vió en la sección anterior, la media de Fréchet permite definir una noción de promedio para espacios métricos. Además, en la sección anterior, el Teorema~\ref{thm:espacioWassersteinEsMetrico} establece que si $(\cX, \dist)$ es un espacio Polaco, entonces $(\WassersteinSpace[p]{\cX}, W_p)$ es un espacio Polaco, y en particular, un espacio métrico. Por tanto, se puede definir su respectivo ``promedio'' utilizando la media de Fréchet:
 
@@ -421,7 +421,7 @@
 		}  % end of sec. El Baricentro de Wasserstein
 
 
-		\subsection*{Geodésicas en el Espacio de Wasserstein}\label{ssec:geodesicas-Wasserstein}
+		\subsection{Geodésicas en el Espacio de Wasserstein}\label{ssec:geodesicas-Wasserstein}
 		{
 			En esta sección, se utilizará la distancia de Wasserstein para definir la interpolación geodésica en el espacio de Wasserstein. Esta noción se utilizará posteriormente en el algoritmo del descenso del gradiente estocástico sobre el espacio de Wasserstein.
 			\FM[inline]{Agregar la referencia del Lecture}
@@ -469,7 +469,7 @@
 
 		}  % end of sec. Geodésicas en el Espacio de Wasserstein
 
-		\subsection*{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
+		\subsection{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}
 		{
 			En esta sección se define el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) explique las muestras tomadas.
 			%  conseguir  incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. 
