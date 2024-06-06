@@ -1,6 +1,6 @@
 % se puede agregar la opción [english] para 
 %  memorias o tesis en inglés (borrando el archivo .aux)
-\documentclass[]{umemoria} 
+\documentclass[draft]{umemoria} 
 
 \addbibresource{bibliografia.bib}
 
@@ -46,7 +46,7 @@
 
 \usepackage{lipsum}
 
-% \includeonly{lib/03redesNeuronales,lib/04modelosGenWass}
+% \includeonly{lib/03redesNeuronales}
 
 \begin{document}
 
@@ -83,7 +83,7 @@
 \include{lib/01intro.tex}
 \include{lib/02marcoTeorico.tex}
 \include{lib/03redesNeuronales.tex}
-\include{lib/04modelosGenWass.tex}
+% \include{lib/04modelosGenWass.tex}
 % \include{lib/cap2.tex}
 % \include{lib/cap3.tex}
 % \include{lib/conclu.tex}
@@ -102,6 +102,7 @@
 
 % opcional ...
 \begin{appendices}
-    \input{lib/anexoA.tex}
+    % \input{lib/anexoA.tex}
+    \input{lib/90anexoGAN.tex}
 \end{appendices}
 \end{document}
