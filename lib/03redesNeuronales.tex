@@ -74,18 +74,10 @@ Este capítulo introduce los conceptos esenciales acerca de los modelos generati
 
     Este capítulo concluye destacando la existencia de múltiples variantes de las redes neuronales, entre las que se incluyen las Redes Neuronales Convolucionales (CNN por sus siglas en inglés) y las Redes Neuronales Recurrentes (RNN por sus siglas en inglés). Estas variantes han ganado popularidad en los campos de la visión computacional y del procesamiento de lenguaje natural, respectivamente. Específicamente, en el presente trabajo se emplean las Redes Neuronales Convolucionales.
 
-}  % end of sec. Redes Neuronales
 
 
-% \section{Redes Neuronales Convolucionales}\label{sec:redes-neuronales-convolucionales}
-% {
-%     \FM[inline]{Escribir! (será necesario?)}
-% }  % end of sec. Redes Neuronales Convolucionales
+\section{Redes Generativas Adversarias}\label{sec:redes-generativas-adversarias-GAN}  % MARK: Redes Generativas Adversarias
 
-
-\section{Redes Generativas Adversarias}\label{sec:redes-generativas-adversarias-GAN}
-{
-% Analogía ladron-policía
 Comencemos esta sección imaginando la siguiente situación\footnote{Este ejemplo es una adaptación y fue inspirado de \cite[min. 4:32]{santana2017creando}}:
 \begin{quotation}
     \textit{Supongamos que hay un ladrón que desea engañar a un policía entregándole un billete falso. El ladrón, que es un inexperto, le entrega una servilleta, con una cara dibujada en ella, y que en el otro lado de la servilleta tiene escrito: ``\emph{esto vale un millón de dólares}''. El policía, que ha sido entrenado en la detección de billetes falsos, revisa el billete para comprobar que, efectivamente, es un billete falso.}
@@ -106,7 +98,12 @@ El marco de las Redes Generativas Adversarias (GAN), introducido en el trabajo d
 La GAN define un juego donde el objetivo de la \emph{generadora} (el ladrón) es la de generar muestras que parezcan reales, mientras que el objetivo de la \emph{discriminadora} (el policía) es el de clasificar las muestras como verdaderas o falsas.
 En este caso, la generadora se entrena para engañar a la discriminadora, y la discriminadora se entrena para detectar la falsedad de las muestras generadas.
 
-En este trabajo de tesis se plantea una definición formal de una GAN, en el contexto no paramétrico, y utilizando medidas de probabilidades generales. Este enfoque es diferente al que se plantea en el \textit{paper} original \cite{goodfellow2014generative}, donde se utiliza una formulación no paramétrica, pero asumiendo que las medidas de probabilidad poseen densidad. Por tanto, se utiliza la formulación presentada en \cite{wikipediagan}, la cuál se basa en medidas de probabilidad generales, aunque se reescriben los teoremas y demostraciones para mayor detalle y comprensión.
+En la siguiente subsección define formalmente una GAN, presenta los teoremas de convergencia de la GAN, y se describe el algoritmo de entrenamiento de una GAN. En las subsecciones posteriores a esta se presentan las variantes de las GAN, como las WGAN, WGAN-GP y WGAN-LP, elementos necesarios para una de las partes de esta tesis.
+
+\subsection{GAN}\label{ssec:GAN}
+% MARK: GAN
+
+En este trabajo de tesis se plantea una definición formal de una GAN, en el contexto no paramétrico, y utilizando medidas de probabilidades generales. Este enfoque es diferente al que se plantea en el \textit{paper} original \cite{goodfellow2014generative}, donde se utiliza una formulación no paramétrica, pero asumiendo que las medidas de probabilidad poseen densidad. Por tanto, se utiliza la formulación presentada en \cite{wikipediagan}, la cuál se basa en medidas de probabilidad generales, aunque se reescriben los teoremas y demostraciones para garantizar su formalidad. Estos se pueden encontrar en el Anexo~\ref{chap:demostraciones-adicionales-teos-gan}.
 
 Desde el punto de vista de la teoría de juegos, la GAN se define como un juego de dos jugadores: una \textit{generadora} $\Prob_G$, donde su conjunto de estrategias es $\ProbSpace[\cX]$ (con $\cX$ el \textit{conjunto de referencia}, e.g. $\cX=[0, 1]^{n_1\times n_2}$ para un conjunto de imágenes), y una \textit{discriminadora} $\Prob_D(\dd y \mid x)$, donde su conjunto de estrategias es el conjunto de kernels Markovianos. Con esto, la GAN es un juego de suma cero con la siguiente función valor objetivo:
 \begin{equation}
@@ -129,54 +126,11 @@ El siguiente teorema nos habla acerca de la naturaleza del discriminador óptimo
     \end{equation}
 \end{theorem}
 
-Este teorema nos dice que el discriminador óptimo es aquel que calcula la divergencia de Jensen-Shannon entre la distribución de referencia $\Prob_X$ y la distribución generada $\Prob_G$, salvo una constante. Además, nos dice que el discriminador toma una forma determinista, de forma que bastaría con buscar una función (como por ejemplo, una red neuronal) $D\colon\cX\to [0, 1]$ tal que la aproxime.
-
-La siguiente demostración se basa en \cite{wikipediagan}.
-
-\begin{proof}[Demostración del Teorema~\ref{thm:gan-optimal-discriminator}]
-    Dado $X \sim \Prob_X$, por la desigualdad de Jensen se tiene que:
-    \begin{equation}\label{eq:gan-jensen-inequality-1}
-        \Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ \ln Y \right]
-        \leq \ln \left( \Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right] \right).
-    \end{equation}
-    Análogamente, dado $\tilde X \sim \Prob_G$, se tiene que:
-    \begin{equation}\label{eq:gan-jensen-inequality-2}
-        \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ \ln \qty\big(1 - Y) \right]
-        \leq \ln \left( \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ 1 - Y \right] \right).
-    \end{equation}
-    Por el lema de Doob \cite[ver Cor. 9.4.11]{sanmartin2018teoria}, se sabe que existe una función $D \colon \cX \to [0, 1]$ tal que $\Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right]
-        = D(X)$,
-    es decir, que el discriminador toma una forma determinista $\Prob_D \left( \dd y \mid x \right) = \delta_{D(x)}(\dd y)$. Utilizando esta propiedad en las desigualdades \eqref{eq:gan-jensen-inequality-1} y \eqref{eq:gan-jensen-inequality-2} y sumando, se tiene que:
-    \begin{equation}
-        V(\Prob_G, \Prob_D) \leq \Exp_{X \sim \Prob_X} \Big[ \ln D(X) \Big] + \Exp_{\tilde X \sim \Prob_G} \Big[ \ln \qty\big(1 - D(\tilde X)) \Big],
-    \end{equation}
-    y dado que la parte derecha de la desigualdad es una cota superior de la función valor, s.p.g. se puede asumir que el discriminador toma una forma determinista en el óptimo. En tal caso, la función valor toma la forma del lado derecho de la desigualdad anterior.
-    % \begin{equation}
-    %     V(\Prob_G, \Prob_D) = \Exp_{X \sim \Prob_X} \Big[ \ln D(X) \Big] + \Exp_{\tilde X \sim \Prob_G} \Big[ \ln \qty\big(1 - D(\tilde X)) \Big].
-    % \end{equation}
-
-    Tomando $\Prob = \Prob_X + \Prob_G$, es claro que $\Prob_X \ll \Prob$ y $\Prob_G \ll \Prob$, y por tanto, existen las derivadas de Radon-Nikodym:
-    \begin{align*}
-        \rho_X & = \dv{\Prob_X}{\Prob}, & \rho_G & = \dv{\Prob_G}{\Prob},
-    \end{align*}
-    donde claramente $\rho_X + \rho_G = 1$. En tal caso, la función valor toma la siguiente forma:
-    \begin{equation}
-        \label{eq:gan-objective-2}
-        V(\Prob_G, \Prob_D) = \int_\cX \big[ \rho_X(x) \ln D(x) + \rho_G(x) \ln \qty(1 - D(x)) \big] \; \Prob(\dd x).
-    \end{equation}
-    Notemos que la función $y \mapsto a \ln y + b \ln(1-y)$ alcanza su máximo en $y^\ast = \frac{a}{a+b}$, y por tanto, la función $D^\ast$ que maximiza la función valor es:
-    \begin{equation}
-        D^\ast = \frac{\rho_X}{\rho_X + \rho_G} = \dv{\Prob_X}{(\Prob_X + \Prob_G)} .
-    \end{equation}
-    Por otro lado, si evaluamos $D^\ast$ en la función valor \eqref{eq:gan-objective-2}, se tiene que:
-    \begin{align*}
-        V(\Prob_G, \Prob_D^\ast)
-         & = \Exp_{X \sim \Prob_X} \left[ \ln \dv{\Prob_X}{\Prob}(X) \right] + \Exp_{\tilde X \sim \Prob_G} \left[ \ln \dv{\Prob_G}{\Prob}(\tilde X) \right] \\
-         & = \KL{\Prob_X}{\frac{\Prob_X + \Prob_G}{2}} - \ln 2 + \KL{\Prob_G}{\frac{\Prob_X + \Prob_G}{2}} - \ln 2                                           \\
-         & = \JS{\Prob_X}{\Prob_G} - 2 \ln 2,
-    \end{align*}
-    lo que concluye la demostración.
+\begin{proof}
+    La demostración de este teorema se encuentra en el Anexo~\ref{chap:demostraciones-adicionales-teos-gan}.
 \end{proof}
+
+Este teorema nos dice que el discriminador óptimo es aquel que calcula la divergencia de Jensen-Shannon entre la distribución de referencia $\Prob_X$ y la distribución generada $\Prob_G$, salvo una constante. Además, nos dice que el discriminador toma una forma determinista, de forma que bastaría con buscar una función (como por ejemplo, una red neuronal) $D\colon\cX\to [0, 1]$ tal que la aproxime.
 
 Dado que para cada generador $\Prob_G$ existe un único discriminador óptimo $\Prob_D^\ast$, entonces tiene sentido definir la siguiente función:
 \begin{equation}
@@ -184,19 +138,12 @@ Dado que para cada generador $\Prob_G$ existe un único discriminador óptimo $\
 \end{equation}
 El siguiente teorema nos dice que existe un único generador óptimo $\Prob_G^\ast$ que minimiza la función $C(\Prob_G)$, y que este corresponde a la distribución de referencia $\Prob_X$:
 
-\begin{theorem}
+\begin{theorem}\label{thm:gan-optimal-generator}
     El mínimo global de la función $C(\Prob_G)$ se alcanza en $\Prob_G^\ast = \Prob_X$, y el valor mínimo es $C(\Prob_X) = - \ln 4$.
 \end{theorem}
 
 \begin{proof}
-    Por el Teorema anterior, se tiene que:
-    \begin{align*}
-        \min_{\Prob_G} \max_{\Prob_D} V(\Prob_G, \Prob_D)
-         & = \min_{\Prob_G} V(\Prob_G, \Prob_D^\ast)         \\
-         & = \min_{\Prob_G} C(\Prob_G)                       \\
-         & = \min_{\Prob_G} \JS{\Prob_X}{\Prob_G} - 2 \ln 2.
-    \end{align*}
-    Como la divergencia de Jensen-Shannon es estrictamente positiva si $\Prob_G \neq \Prob_X$, y nula si $\Prob_G = \Prob_X$, entonces se tiene que el mínimo global de la función $C(\Prob_G)$ se alcanza en $\Prob_G^\ast = \Prob_X$, y el valor mínimo es $C(\Prob_X) = - \ln 4$. Esto concluye la demostración.
+    La demostración de este teorema se encuentra en el Anexo~\ref{chap:demostraciones-adicionales-teos-gan}.
 \end{proof}
 
 En la práctica, la forma de implementar la generadora es a través de un \emph{modelo generativo de espacio latente}. Esto es,
@@ -263,13 +210,6 @@ Es común que las arquitecturas de tipo GAN sean representadas como en la Figura
 
 
 \FM[inline]{Si es que en el futuro se puede, modificar esta figura para que coincida más con la descripción}
-
-
-
-
-
-
-
 
 % Teorema de la GAN: Convergencia en divergencia Jensen-Shannon
 
