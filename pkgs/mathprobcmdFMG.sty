@@ -22,13 +22,13 @@
 
 %% ====================================================================
 
-% Macros para espacios
+% MARK: Espacios
 \newcommand{\Simplex}[1][n]{\Sigma_{#1}}
 \newcommand{\ProbSpace}[1][\cX]{\cP(#1)}
 \newcommand{\ProbSpaceAC}[1][\cX]{\cP_{\text{ac}}(#1)}
 
 %% ====================================================================
-% Macros para operadores
+% MARK: Operadores
 
 % Operador push-forward
 \newcommand{\pf}[1]{{#1}_{\sharp}}
@@ -53,6 +53,9 @@
 % Divergencia de Kullback-Leibler
 \DeclareMathOperator{\KLOp}{KL}
 \newcommand{\KL}[2]{\opparent{\KLOp}{#1}{\left(#1 \mid #2\right)}}
+% Divergencia MMD
+\DeclareMathOperator{\MMDOp}{MMD}
+\newcommand{\MMD}[2]{\opparent{\MMDOp}{#1}{\left(#1 \mid #2\right)}}
 % Divergencia de Jensen-Shannon
 \DeclareMathOperator{\JSOp}{JS}
 \newcommand{\JS}[2]{\opparent{\JSOp}{#1}{\left(#1, #2\right)}}
@@ -64,7 +67,7 @@
 \newcommand{\WassersteinSpace}[2][1]{\cW_{#1}(#2)}
 
 %% ====================================================================
-% Macros para diferenciales
+% MARK: Diferenciales
 % \newcommand{\ddpar}[2]{\;\if#2{}#1\else#1(\dd #2)\fi}
 \newcommand{\ddpar}[2]{\;\ifthenelse{\isempty{#2}}{#1}{#1(\dd #2)}}
 
@@ -86,13 +89,18 @@
 % \newcommand{\dnu}[1][]{\;\nu(\dd #1)}
 
 %% ====================================================================
-% Macros de conjuntos
+% MARK: Conjuntos
 
 \newcommand{\Data}{D}
 \newcommand{\Models}{\cM}
 
 %% ====================================================================
-% Macros de Bayes
+% MARK: Bayes
 
 \newcommand{\Prior}{\Pi}
 \newcommand{\bPi}{\mathbf{\Pi}}
+
+%% ===================================================================
+% MARK: Distribuciones
+
+\newcommand{\Uniform}{\mathrm{Unif}}

@@ -1,0 +1,62 @@
+\chapter{Demostraciones Adicionales de los Teoremas de la GAN}\label{chap:demostraciones-adicionales-teos-gan}
+{
+
+    La siguiente demostración se basa en \cite{wikipediagan}.
+
+    \begin{proof}[Demostración del Teorema~\ref{thm:gan-optimal-discriminator}]
+        Dado $X \sim \Prob_X$, por la desigualdad de Jensen se tiene que:
+        \begin{equation}\label{eq:gan-jensen-inequality-1}
+            \Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ \ln Y \right]
+            \leq \ln \left( \Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right] \right).
+        \end{equation}
+        Análogamente, dado $\tilde X \sim \Prob_G$, se tiene que:
+        \begin{equation}\label{eq:gan-jensen-inequality-2}
+            \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ \ln \qty\big(1 - Y) \right]
+            \leq \ln \left( \Exp_{Y \sim \Prob_D ( \dd y \mid \tilde X )} \left[ 1 - Y \right] \right).
+        \end{equation}
+        Por el lema de Doob \cite[ver Cor. 9.4.11]{sanmartin2018teoria}, se sabe que existe una función $D \colon \cX \to [0, 1]$ tal que $\Exp_{Y \sim \Prob_D \left( \dd y \mid X \right)} \left[ Y \right]
+            = D(X)$,
+        es decir, que el discriminador toma una forma determinista $\Prob_D \left( \dd y \mid x \right) = \delta_{D(x)}(\dd y)$. Utilizando esta propiedad en las desigualdades \eqref{eq:gan-jensen-inequality-1} y \eqref{eq:gan-jensen-inequality-2} y sumando, se tiene que:
+        \begin{equation}
+            V(\Prob_G, \Prob_D) \leq \Exp_{X \sim \Prob_X} \Big[ \ln D(X) \Big] + \Exp_{\tilde X \sim \Prob_G} \Big[ \ln \qty\big(1 - D(\tilde X)) \Big],
+        \end{equation}
+        y dado que la parte derecha de la desigualdad es una cota superior de la función valor, s.p.g. se puede asumir que el discriminador toma una forma determinista en el óptimo. En tal caso, la función valor toma la forma del lado derecho de la desigualdad anterior.
+        % \begin{equation}
+        %     V(\Prob_G, \Prob_D) = \Exp_{X \sim \Prob_X} \Big[ \ln D(X) \Big] + \Exp_{\tilde X \sim \Prob_G} \Big[ \ln \qty\big(1 - D(\tilde X)) \Big].
+        % \end{equation}
+
+        Tomando $\Prob = \Prob_X + \Prob_G$, es claro que $\Prob_X \ll \Prob$ y $\Prob_G \ll \Prob$, y por tanto, existen las derivadas de Radon-Nikodym:
+        \begin{align*}
+            \rho_X & = \dv{\Prob_X}{\Prob}, & \rho_G & = \dv{\Prob_G}{\Prob},
+        \end{align*}
+        donde claramente $\rho_X + \rho_G = 1$. En tal caso, la función valor toma la siguiente forma:
+        \begin{equation}
+            \label{eq:gan-objective-2}
+            V(\Prob_G, \Prob_D) = \int_\cX \big[ \rho_X(x) \ln D(x) + \rho_G(x) \ln \qty(1 - D(x)) \big] \; \Prob(\dd x).
+        \end{equation}
+        Notemos que la función $y \mapsto a \ln y + b \ln(1-y)$ alcanza su máximo en $y^\ast = \frac{a}{a+b}$, y por tanto, la función $D^\ast$ que maximiza la función valor es:
+        \begin{equation}
+            D^\ast = \frac{\rho_X}{\rho_X + \rho_G} = \dv{\Prob_X}{(\Prob_X + \Prob_G)} .
+        \end{equation}
+        Por otro lado, si evaluamos $D^\ast$ en la función valor \eqref{eq:gan-objective-2}, se tiene que:
+        \begin{align*}
+            V(\Prob_G, \Prob_D^\ast)
+             & = \Exp_{X \sim \Prob_X} \left[ \ln \dv{\Prob_X}{\Prob}(X) \right] + \Exp_{\tilde X \sim \Prob_G} \left[ \ln \dv{\Prob_G}{\Prob}(\tilde X) \right] \\
+             & = \KL{\Prob_X}{\frac{\Prob_X + \Prob_G}{2}} - \ln 2 + \KL{\Prob_G}{\frac{\Prob_X + \Prob_G}{2}} - \ln 2                                           \\
+             & = \JS{\Prob_X}{\Prob_G} - 2 \ln 2,
+        \end{align*}
+        lo que concluye la demostración.
+    \end{proof}
+
+    \begin{proof}[Demostración del Teorema \ref{thm:gan-optimal-generator}]
+        Por el Teorema anterior, se tiene que:
+        \begin{align*}
+            \min_{\Prob_G} \max_{\Prob_D} V(\Prob_G, \Prob_D)
+             & = \min_{\Prob_G} V(\Prob_G, \Prob_D^\ast)         \\
+             & = \min_{\Prob_G} C(\Prob_G)                       \\
+             & = \min_{\Prob_G} \JS{\Prob_X}{\Prob_G} - 2 \ln 2.
+        \end{align*}
+        Como la divergencia de Jensen-Shannon es estrictamente positiva si $\Prob_G \neq \Prob_X$, y nula si $\Prob_G = \Prob_X$, entonces se tiene que el mínimo global de la función $C(\Prob_G)$ se alcanza en $\Prob_G^\ast = \Prob_X$, y el valor mínimo es $C(\Prob_X) = - \ln 4$. Esto concluye la demostración.
+    \end{proof}
+
+}  % end of Chapter Demostraciones Adicionales de los Teoremas de la GAN
