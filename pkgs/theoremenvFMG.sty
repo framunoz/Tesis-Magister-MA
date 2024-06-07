@@ -23,10 +23,10 @@
 
 %% En esta parte se manejan las opciones pasadas al paquete
 \DeclareOption{color}{% Opción para activar los colores de los teoremas
-    \@coloroptiontrue
+	\@coloroptiontrue
 }
 \DeclareOption{english}{% Opción para activar los colores de los teoremas
-    \@entrue
+	\@entrue
 }
 \DeclareOption{leftnum}{\@swapnumtrue}
 \DeclareOption{rightnum}{\@swapnumfalse}
@@ -40,7 +40,7 @@
 
 % Para cambiar el formato en el que se escribe el número del teorema
 \if@swapnum
-    \swapnumbers
+	\swapnumbers
 \fi
 
 % comando para elegir si activar los colores o no
@@ -65,6 +65,7 @@
 \newcommand{\remarkname}{\englishname{Remark}{Observación}}
 \newcommand{\notename}{\englishname{Note}{Nota}}
 \newcommand{\conclusionname}{\englishname{Conclusion}{Conclusión}}
+\newcommand{\assumptionname}{\englishname{Assumption}{Supuesto}}
 
 % Entorno demostración
 \renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\scshape\footnotesize#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
@@ -88,3 +89,4 @@
 \newtheorem{remark}[theorem]{\colorp{\remarkname}}
 \newtheorem{note}[theorem]{\colorp{\notename}}
 \newtheorem{conclusion}[theorem]{\colorp{\conclusionname}}
+\newtheorem{assumption}[theorem]{\colorp{\assumptionname}}
