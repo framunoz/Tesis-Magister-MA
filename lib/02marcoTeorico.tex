@@ -387,7 +387,7 @@ Un ejemplo de distintos baricentros, variando los pesos $(\gamma_i)_i$, se puede
 % MARK: Interpolación geodésica
 Cabe destacar que para el caso en donde se considera $n = 2$ el baricentro de Wasserstein recibe un nombre especial: \textit{interpolación geodésica de McCann}. En este caso, se consideran dos medidas $\mu_0, \mu_1 \in \WassersteinSpace[p]{\cX} $ y se define el baricentro de Wasserstein con pesos $\gamma = (1 - t, t)$, para $t \in [0, 1]$:
 \begin{equation}\label{eq:interpolacion-geodesica}
-	\mu_t \eqdef \arginf_{\mu \in \WassersteinSpace[p]{\cX} } \left\{ (1-t) \Wasserstein[p]{\mu_0}{\mu}^p + t \Wasserstein[p]{\mu}{\mu_1}^p \right\}.
+	\mu_t \eqdef \arginf_{\mu \in \WassersteinSpace[p]{\cX} }  (1-t) \Wasserstein[p]{\mu_0}{\mu}^p + t \Wasserstein[p]{\mu}{\mu_1}^p .
 \end{equation}
 
 

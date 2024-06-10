@@ -428,7 +428,7 @@ Como se tiene una restricción de igualdad, se puede penalizar el problema anter
 	\Exp_{Z\sim\Prob_Z} \qty\big[ k(Z, \cdot) ] - \Exp_{Z\sim\ProbQ_Z} \qty\big[ k(Z, \cdot) ]
 	\Big\|_{\cH_k},
 \end{equation}
-donde $\cH_k$ es el RKHS asociado al kernel $k$. De esta forma, el problema de optimización del WAE se puede reescribir como:
+donde $\cH_k$ es el RKHS asociado al kernel $k$.\FM{Creo que falta una cita aquí} De esta forma, el problema de optimización del WAE se puede reescribir como:
 \begin{equation}
 	(P_{\mathrm{WAE-MMD}}) \quad \min_{G} \min_{\ProbQ} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ] + \lambda \cdot \MMDOp_{k}(\Prob_Z, \ProbQ_Z),
 \end{equation}
@@ -463,8 +463,82 @@ donde $z = (z_i)_{i=1}^{n}$ y $\tilde z = (\tilde z_i)_{i=1}^{n}$ son muestras d
 \end{algorithm}
 
 
-% \section{Aplicación: Baricentros de Wasserstein Proyectados}\label{sec:app-bar-wass-Proyectados}  % MARK: - Section Aplicación: Baricentros de Wasserstein Proyectados
+\section{Aplicación: Baricentros de Wasserstein Proyectados}\label{sec:app-bar-wass-Proyectados}  % MARK: - Section Aplicación: Baricentros de Wasserstein Proyectados
 
-% Una aplicación interesante de las GANs y AEs es que aprenden la variedad de imágenes de un conjunto de datos. Los autores de \cite{simon2020barycenters} proponen una forma de calcular baricentros de Wasserstein, utilizando una GAN y un AE como variedad de imágenes y proyector, respectivamente.
+\RED[inline]{Hay que revisar esta sección!}
+\RED[inline]{Aquí no me gusta como me refiero a cada rato a ``los autores'', hay que cambiarlo}
 
-% Este trabajo se enfoca en la interpolación de imágenes (también conocido como la trans)
+Una aplicación interesante de las GANs y AEs es que aprenden la variedad de imágenes de un conjunto de datos. Los autores de \cite{simon2020barycenters} proponen una forma de calcular baricentros de Wasserstein, utilizando una GAN y un AE como variedad de imágenes y proyector, respectivamente.
+
+Aquel trabajo se enfoca en la interpolación de imágenes (también conocido como la morfización de imágenes), que se refiere a la transición visual de dos imágenes de entrada. Para que aquella transición sea visualmente atractiva, es deseable que cumpla con las siguientes propiedades: (\textit{i}) que sea suave, es decir, que no haya cambios bruscos en la transición; (\textit{ii}) que aplique los mínimos cambios necesarios en la imagen; y (\textit{iii}) que parezca ``realista'', evitando cambios no naturales en cada imagen de la transición.
+
+Varias de estas propiedades se puede obtener a través de la interpolación de baricentros de Wasserstein, sin embargo, el resultado de esta interpolación puede no verse natural.
+En base al trabajo \cite{zhu2016generative}, donde describe la manera en que una GAN aproxima una variedad de imágenes, y como se puede utilizar un AE para proyectar una imagen en esta variedad, los autores de \cite{simon2020barycenters} proponen utilizar una GAN y un AE para mantener la suavidad y realismo de la interpolación.
+
+En la Figura~\ref{fig:interpolacion-wass-bar-gan} se puede observar un ejemplo de la interpolación de baricentros de Wasserstein, donde se puede notar que la interpolación es suave y realista.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{img/cbw/interpolacion-wass-bar-gan.png}
+	\caption{
+		Interpolación de una zapatilla deportiva a una bota utilizando 3 métodos. En la Figura~\ref{fig:interpolacion-wass-bar-gan} (b) las imágenes intermedias se ven borrosas y poco realistas. En la Figura~\ref{fig:interpolacion-wass-bar-gan} (c) la zapatilla a penas cambia y entonces inmediatamente cambia a una bota. En la Figura~\ref{fig:interpolacion-wass-bar-gan} (d) la interpolación es suave en la transición del color y de forma. Imagen obtenida de \cite{simon2020barycenters}.
+	}
+	\label{fig:interpolacion-wass-bar-gan}
+\end{figure}
+
+
+En \cite{simon2020barycenters}, se empieza asumiendo que el espacio $\cX$ en que se trabaja corresponde a una grilla de $n_1 \times n_2 = N$ píxeles, donde las medidas se encuentran definidas:
+\begin{align*}
+	\mu_0 = \sum_{i=1}^{N} p^{(0)}_i \delta_{x_i},
+	\qquad \text{ y } \qquad
+	\mu_1 = \sum_{i=1}^{N} p^{(1)}_i \delta_{x_i}.
+\end{align*}
+Por tanto, basta con considerar a los vectores $p^{(0)}$ y $p^{(1)}$ como vectores de probabilidad el Simplex $\Simplex[N] \eqdef \left\{ p \in [0, 1]^{N} \colon \sum_i p_i = 1 \right\}$.
+
+De esta forma, los autores de \cite{simon2020barycenters} proponen el siguiente problema de optimización:
+\begin{align*}
+	(P_{\mathrm{CWB}}) \quad
+	\min_{q \in \Simplex[N]} & \ \ (1-t) \Wasserstein[2]{\mu_0}{\nu}^2 + \Wasserstein[2]{\nu}{\mu_1}^2 \\
+	\text{s.a.}              & \ \ \nu = \sum_{i=1}^{N} q_i \delta_{x_i} \in \bM,
+\end{align*}
+donde se puede notar que este problema es similar a la definición de una interpolación geodésica~\eqref{eq:interpolacion-geodesica}, pero con la diferencia de que se restringe a que el baricentro $\nu$ pertenezca a la variedad $\bM$. Por esta restricción, los autores llama a este problema como \textit{Baricentros de Wasserstein Restringidos} (CBW por sus siglas en inglés).
+
+A partir del problema $(P_{\mathrm{CWB}})$, los autores imponen una restricción de igualdad en la variable $\nu$, de forma que $\tilde \nu = \nu$ con $\tilde \nu \in \bM$. De esta forma, se puede reescribir el problema $(P_{\mathrm{CWB}})$ utilizando la técnica del Lagrangiano Aumentado \cite[Sec. 2.3]{boyd2011distributed}:
+\begin{align*}
+	(P_{\mathrm{CWB}}^{\mathrm{AL}}) \quad
+	\min_{q\in\Simplex[N],\tilde q,u} & \ \ (1-t) \Wasserstein[2]{\mu_0}{\nu}^2 + \Wasserstein[2]{\nu}{\mu_1}^2
+	+ \frac{\rho}{2} \| \tilde q - q + u \|_2^2                                                                 \\
+	\text{s.a.}                       & \ \ \tilde \nu = \sum_{i=1}^{N} \tilde q_i \delta_{x_i} \in \bM,
+\end{align*}
+
+El problema $(P_{\mathrm{CWB}}^{\mathrm{AL}})$ se puede resolver usando el Método de los Multiplicadores de Dirección Alterna (ADMM) \cite[Cap. 3]{boyd2011distributed} el cuál se presenta a continuación:
+
+\begin{algorithm}[H]
+	\caption{Baricentros de Wasserstein Restringidos (CBW)}\label{alg:ADMM-CWB}
+	\begin{algorithmic}[1]
+		\Require Vectores de probabilidad $p^{(0)}, p^{(1)} \in \Simplex[N]$, suposición inicial $q^{(0)}$, parámetro $t$, parámetro de penalización $\rho$ y umbral $\epsilon$.
+		\State Inicializar $u^{(0)} \gets 0$, $\tilde q^{(0)} \gets q^{(0)}$, $k \gets 0$
+		\Repeat
+		\State $q^{(k+1)} \gets \argmin_{q\in\Simplex[N]}  (1-t) \Wasserstein[2]{\mu_0}{\nu}^2 + t\Wasserstein[2]{\nu}{\mu_1}^2 + \frac{\rho}{2} \| \tilde q^{(k)} - q + u^{(k)} \|_2^2$
+		\State $\tilde q^{(k+1)} \gets \argmin_{\tilde q \colon \tilde \nu \in \bM } \| \tilde q - q^{(k+1)} + u^{(k)} \|_2^2 $
+		\State $u^{(k+1)} \gets u^{(k)} + \tilde q^{(k+1)} - q^{(k+1)}$
+		\State $k \gets k + 1$
+		\Until{$\| q^{(k)} - \tilde q^{(k)} \|<\epsilon$}
+		\State\Return $q^{(k)}$
+	\end{algorithmic}
+\end{algorithm}
+
+Al principio, en la línea 3 del Algoritmo~\ref{alg:ADMM-CWB}, se encuentra una solución de la versión regularizada del problema de la Ecuación~\eqref{eq:interpolacion-geodesica} (los autores siguen \cite{cuturi2016smoothed} para resolver este problema). En la línea 4, se proyecta la solución en la variedad $\bM$ y en la línea 5 se actualiza la variable dual $u$. Este proceso se repite hasta que se alcance la convergencia.
+
+En la Figura~\ref{fig:latent-pixel-space} se ilustra la diferencia entre su método, comparado con los otros dos métodos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.48\textwidth]{img/cbw/latent-space.png}
+	\includegraphics[width=0.48\textwidth]{img/cbw/pixel-space.png}
+	\caption{
+		Una ilustración del proceso de interpolación de una imagen, fijando $t = 0 \to 1$, usando varios métodos en el espacio de píxeles y en el espacio latente de una GAN entrenada.
+		Imagen obtenida de \cite{simon2020barycenters}.
+	}
+	\label{fig:latent-pixel-space}
+\end{figure}
