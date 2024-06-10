@@ -350,6 +350,8 @@ Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una 
 	Con este ejemplo, se puede apreciar que la media de Fréchet generaliza la noción de promedio.
 \end{example}
 
+\FM[inline]{Quizás no es necesario dejar esto como observación.}
+
 \begin{remark}
 	La razón por la que resulta interesante estudiar este concepto, es que únicamente utiliza nociones métricas, desligándose de nociones vectoriales. Como se vió en el Ejemplo~\ref{ex:baricentro-triangulo}, el promedio $\bar x$ utilizó conceptos vectoriales (suma y ponderación de vectores) mientras que la media de Fréchet utilizó nociones métricas (a través de la distancia $\dist(x, y) = \|x - y\|$), resultando en el mismo promedio.
 
@@ -394,6 +396,8 @@ Cabe destacar que para el caso en donde se considera $n = 2$ el baricentro de Wa
 
 Es posible generalizar aún más la noción de baricentro de Wasserstein a una colección infinita de medidas. Esto se puede hacer considerando una medida $\Gamma \in \ProbSpace[\ProbSpace ] $, que cumplirá el rol de los pesos $(\gamma_{i})_{i}$ en la definición anterior. Esto se puede formalizar en la siguiente definición: \RED{Hay que mejorar la redacción de este párrafo. No me gusta que aparezca ``Esto'' dos veces}
 
+\FM[inline]{Puede ser que en esta definición sea necesario incluir la definición utilizando el espacio de modelos como en el paper \cite{backhoff2022bayesian}}
+
 % MARK: Baricentro de Población de Wasserstein
 \begin{definition}[Baricentro de población de Wasserstein \cite{bigot2018characterization}]
 	Sea $\Gamma \in \ProbSpace[\ProbSpace]$ una medida. El \emph{baricentro de población de Wasserstein} se define por medio de:
@@ -419,7 +423,7 @@ Es posible generalizar aún más la noción de baricentro de Wasserstein a una c
 
 \RED[inline]{Esta sección quedó muy difícil de leer, quizás hay que acortarla más o mejorarla.}
 
-Para calcular una estimación del baricentro de Wasserstein de una colección finita de medidas $\left\{ \mu_i \right\}_{i=1}^{n}$, existen múltiples algoritmos que se pueden utilizar. Por ejemplo, para el caso en que las medidas sean a soporte discreto, se puede deducir un problema de programación lineal \cite[ver Cap. 3]{peyre2019computational}, y resolver el problema de forma exacta \cite{bonneel2011displacement}, o utilizando una estimación de la solución por medio métodos iterativos, como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}. En el caso en que las medidas provengan de imágenes, se pueden utilizar métodos convolucionales, como en \cite{solomon2015convolutional} o \cite{janati2020debiased}.
+Para calcular una estimación del baricentro de Wasserstein de una colección finita de medidas $\left\{ \mu_i \right\}_{i=1}^{n}$, existen múltiples algoritmos que se pueden utilizar. Por ejemplo, para el caso en que las medidas sean a soporte discreto, se puede deducir un problema de programación lineal \cite[ver Cap. 3]{peyre2019computational}, y resolver el problema de forma exacta \cite{bonneel2011displacement}, o utilizando una estimación de la solución por medio métodos iterativos, como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}. En el caso en que las medidas provengan de imágenes, se pueden utilizar métodos convolucionales, como en \cite{solomon2015convolutional} o en su respectiva mejora insesgada \cite{janati2020debiased}.
 
 Sin embargo, para el caso en que la colección de medidas sean infinitas, como lo es en el caso del baricentro de población de Wasserstein, estos métodos no son aplicables. Por este motivo, en los trabajos \cite{rios2020contributions,backhoff2022stochastic,backhoff2022bayesian} se propone un algoritmo para encontrar este baricentro, por medio del Descenso del Gradiente Estocástico (SGD).
 
@@ -438,12 +442,12 @@ En los trabajos mencionados, se hicieron los siguientes supuestos (que serán v�
 \end{assumption}
 
 \begin{definition}[Secuencia de SGDW \cite{backhoff2022stochastic,backhoff2022bayesian}]\label{def:sgdw}
-	Dado $\mu_0 \in K_\Gamma$, $\tilde \mu_k \simiid \Gamma$ y $\eta_k > 0$ para $k \geq 0$. Se define iterativamente la \textit{Secuencia de Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein} (SGDW) por medio de:
+	Dado $\mu_0 \in K_\Gamma$, $\tilde \mu_k \simiid \Gamma$ y $\eta_k > 0$ para $k \in\N$. Se define iterativamente la \textit{Secuencia de Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein} (SGDW) por medio de:
 	\begin{equation}
 		\label{eq:sgdw}
 		\mu_{k+1} \eqdef \pf{\qty\Big[
 				(1 - \eta_k) \id + \eta_k T_{\mu_k \to \tilde \mu_k}
-			]} (\mu_k), \quad \text{para } k \geq 0,
+			]} (\mu_k), \quad \text{para } k \in\N,
 	\end{equation}
 	donde $\eta_k \in [0, 1]$ es el tamaño de paso, y $T_{\mu_k \to \tilde \mu_k}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k$ como en la Definición~\ref{def:operador-push-forward}.
 \end{definition}
@@ -454,24 +458,24 @@ En los trabajos mencionados, se hicieron los siguientes supuestos (que serán v�
 \end{remark}
 
 \begin{remark}
-	Gracias al supuesto de que $K_\Gamma$ es geodésicamente convexo, se tiene que $\mu_k \in K_\Gamma$ para toda $k \geq 0$.
+	Gracias al supuesto de que $K_\Gamma$ es geodésicamente convexo, se tiene que $\mu_k \in K_\Gamma$ para toda $k \in\N$.
 \end{remark}
 
 El teorema principal que le da sentido a la definición de la Secuencia de SGDW es el siguiente:
 
 \begin{theorem}\label{thm:convergencia-sgdw}
-	Se asumen los Supuestos~\ref{assump:caso-particular-lebesgue}, \ref{assump:caso-particular-geodesicamente-convexo} \ref{assump:caso-particular-esquema-paso-L1-L2}, y que $\Gamma$ admite una única media de Karcher. Entonces la secuencia de SGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:sgdw} converge c.s. al único 2-Wasserstein baricentro $\bar \mu$ de $\Gamma$. Más aún, se tiene que $\bar \mu\in K_\Gamma$.
+	Se asumen los Supuestos~\ref{assump:caso-particular-lebesgue}, \ref{assump:caso-particular-geodesicamente-convexo}, \ref{assump:caso-particular-esquema-paso-L1-L2}, y que $\Gamma$ admite una única media de Karcher. Entonces la secuencia de SGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:sgdw} converge c.s. al único 2-Wasserstein baricentro $\bar \mu$ de $\Gamma$. Más aún, se tiene que $\bar \mu\in K_\Gamma$.
 \end{theorem}
 
 Además de la Secuencia de SGDW, en \cite{backhoff2022stochastic} se propone una versión de esta secuencia por lotes (o \textit{batched}, en inglés):
 
 \begin{definition}[Secuencia de SGDW por lotes \cite{backhoff2022stochastic}]\label{def:bsgdw}
-	Dado $\mu_0 \in K_\Gamma$, $\tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)} \simiid \Gamma$ y $\eta_k > 0$ para $k \geq 0$. Se define iterativamente la \textit{Secuencia de Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein por lotes} (BSGDW) por medio de:
+	Dado $\mu_0 \in K_\Gamma$, $\tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)} \simiid \Gamma$ y $\eta_k > 0$ para $k \in\N$. Se define iterativamente la \textit{Secuencia de Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein por lotes} (BSGDW) por medio de:
 	\begin{equation}
 		\label{eq:bsgdw}
 		\mu_{k+1} \eqdef \pf{\qty[
 				(1 - \eta_k) \id + \eta_k \frac{1}{S_k} \sum_{j=1}^{S_k} T_{\mu_k \to \tilde \mu_k^{(j)}}
-			]} (\mu_k) \quad \text{para } k \geq 0,
+			]} (\mu_k) \quad \text{para } k \in\N,
 	\end{equation}
 	donde $\eta_k \in [0, 1]$ es el tamaño de paso, y $T_{\mu_k \to \tilde \mu_k^{(j)}}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k^{(j)}$ como en la Definición~\ref{def:operador-push-forward}.
 \end{definition}
@@ -489,6 +493,29 @@ Los siguientes dos resultados dicen que la Secuencia de BSGDW aún converge, mie
 \begin{proposition}
 	El estimador por lotes hace que la varianza integrada decrezca linealmente con el tamaño de los lotes.
 \end{proposition}
+
+Se terminará esta sección presentando el algoritmo del BSGDW, pues es esta la versión más general. El siguiente algoritmo es una adaptación de la presentada en \cite{backhoff2022bayesian}.
+\begin{algorithm}[htbp]
+	\caption{SGD sobre el Espacio de Wasserstein por lotes (BSGDW) \cite{backhoff2022bayesian}}
+	\label{alg:bsgdw}
+	\begin{algorithmic}[1]
+		\Require Acceso a las muestras de $\Gamma(\dd \mu) \in \ProbSpace[\ProbSpace]$, un esquema de paso $(\eta_k)_k \in [0, 1]^\N$, y un esquema de lotes $(S_k)_k \in {\N_\ast}^\N$.
+		\State{$k\gets0$}
+		\State{Muestrear $\mu_0 \sim \Gamma$}
+		\Repeat
+		\State{Muestrear $\tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)} \simiid \Gamma$}
+		\State{$\gamma\gets \qty(1-\eta_k, \frac{\eta_k}{S_k}, \dots, \frac{\eta_k}{S_k})\in[0,1]^{S_{k+1}}$} \Comment{$\gamma$ es el vector de pesos.}
+		\State{Definir $\mu_k$ como el baricentro de $(\mu_{k-1}, \tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)})$ con pesos $\gamma$}
+		\State{$k\gets k+1$}
+		\Until{un criterio de detención ha sido alcanzado.}
+		\State\Return $\mu_k$
+	\end{algorithmic}
+\end{algorithm}
+
+Los cuellos de botella que tiene el Algoritmo~\ref{alg:bsgdw} son el acceso de muestrear a partir de $\Gamma(\dd \mu)$, como el de calcular el baricentro entre medidas. Para el primer caso, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, mientras que para el segundo caso, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o si es en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
+
+Como parte del criterio de detención, se pueden utilizar los criterios clásicos (como por ejemplo, limitar el algoritmo hasta una iteración máxima, o un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas.
+
 
 
 \subsection{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}  % MARK: El Baricentro de Wasserstein Bayesiano

@@ -1,6 +1,8 @@
 \chapter{Redes Neuronales y Modelos Generativos}\label{chap:redes-neuronales-y-modelos-generativos}  % MARK: Redes Neuronales y Modelos Generativos
 Este capítulo introduce los modelos generativos, empezando por las redes neuronales, viendo las versiones más simples, y terminando con sus variantes basadas en la distancia de Wasserstein. Para ello, se empieza por definir lo que es una red neuronal.
 
+\RED[inline]{¿Se podría poner en esta parte la razón por la que estoy incluyendo a las redes neuronales? ¿O explicar la forma en que estará estructurado el capítulo? (breve intro redes neuronales, GANs, WGANs, AE, WAE y por último la aplicación con baricentros de Wasserstein).}
+
 \section{Redes Neuronales}\label{sec:redes-Neuronales}  % MARK: Redes Neuronales
 En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros.
 
@@ -466,6 +468,7 @@ donde $z = (z_i)_{i=1}^{n}$ y $\tilde z = (\tilde z_i)_{i=1}^{n}$ son muestras d
 		\State Muestrear $\{x_i\}_{i=1}^{N} \sim \Prob_X$ desde el conjunto de entrenamiento.
 		\State Muestrear $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ desde el espacio latente.
 		\State Muestrear $\tilde z_i \sim \ProbQ_\varphi(\dd z \mid x_i)$ para $i=1\dots N$.
+		\Comment{$\tilde z = \ProbQ_\varphi(x)$ si $\ProbQ_\varphi$ es determinista.}
 		\State $\cL_{\mathrm{AE}} \gets \frac{1}{N}\sum_{i=1}^{N} c(x_i, G_\theta(\tilde z_i)) + \lambda \cdot \Call{MMD}{z, \tilde z}$.
 		\State Actualizar $\ProbQ_\varphi$ y $G_\theta$ por medio de descenso de gradiente en $\pdv{\varphi} \cL_{\mathrm{AE}}$ y $\pdv{\theta} \cL_{\mathrm{AE}}$.
 		\EndWhile
