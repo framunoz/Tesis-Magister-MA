@@ -13,24 +13,13 @@ Es notable señalar que esta sección está basada en la Sección 1.1 del libro 
 	\begin{itemize}
 		\item Si $(\cX, \dist)$ es un espacio métrico, completo y separable, entonces se dice que este es un \emph{espacio Polaco}.
 		\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpace[\cX]$ denotará al \emph{conjunto de medidas de probabilidad} en $\cX$, utilizando la $\sigma$-álgebra de Borel.
-		\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpaceAC[\cX]$ denotará al \emph{conjunto de medidas de probabilidad absolutamente continuas} con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel.
+		\item Si $(\cX, \dist)$ es un espacio Polaco, $\ProbSpaceAC[\cX]$ denotará al \emph{conjunto de medidas de probabilidad absolutamente continuas} con respecto a una medida de referencia $\lambda$ (como por ejemplo, la de Lebesgue o la cuenta puntos), utilizando la $\sigma$-álgebra de Borel generada por $\dist$.
 		\item $\ContSpace[\cX]$ denotará al \emph{conjunto de funciones continuas} en $\cX$.
 		\item $\ContBoundedSpace[\cX]$ denotará al \emph{conjunto de funciones continuas y acotadas} en $\cX$.
 		\item ${\Lip}_{k}(\cX)$ denotará al \emph{conjunto de funciones $k$-Lipschitz} en $\cX$. Mientras que se asumirá que $\Lip[\cX]$ denotará al \emph{conjunto de funciones $1$-Lipschitz} en $\cX$. \FM{Se podría agregar una definición de función Lipschitz?}
+		\item Al conjunto de funciones de $A$ a $B$ se le denotará por $B^A$.
 	\end{itemize}
 \end{definition}
-
-%   \begin{definition}
-% 	  Se definirá el \emph{simplex} de dimension $n$ como el conjunto de vectores de $\R^{n}$ cuyas componentes suman 1, es decir,
-% 	  \begin{equation}
-% 		  \Simplex \eqdef \left\{
-% 		  x \in [0, 1]^{n} \colon \sum_{i=1}^{n} x_{i} = 1
-% 		  \right\},
-% 	  \end{equation}
-% 	  y a los elementos pertenecientes al simplex se les llamará \emph{vectores de probabilidad}.
-%   \end{definition}
-
-
 
 \section{El Problema de Transporte}\label{sec:el-problema-de-transporte}  % MARK: El Problema de Transporte
 
@@ -40,7 +29,7 @@ A lo largo de esta sección se presentan distintas formulaciones del problema de
 
 Supongamos que hay un trabajador que debe de transportar una pila de arena a un pozo de igual volumen, situación que se puede ver representada en la Figura~\ref{fig:montanas-arena-pozo}. En esta situación, Monge \cite{monge1781memoire} en el 1781 se preguntó: ¿Cuál es la manera de transportar la arena al pozo con \emph{el menor esfuerzo} para el trabajador?, o dicho de otra manera, ¿Cuál es la forma \emph{óptima} de transportar la arena al pozo?
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/transporte/montanas-arena-pozo.png}
 	\caption{Representación de la pila de arena, representada en rojo por la medida $\mu$, y el pozo, representada en azul por la medida $\nu$. Imagen obtenida de \cite{cuturi2017primer}.}
@@ -54,14 +43,14 @@ La \emph{decisión} sobre cómo transportar la arena se representa mediante una 
 	C(T) \eqdef \int_{\cX} c(x, T(x)) \dmu[x].
 \end{equation}
 
-\begin{figure}[ht]
+Una primera propiedad que se debe exigir a la función $T$ es que preserve la masa total de la arena. Es decir, para cualquier conjunto $B \subseteq \cY$ que represente una región en el pozo con volumen $\nu(B)$, se requiere que el volumen de arena asignado a la región $B$ por la ``decisión'' $T$ sea exactamente el mismo volumen que se rellenará en $B$. La cantidad de arena que ocupará $B$ bajo la ``decisión'' $T$ se expresa como $\left\{ x \in \cX : T(x) \in B \right\} = T^{-1}(B)$, y por lo tanto, la condición de preservación de masa implica que $\mu(T^{-1}(B)) = \nu(B)$ para todo $B \subseteq \cY$.
+
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/transporte/preservacion-masa.png}
 	\caption{Representación de como la función $T$ ha de preservar la masa total de la arena. Imagen obtenida de \cite{cuturi2017primer}.}
 	\label{fig:preservacion-masa}
 \end{figure}
-
-Una primera propiedad que se debe exigir a la función $T$ es que preserve la masa total de la arena. Es decir, para cualquier conjunto $B \subseteq \cY$ que represente una región en el pozo con volumen $\nu(B)$, se requiere que el volumen de arena asignado a la región $B$ por la ``decisión'' $T$ sea exactamente el mismo volumen que se rellenará en $B$. La cantidad de arena que ocupará $B$ bajo la ``decisión'' $T$ se expresa como $\left\{ x \in \cX : T(x) \in B \right\} = T^{-1}(B)$, y por lo tanto, la condición de preservación de masa implica que $\mu(T^{-1}(B)) = \nu(B)$ para todo $B \subseteq \cY$.
 
 Esta condición se ilustra gráficamente en la Figura~\ref{fig:preservacion-masa} y se formula de manera más precisa mediante la definición del operador push-forward:
 
@@ -145,13 +134,6 @@ Al igual que en el problema de Monge, se puede definir el costo total de transpo
 	C(\pi) = \int_{\cX \times \cY} c(x, y) \dpi (\dd x, \dd y).
 \end{equation}
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=0.7\textwidth]{img/transporte/coupling-example.png}
-	\caption{Izquierda: coupling óptimo entre dos medidas 1-D continuas con densidad. El coupling está localizado a lo largo del grafo del mapa de transporte óptimo $(x, T(x))$. Derecha: coupling óptimo entre dos medidas discretas. El radio del disco negro es proporcional a la masa transportada en esa coordenada. Imagen obtenida de \cite{peyre2019computational}.
-		\label{fig:coupling-example}}
-\end{figure}
-
 Y utilizando esta definición, se puede definir el problema de transporte óptimo de Kantorovich de forma análoga al problema de Monge:
 \begin{definition}[Problema de Kantorovich \cite{kantorovich1942translocation}]
 	Dadas dos medidas $\mu \in \ProbSpace[\cX]$ y $\nu \in \ProbSpace[\cY]$ y una función de coste $c: \cX \times \cY \to \R$, el \emph{problema de transporte óptimo de Kantorovich} se define como el problema de encontrar un coupling $\pi \in \Cpl(\mu, \nu)$ que minimice el costo total de transporte, es decir, que minimice la siguiente expresión:
@@ -164,6 +146,13 @@ Y utilizando esta definición, se puede definir el problema de transporte óptim
 
 
 En diferencia con el problema de Monge, el problema de Kantorovich siempre tiene solución, si es que $(\cX, \cY)$ son espacios compactos y $c$ es continuo. En efecto, $\Cpl(\mu, \nu)$ es compacto para la topología débil de las medidas,  $\pi \mapsto \int c\dd{\pi}$ es una función continua para esta topología, y la restricción $\pi\in\Cpl(\mu, \nu)$ es no vacía (la medida producto $\mu \otimes \nu$ pertenece a $\Cpl(\mu, \nu)$). Como se busca un ínfimo en un compacto de una función continua, se sigue que existe un coupling óptimo $\pi_{\mu \to \nu}$ que resuelve \eqref{eq:problemaTransporteKantorovich}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/transporte/coupling-example.png}
+	\caption{Izquierda: coupling óptimo entre dos medidas 1-D continuas con densidad. El coupling está localizado a lo largo del grafo del mapa de transporte óptimo $(x, T(x))$. Derecha: coupling óptimo entre dos medidas discretas. El radio del disco negro es proporcional a la masa transportada en esa coordenada. Imagen obtenida de \cite{peyre2019computational}.
+		\label{fig:coupling-example}}
+\end{figure}
 
 Continuando con los ejemplos \ref*{ex:problemaDeMongeSinSolucion} y \ref*{ex:problemaDeMongeMultipleSolucion}, podemos encontrar el coupling óptimo para cada uno de estos problemas:
 
@@ -316,11 +305,11 @@ Vista la distancia y el espacio de Wasserstein, se presentará una caracterizaci
 	Por tanto, se puede notar que la distancia de Wasserstein es la única que es capaz de distinguir entre medidas de probabilidad que no tienen soporte en el mismo punto, gracias a que metriza la convergencia débil.
 \end{example}
 
-\section{El Baricentro de Wasserstein Bayesiano}\label{sec:el-baricentro-de-Wasserstein-Bayesiano}  % MARK: El Baricentro de Wasserstein Bayesiano
+\section{El Baricentro de Wasserstein}\label{sec:el-baricentro-de-Wasserstein-Bayesiano}  % MARK: El Baricentro de Wasserstein
 
 \RED[inline]{Se podría volver a revisar la redacción de esta sección.}
 
-Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empieza revisando el concepto de media de Fréchet, para luego definir el baricentro de Wasserstein. La escritura de esta sección se basó en ejemplos de la Sección 3 de Panaretos y Zemel \cite{panaretos2020invitation} y en definiciones de la Sección 9.2 de Peyré y Cuturi \cite{peyre2019computational}.
+Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una generalización del concepto de promedio para medidas de probabilidad. Este concepto será clave para definir el baricentro de Wasserstein Bayesiano, el cual será el principal objeto de estudio de esta tesis. Para ello, se empieza revisando el concepto de media de Fréchet, para continuar por definir el baricentro de Wasserstein, revisar técnicas de cálculo de baricentros de población, y terminar definiendo el baricentro de Wasserstein Bayesiano. La escritura de esta sección se basó en ejemplos de la Sección 3 de Panaretos y Zemel \cite{panaretos2020invitation} y en definiciones de la Sección 9.2 de Peyré y Cuturi \cite{peyre2019computational}.
 
 \subsection{La Media de Fréchet}\label{ssec:la-media-de-Frechet}  % MARK: La Media de Fréchet
 %   En esta sección se revisará el concepto de media de Fréchet, el cual es una generalización de la noción de promedio para espacios métricos. Este concepto será clave para definir el baricentro de Wasserstein.
@@ -350,15 +339,9 @@ Esta sección presenta el concepto de baricentro de Wasserstein, el cual es una 
 	Con este ejemplo, se puede apreciar que la media de Fréchet generaliza la noción de promedio.
 \end{example}
 
-\FM[inline]{Quizás no es necesario dejar esto como observación.}
+La razón por la que resulta interesante estudiar este concepto, es que únicamente utiliza nociones métricas, desligándose de nociones vectoriales. Como se vió en el Ejemplo~\ref{ex:baricentro-triangulo}, el promedio $\bar x$ utilizó conceptos vectoriales (suma y ponderación de vectores) mientras que la media de Fréchet utilizó nociones métricas (a través de la distancia $\dist(x, y) = \|x - y\|$), resultando en el mismo promedio.
 
-\begin{remark}
-	La razón por la que resulta interesante estudiar este concepto, es que únicamente utiliza nociones métricas, desligándose de nociones vectoriales. Como se vió en el Ejemplo~\ref{ex:baricentro-triangulo}, el promedio $\bar x$ utilizó conceptos vectoriales (suma y ponderación de vectores) mientras que la media de Fréchet utilizó nociones métricas (a través de la distancia $\dist(x, y) = \|x - y\|$), resultando en el mismo promedio.
-
-	Lo interesante de la media de Fréchet, es que este concepto es mucho más general, pues la media dependerá ahora de la distancia que se esté utilizando.
-
-	% Aunque igualmente se hizo algo de ``trampa'', pues se utilizó la norma para definir una distancia. Sin embargo, el concepto es mucho más general, pues este baricentro depende de la distancia que se esté utilizando, de forma que el baricentro cambiará conforme a esta.
-\end{remark}
+Lo interesante de la media de Fréchet, es que este concepto es mucho más general, pues la media dependerá ahora de la distancia que se esté utilizando.
 
 
 \subsection{El Baricentro de Wasserstein}\label{ssec:el-baricentro-de-Wasserstein}  % MARK: El Baricentro de Wasserstein
@@ -376,7 +359,7 @@ Como se vió en la sección anterior, la media de Fréchet permite definir una n
 
 Un ejemplo de distintos baricentros, variando los pesos $(\gamma_i)_i$, se puede ver en la Figura~\ref{fig:baricentro-Wass-3d}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/transporte/baricentro-Wass-3d.png}
 	\caption{Baricentro entre tres figuras en 3 dimensiones, donde se variaron los pesos $\gamma_i$ de forma bilineal. Imagen obtenida de \cite{solomon2015convolutional}.}
@@ -407,9 +390,7 @@ Es posible generalizar aún más la noción de baricentro de Wasserstein a una c
 	\end{equation}
 \end{definition}
 
-\begin{remark}
-	Se puede notar que la definición anterior es una generalización, pues si se considera $\Gamma = \sum_{i=1}^{n} \gamma_i \delta_{\mu_i}$, entonces se recupera la primera definición. Además, cabe destacar que no es necesario especificar las medidas $(\mu_i)_{i=1}^{n}$, pues se encuentran implícitas en la medida $\Gamma$.
-\end{remark}
+La razón por la que la definición anterior es una generalización, es que si se considera $\Gamma = \sum_{i=1}^{n} \gamma_i \delta_{\mu_i}$, entonces se recupera la primera definición. Además, cabe destacar que no es necesario especificar las medidas $(\mu_i)_{i=1}^{n}$, pues se encuentran implícitas en la medida $\Gamma$.
 
 \begin{remark}
 	Notemos también que en la definición anterior, el baricentro de Wasserstein es la medida que minimiza el promedio de las medidas generadas por $\Gamma$. De esta forma, la Ecuación \eqref{eq:baricentroWassersteinGeneral} se puede reescribir como:
@@ -423,9 +404,9 @@ Es posible generalizar aún más la noción de baricentro de Wasserstein a una c
 
 \RED[inline]{Esta sección quedó muy difícil de leer, quizás hay que acortarla más o mejorarla.}
 
-Para calcular una estimación del baricentro de Wasserstein de una colección finita de medidas $\left\{ \mu_i \right\}_{i=1}^{n}$, existen múltiples algoritmos que se pueden utilizar. Por ejemplo, para el caso en que las medidas sean a soporte discreto, se puede deducir un problema de programación lineal \cite[ver Cap. 3]{peyre2019computational}, y resolver el problema de forma exacta \cite{bonneel2011displacement}, o utilizando una estimación de la solución por medio métodos iterativos, como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}. En el caso en que las medidas provengan de imágenes, se pueden utilizar métodos convolucionales, como en \cite{solomon2015convolutional} o en su respectiva mejora insesgada \cite{janati2020debiased}.
+Para calcular una estimación del baricentro de Wasserstein de una colección finita de medidas $\left\{ \mu_i \right\}_{i=1}^{n}$, existen múltiples algoritmos que se pueden utilizar. Por ejemplo, para el caso en que las medidas sean a soporte discreto, se puede deducir un problema de programación lineal \cite[ver Cap. 3]{peyre2019computational}, y resolver el problema de forma exacta \cite{bonneel2011displacement}, o utilizando una estimación de la solución por medio de métodos iterativos, como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}. En el caso en que las medidas provengan de imágenes, se pueden utilizar métodos convolucionales, como en \cite{solomon2015convolutional} o en su versión mejorada e insesgada \cite{janati2020debiased}.
 
-Sin embargo, para el caso en que la colección de medidas sean infinitas, como lo es en el caso del baricentro de población de Wasserstein, estos métodos no son aplicables. Por este motivo, en los trabajos \cite{rios2020contributions,backhoff2022stochastic,backhoff2022bayesian} se propone un algoritmo para encontrar este baricentro, por medio del Descenso del Gradiente Estocástico (SGD).
+Sin embargo, para el caso en que la colección de medidas sean infinitas, como lo es en el caso del baricentro de población de Wasserstein, estos métodos no son aplicables. Por este motivo, en los trabajos \cite{rios2020contributions,backhoff2022stochastic,backhoff2022bayesian} proponen un algoritmo para encontrar este baricentro, por medio del Descenso del Gradiente Estocástico (SGD).
 
 En los trabajos mencionados, se hicieron los siguientes supuestos (que serán válidos sólo para esta sección de la tesis).
 
@@ -434,11 +415,11 @@ En los trabajos mencionados, se hicieron los siguientes supuestos (que serán v�
 \end{assumption}
 
 \begin{assumption}\label{assump:caso-particular-geodesicamente-convexo}
-	$\Gamma$ tiene un espacio de modelos $W_2$-compacto $K_\Gamma \subseteq \WassersteinSpace[2,\mathrm{ac}]{\R^q} $. Más aún, este conjunto es geodésicamente convexo: para cualesquiera $\mu_0, \mu_1 \in K_\Gamma$, la geodésica $\mu_t$ entre $\mu_0$ y $\mu_1$ está contenida en $K_\Gamma$.
+	$\Gamma$ tiene un espacio de modelos $W_2$-compacto: $K_\Gamma \subseteq \WassersteinSpace[2,\mathrm{ac}]{\R^q} $. Más aún, este conjunto es geodésicamente convexo: para cualesquiera $\mu_0, \mu_1 \in K_\Gamma$, la geodésica $\mu_t$ entre $\mu_0$ y $\mu_1$ está contenida en $K_\Gamma$.
 \end{assumption}
 
 \begin{assumption}\label{assump:caso-particular-esquema-paso-L1-L2}
-	Para un esquema de paso $(\eta_k)_k \in [0, 1]^\N$, se asume que $\sum_{k=0}^{\infty} \eta_k = \infty$ y $\sum_{k=0}^{\infty} \eta_k^2 < \infty$.
+	Para un esquema de paso\FM{Quizás podría definir qué es un esquema de paso.} $(\eta_k)_k \in [0, 1]^\N$\FM{Dejar que estoy anotando al conjunto de funciones de $A$ a $B$ por $B^A$.}, se asume que $\sum_{k=0}^{\infty} \eta_k = \infty$ y $\sum_{k=0}^{\infty} \eta_k^2 < \infty$.
 \end{assumption}
 
 \begin{definition}[Secuencia de SGDW \cite{backhoff2022stochastic,backhoff2022bayesian}]\label{def:sgdw}
@@ -449,22 +430,24 @@ En los trabajos mencionados, se hicieron los siguientes supuestos (que serán v�
 				(1 - \eta_k) \id + \eta_k T_{\mu_k \to \tilde \mu_k}
 			]} (\mu_k), \quad \text{para } k \in\N,
 	\end{equation}
-	donde $\eta_k \in [0, 1]$ es el tamaño de paso, y $T_{\mu_k \to \tilde \mu_k}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k$ como en la Definición~\ref{def:operador-push-forward}.
+	donde $\eta_k \in [0, 1]$ es el tamaño de paso en la iteración $k$, y $T_{\mu_k \to \tilde \mu_k}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k$ como en la Definición~\ref{def:operador-push-forward}.
 \end{definition}
 
 
 \begin{remark}
 	A pesar de que en la Definición~\ref{def:sgdw} se utilizó la notación de push-forward (en donde se asume que $\mu_k$ y $\tilde \mu_k$ son absolutamente continuas con respecto a la medida de Lebesgue), basta con interpretar la notación de push-forward como la interpolación geodésica entre $\mu_k$ y $\tilde \mu_k$, como se mencionó en \eqref{eq:interpolacion-geodesica}.
+
+	Con esta idea en mente, en la iteración $k$ de la Secuencia de SGDW se interpreta como si se estuviera transportando el $\eta_k\%$ de la masa de $\mu_k$ a $\tilde \mu_k$. Si $(\eta_k)_k$ es decreciente, entonces cada vez se mantiene más la forma de $\mu_k$.
 \end{remark}
 
 \begin{remark}
 	Gracias al supuesto de que $K_\Gamma$ es geodésicamente convexo, se tiene que $\mu_k \in K_\Gamma$ para toda $k \in\N$.
 \end{remark}
 
-El teorema principal que le da sentido a la definición de la Secuencia de SGDW es el siguiente:
+El teorema principal que le da sentido a la definición anterior es el siguiente:
 
 \begin{theorem}\label{thm:convergencia-sgdw}
-	Se asumen los Supuestos~\ref{assump:caso-particular-lebesgue}, \ref{assump:caso-particular-geodesicamente-convexo}, \ref{assump:caso-particular-esquema-paso-L1-L2}, y que $\Gamma$ admite una única media de Karcher. Entonces la secuencia de SGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:sgdw} converge c.s. al único 2-Wasserstein baricentro $\bar \mu$ de $\Gamma$. Más aún, se tiene que $\bar \mu\in K_\Gamma$.
+	Se asumen los Supuestos~\ref{assump:caso-particular-lebesgue}, \ref{assump:caso-particular-geodesicamente-convexo}, \ref{assump:caso-particular-esquema-paso-L1-L2}, y que $\Gamma$ admite una única media de Karcher\FM{¿Será necesario incluir lo que es una media de Karcher? nunca lo ocupo directamente en el trabajo.}. Entonces la secuencia de SGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:sgdw} converge c.s. al único 2-Wasserstein baricentro $\bar \mu$ de $\Gamma$. Más aún, se tiene que $\bar \mu\in K_\Gamma$.
 \end{theorem}
 
 Además de la Secuencia de SGDW, en \cite{backhoff2022stochastic} se propone una versión de esta secuencia por lotes (o \textit{batched}, en inglés):
@@ -480,21 +463,21 @@ Además de la Secuencia de SGDW, en \cite{backhoff2022stochastic} se propone una
 	donde $\eta_k \in [0, 1]$ es el tamaño de paso, y $T_{\mu_k \to \tilde \mu_k^{(j)}}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k^{(j)}$ como en la Definición~\ref{def:operador-push-forward}.
 \end{definition}
 
-\begin{remark}
+\begin{remark}\label{rem:bsgdw}
 	En esta versión del SGDW por lotes, el operador push-forward de la Ecuación~\eqref{eq:bsgdw} se interpreta como el baricentro de las medidas $(\mu_k, \tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)})$ con pesos $(1 - \eta_k, \eta_k/S_k, \ldots, \eta_k/S_k)$.
 \end{remark}
 
 Los siguientes dos resultados dicen que la Secuencia de BSGDW aún converge, mientras que la segunda dice que los lotes ayudan a reducir la varianza de la estimación:
 
 \begin{proposition}
-	Bajo los supuestos del Teorema~\ref{thm:convergencia-sgdw}, la secuencia de BSGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:bsgdw} converge c.s. al único 2-Wasserstein baricentro $\bar \mu$ de $\Gamma$.
+	Bajo los supuestos del Teorema~\ref{thm:convergencia-sgdw}, la secuencia de BSGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:bsgdw} converge c.s. al único 2-baricentro de Wasserstein $\bar \mu$ de $\Gamma$.
 \end{proposition}
 
 \begin{proposition}
 	El estimador por lotes hace que la varianza integrada decrezca linealmente con el tamaño de los lotes.
 \end{proposition}
 
-Se terminará esta sección presentando el algoritmo del BSGDW, pues es esta la versión más general. El siguiente algoritmo es una adaptación de la presentada en \cite{backhoff2022bayesian}.
+Se terminará esta sección presentando el algoritmo del BSGDW, pues es esta la versión más general. El siguiente algoritmo es una adaptación de la presentada en \cite{backhoff2022bayesian}, en donde se utiliza la Observación~\ref{rem:bsgdw}.
 \begin{algorithm}[htbp]
 	\caption{SGD sobre el Espacio de Wasserstein por lotes (BSGDW) \cite{backhoff2022bayesian}}
 	\label{alg:bsgdw}
@@ -512,31 +495,29 @@ Se terminará esta sección presentando el algoritmo del BSGDW, pues es esta la 
 	\end{algorithmic}
 \end{algorithm}
 
-Los cuellos de botella que tiene el Algoritmo~\ref{alg:bsgdw} son el acceso de muestrear a partir de $\Gamma(\dd \mu)$, como el de calcular el baricentro entre medidas. Para el primer caso, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, mientras que para el segundo caso, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o si es en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
+El Algoritmo~\ref{alg:bsgdw} posee dos cuellos de botella: el primero es que se debe poder muestrear a partir de $\Gamma(\dd \mu)$, y el segundo es la capacidad de calcular el baricentro entre medidas. Para el primer problema, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, o alguna otra técnica de muestreo; mientras que para el segundo, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o si es en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
 
-Como parte del criterio de detención, se pueden utilizar los criterios clásicos (como por ejemplo, limitar el algoritmo hasta una iteración máxima, o un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas.
+Como parte del criterio de detención, se pueden utilizar algunos criterios clásicos (como por ejemplo, limitar el número máximo de iteraciones, o tener un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas. En particular, se puede utilizar el criterio de detención propuesto en \cite{backhoff2022bayesian}.
 
 
 
 \subsection{El Baricentro de Wasserstein Bayesiano}\label{ssec:baricentro-Wasserstein-Bayesiano}  % MARK: El Baricentro de Wasserstein Bayesiano
 
-En esta sección se define el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) explique las muestras tomadas.
-%  conseguir  incorporar información a priori sobre las medidas de probabilidad que se quieren promediar. 
+En esta sección se define el baricentro de Wasserstein Bayesiano, el cual es una variante del baricentro de Wasserstein. La ventaja de este baricentro, es que permite encontrar una medida (el cuál, en este contexto, llamaremos \emph{modelo}) que mejor explique las muestras tomadas.
 En esta sección se utilizará como referencia principal la sección 5 de la Tesis de G. Ríos \cite{rios2020contributions} y de la Sección~1 de J. Backhoff et al. \cite{backhoff2022bayesian}.
 
 Se considera una muestra $\Data = \left(x_1,\ldots, x_n \right)$ que pertenecen a un espacio $\cX$ y un conjunto de modelos factibles
-% , o medidas de probabilidad, 
 $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo (también conocido como la \emph{selección de un modelo}) utilizando los datos $\Data$  consiste en escoger un elemento $\mu$ de $\Models$ que \emph{mejor explique los datos}, si es que estos hubieran sido generados por $\mu$.
 
 Para este objetivo, se adoptará un enfoque Bayesiano, el cuál provee de un marco probabilística para manejar la incertidumbre sobre los modelos. Por tanto, se empezará considerando una medida de probabilidad $\Pi \in \ProbSpace[\ProbSpace[\cX] ] $, entendida con una distribución a \textit{priori} sobre un espacio de modelos $\Models$. En particular, se tiene que el prior se encuentra soportada en el espacio de modelos $\Models$, es decir, $\Pi(\Models) = \Pi(\ProbSpaceAC[\cX] ) = 1$.
 
-Para cada $n \in \N\setminus\left\{ 0 \right\}$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de escoger un modelo $\mu$ de acuerdo a la ley $\Pi$, y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generadas por $\mu$. Esto es
+Para cada $n \in \N_\ast$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de escoger un modelo $\mu$ de acuerdo a la ley $\Pi$, y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generadas por $\mu$. Esto es
 \begin{align}
 	\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
 	 & \eqdef \dPi[\mu] \dmu[x_1] \cdots \dmu[x_n]                                      \\
 	 & = \dPi[\mu] \dlambda[x_1] \cdots \dlambda[x_n] \prod_{i=1}^{n} \rho_{\mu} (x_i),
 \end{align}
-donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym de $\mu$ con respecto a la medida de referencia $\lambda$.
+donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym \cite{nikodym1930generalisation} de $\mu$ con respecto a la medida de referencia $\lambda$.
 Considerando que $\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu) = \Pi(\dd \mu) \bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$, donde $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ es su respectivo kernel de transición, se deduce entonces que la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
 \begin{equation}
 	\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)
@@ -548,16 +529,16 @@ donde se define la \emph{verosimilitud} como la densidad de $\bPi(\dd x_1,\ldots
 \end{equation}
 y la verosimilitud marginal, también conocido como la \emph{evidencia}, que se define por:
 \begin{equation}
-	\rho_\bPi(x_1,\ldots, x_n) \eqdef \int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu].
+	\rho_\bPi(x_1,\ldots, x_n) \eqdef \int_{\Models} \LikelihoodN[\mu] \dPi[\mu].
 \end{equation}
 
 La \emph{densidad posterior} $\bPi(\dd\mu \mid x_1,\ldots, x_n )$, denotada por $\Pi_n(\dd\mu)$ por simplicidad, es un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, y en virtud a la regla de Bayes, está dado por
 \begin{equation}
 	\label{eq:distribucionPosterior}
-	\dPiN[\mu] = \dPi[\mu] \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} = \dPi[\mu] \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}.
+	\dPiN[\mu] = \dPi[\mu] \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} = \dPi[\mu] \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\nu] \dPi[\nu]}.
 \end{equation}
 
-La derivada de Radon-Nikodym \cite{nikodym1930generalisation} de $\Pi_n(\dd \mu)$ con respecto a $\Pi(\dd \mu)$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\tilde\mu] \dPi[\tilde\mu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
+La derivada de Radon-Nikodym de $\Pi_n(\dd \mu)$ con respecto a $\Pi(\dd \mu)$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\nu] \dPi[\nu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
 
 Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$, correspondería al modelo que minimice el riesgo Bayesiano que utiliza como función de pérdida la distancia de Wasserstein:
 \begin{equation}
@@ -574,33 +555,5 @@ La definición anterior, corresponde justamente con la definición del baricentr
 		\bar \mu \eqdef \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
 	\end{equation}
 \end{definition}
-
-
-% \newpage
-% donde su densidad marginal con respecto a $\lambda^{\otimes n}$ es
-% \begin{equation*}
-% 	\dv{\bPi}{\lambda^{\otimes n}}\qty(x_1,\ldots, x_n) = \int_{\Models} \prod_{i=1}^{n} \rho_{\tilde\mu}\qty(x_i) \dd{\Pi(\tilde\mu)}.
-% \end{equation*}
-
-% La \textit{distribución posterior} $\bPi(\dd \mu \mid x_1, \ldots, x_n )$ dada la data $\Data$ es también un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, el cuál se denotará por $\Pi_n$ por simplicidad y el cuál, en virtud a la regla de Bayes, está dado por
-% \begin{equation}
-% 	\label{eq:distribucionPosterior}
-% 	\dd{\Pi_n(\mu)}
-% 	\eqdef \frac{\bPi(x_1,\ldots, x_n \mid\mu)}{\bPi(x_1,\ldots, x_n)} \dd{\Pi(\mu)}
-% 	= \frac{\prod_{i=1}^{n} \dv{\mu}{\lambda}\qty(x_i)}
-% 	{\int_{\Models} \prod_{i=1}^{n} \dv{\nu}{\lambda}\qty(x_1) \dd{\Pi(\nu)}} \dd{\Pi(\mu)}.
-% \end{equation}
-
-
-
-
-
-%   de tamaño $n$ generada por $\mu$. En particular, se tiene que $\bPi$ es una medida de probabilidad sobre $\cX^n\times \Models$ tal que
-
-%   \FM[inline]{Comentar que aquí se está tomando ideas de la tesis de Gonzalo Ríos}
-%   Consideremos muestras $\Data = \left\{ x_1,\ldots, x_n  \right\}$ en un espacio $\cX$ y un conjunto de modelos factibles o medidas de probabilidad $\Models \subseteq \ProbSpace[\cX]$. Aprender un modelo, también conocido como la \emph{selección de un modelo}, de $\Data$ consiste en escoger un elemento $\mu \in \Models$ que mejor explique los datos, si es que estos hubieran sido generados por $\mu$, dado algún criterio.
-
-%   Se considerará una medida de probabilidad $\Prior \in \ProbSpace[\Models]$ sobre un espacio de modelos $\Models$  un \emph{prior} fijo.
-
 
 \FM[inline]{Será necesario incluir una parte que describa métodos numéricos para calcular baricentros? Tenía pensado incluir el algoritmo del descenso del gradiente estocástico en espacio de Wasserstein, los algoritmos LP para el problema de Wasserstein, el de Sinkhorn, el Convolucional y el Debaised, que igual fueron métodos estudiados y utilizados.}
