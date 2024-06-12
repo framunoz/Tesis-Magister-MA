@@ -59,6 +59,8 @@
 \else
     \RequirePackage[spanish, es-nolists, es-lcroman]{babel} % Lenguaje
 \fi
+% babel recomienda importar csquotes https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
+\RequirePackage{csquotes}
 
 % \RequirePackage[numbers,sort]{natbib}  % Estilo de citado (antiguo)
 \if@draft
