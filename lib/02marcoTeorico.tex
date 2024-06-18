@@ -430,11 +430,11 @@ En los trabajos mencionados, se hacen los siguientes supuestos (que serán váli
 \end{definition}
 
 
-\begin{remark}
-    A pesar de que en la Definición~\ref{def:sgdw} se utilizó la notación de \textit{push-forward} (en donde se asume que $\mu_k$ y $\tilde \mu_k$ son absolutamente continuas con respecto a la medida de Lebesgue), basta con interpretar la notación de \textit{push-forward} como la interpolación geodésica entre $\mu_k$ y $\tilde \mu_k$, como se mencionó en \eqref{eq:interpolacion-geodesica}.
+% \begin{remark}
+%     A pesar de que en la Definición~\ref{def:sgdw} se utilizó la notación de \textit{push-forward} (en donde se asume que $\mu_k$ y $\tilde \mu_k$ son absolutamente continuas con respecto a la medida de Lebesgue), basta con interpretar la notación de \textit{push-forward} como la interpolación geodésica entre $\mu_k$ y $\tilde \mu_k$, como se mencionó en \eqref{eq:interpolacion-geodesica}.
 
-    Con esta idea en mente, en la iteración $k$ de la Secuencia de SGDW se interpreta como si se estuviera transportando el $\eta_k\%$ de la masa de $\mu_k$ a $\tilde \mu_k$. Si $(\eta_k)_k$ es decreciente, entonces cada vez se mantiene más la forma de $\mu_k$.
-\end{remark}
+%     Con esta idea en mente, en la iteración $k$ de la Secuencia de SGDW se interpreta como si se estuviera transportando el $\eta_k\%$ de la masa de $\mu_k$ a $\tilde \mu_k$. Si $(\eta_k)_k$ es decreciente, entonces cada vez se mantiene más la forma de $\mu_k$.
+% \end{remark}
 
 \begin{remark}
     Gracias al supuesto de que $K_\Gamma$ es geodésicamente convexo, se tiene que $\mu_k \in K_\Gamma$ para toda $k \in\N$.
@@ -459,9 +459,9 @@ Además de la Secuencia de SGDW, en \cite{backhoff2022stochastic} se propone una
     donde $\eta_k \in [0, 1]$ es el tamaño de paso, y $T_{\mu_k \to \tilde \mu_k^{(j)}}$ es el transporte óptimo entre $\mu_k$ y $\tilde \mu_k^{(j)}$ como en la Definición~\ref{def:operador-push-forward}.
 \end{definition}
 
-\begin{remark}\label{rem:bsgdw}
-    En esta versión del SGDW por lotes, el operador \textit{push-forward} de la Ecuación~\eqref{eq:bsgdw} se interpreta como el baricentro de las medidas $(\mu_k, \tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)})$ con pesos $(1 - \eta_k, \eta_k/S_k, \ldots, \eta_k/S_k)$.
-\end{remark}
+% \begin{remark}\label{rem:bsgdw}
+%     En esta versión del SGDW por lotes, el operador \textit{push-forward} de la Ecuación~\eqref{eq:bsgdw} se interpreta como el baricentro de las medidas $(\mu_k, \tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)})$ con pesos $(1 - \eta_k, \eta_k/S_k, \ldots, \eta_k/S_k)$.
+% \end{remark}
 
 Los siguientes dos resultados dicen que la Secuencia de BSGDW aún converge, mientras que la segunda dice que los lotes ayudan a reducir la varianza de la estimación:
 
@@ -473,27 +473,36 @@ Los siguientes dos resultados dicen que la Secuencia de BSGDW aún converge, mie
     El estimador por lotes hace que la varianza integrada decrezca linealmente con el tamaño de los lotes.
 \end{proposition}
 
-Se termina esta sección presentando el algoritmo del BSGDW, pues es esta la versión más general. El siguiente algoritmo es una adaptación de la presentada en \cite{backhoff2022bayesian}, en donde se usa la Observación~\ref{rem:bsgdw}.
+Se termina esta sección presentando el algoritmo del SGDW que se presenta en \cite{backhoff2022bayesian}.
+% El siguiente algoritmo es una adaptación de la presentada en \cite{backhoff2022bayesian}, en donde se usa la Observación~\ref{rem:bsgdw}.
 \begin{algorithm}[H]
-    \caption{SGD sobre el Espacio de Wasserstein por lotes (BSGDW) \cite{backhoff2022bayesian}}
-    \label{alg:bsgdw}
+    \caption{SGD sobre el Espacio de Wasserstein (SGDW) \cite{backhoff2022bayesian}}
+    \label{alg:sgdw-clasico}
     \begin{algorithmic}[1]
-        \Require Acceso a las muestras de $\Gamma(\dd \mu) \in \ProbSpace[\ProbSpace]$, un esquema de paso $(\eta_k)_k \in [0, 1]^\N$, y un esquema de lotes $(S_k)_k \in {\N_\ast}^\N$.
+        \Require Acceso a las muestras de $\Gamma(\dd \mu) \in \ProbSpace[\ProbSpace]$, un esquema de paso $(\eta_k)_k \in [0, 1]^\N$.
         \State{$k\gets0$}
         \State{Muestrear $\mu_0 \sim \Gamma$}
         \Repeat
-        \State{Muestrear $\tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)} \simiid \Gamma$}
-        \State{$\gamma\gets \qty(1-\eta_k, \frac{\eta_k}{S_k}, \dots, \frac{\eta_k}{S_k})\in[0,1]^{S_{k+1}}$} \Comment{$\gamma$ es el vector de pesos.}
-        \State{Definir $\mu_k$ como el baricentro de $(\mu_{k-1}, \tilde \mu_k^{(1)}, \ldots, \tilde \mu_k^{(S_k)})$ con pesos $\gamma$}
+        \State{Muestrear $\tilde \mu_k \sim \Gamma$ independiente de $\mu_0, \tilde \mu_1, \ldots, \tilde \mu_{k-1}$.}
+        \State Definir $\mu_k$ de la siguiente manera:
+        \begin{equation}
+            \mu_{k+1} \gets \pf{\qty\Big[
+                    (1 - \eta_k) \id + \eta_k T_{\mu_k \to \tilde \mu_k}
+                ]} (\mu_k)
+        \end{equation}
         \State{$k\gets k+1$}
         \Until{un criterio de detención ha sido alcanzado.}
         \State\Return $\mu_k$
     \end{algorithmic}
 \end{algorithm}
 
-El Algoritmo~\ref{alg:bsgdw} posee dos cuellos de botella: el primero es que se debe poder muestrear a partir de $\Gamma(\dd \mu)$, y el segundo es la capacidad de calcular el baricentro entre medidas. Para el primer problema, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, o alguna otra técnica de muestreo; mientras que para el segundo, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
+El Algoritmo~\ref{alg:sgdw-clasico} posee dos cuellos de botella: el primero es que se debe poder muestrear a partir de $\Gamma(\dd \mu)$, y el segundo es la capacidad de calcular el baricentro entre medidas. Para el primer problema, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, o alguna otra técnica de muestreo; mientras que para el segundo, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
 
-Como parte del criterio de detención, se pueden utilizar algunos criterios clásicos (como por ejemplo, limitar el número máximo de iteraciones, o tener un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas. En particular, se puede utilizar el criterio de detención propuesto en \cite{backhoff2022bayesian}.
+Como parte del criterio de detención, se pueden utilizar algunos criterios clásicos (como por ejemplo, limitar el número máximo de iteraciones, o tener un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas. En particular, en \cite{backhoff2022bayesian} se describe una manera de calcular la distancia de Wasserstein para este caso:
+\begin{equation}
+    \Wasserstein[2]{\mu_{k+1}}{\mu_k}^2 = \eta_k^2 \int_{\R^q} | x - T_{\mu_k \to \tilde \mu_k}(x) |^2 \; \mu_k(\dd x).
+\end{equation}
+
 
 
 
