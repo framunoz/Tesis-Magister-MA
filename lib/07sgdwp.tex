@@ -5,7 +5,13 @@ A pesar de que la implementación del SGDW entrega los resultados esperados, el 
 
 Para ello, se recapitula la definición de CWB de la Sección~\ref{sec:app-bar-wass-Proyectados}, donde en este trabajo \cite{simon2020barycenters} se explica la forma de proyectar una medida $\mu$ sobre una variedad específica de medidas $\Manifold$, aprendidas por una red generativa.
 
-En este sentido, el conjunto de modelos $\Manifold\subseteq \ProbSpace[\cX] $ será restringido a la variedad generada por la red $G_\theta$. Este cambio puede hacer que el Supuesto~\ref{assump:caso-particular-geodesicamente-convexo} no se cumpla, dado que es posible que $\Manifold$ no sea geodésicamente convexo. Esto provocaría que el Teorema~\ref{thm:convergencia-sgdw} y la Proposición~\ref{prop:convergencia-bsgdw} no garanticen la existencia o la unicidad del baricentro proyectado.
+En este sentido, el conjunto de modelos $\Manifold\subseteq \ProbSpace[\cX] $ correspondería a la variedad generada por la red $G_\theta$, es decir,
+\begin{equation}
+    \Manifold \eqdef \left\{ G_\theta(z) \in \ProbSpace[\cX] \colon z \in \cZ \right\} \subseteq \ProbSpace[\cX].
+\end{equation}
+Este cambio puede hacer que el Supuesto~\ref{assump:caso-particular-geodesicamente-convexo} no se cumpla, dado que es posible que $\Manifold$ no sea geodésicamente convexo. Esto provocaría que el Teorema~\ref{thm:convergencia-sgdw} y la Proposición~\ref{prop:convergencia-bsgdw} no garanticen la existencia o la unicidad del baricentro proyectado.
+
+awa
 
 
 \FM[inline]{Para comprobar estas hipótesis, se realizan los siguientes experimentos.....}
