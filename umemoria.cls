@@ -68,6 +68,9 @@
         sorting=none,
         style=draft,
     ]{biblatex}  % Estilo de citado
+    \RequirePackage[
+        %
+    ]{showlabels} % Mostrar etiquetas
 \else
     \RequirePackage[
         style=ieee,

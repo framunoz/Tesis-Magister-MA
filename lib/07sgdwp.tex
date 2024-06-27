@@ -1,1 +1,51 @@
 \section{SGDW Proyectado}\label{sec:sgdwp}  % MARK: - Section SGDWP
+
+
+A pesar de que la implementación del SGDW entrega los resultados esperados, el baricentro no parece ser lo suficientemente natural. Por este motivo, se propone una adaptación del SGDW, donde se proyecta el baricentro sobre alguna variedad $\Manifold$ de medidas para que se vea más natural y atractivo.
+
+Para ello, se recapitula la definición de CWB de la Sección~\ref{sec:app-bar-wass-Proyectados}, donde en este trabajo \cite{simon2020barycenters} se explica la forma de proyectar una medida $\mu$ sobre una variedad específica de medidas $\Manifold$, aprendidas por una red generativa.
+
+En este sentido, el conjunto de modelos $\Manifold\subseteq \ProbSpace[\cX] $ será restringido a la variedad generada por la red $G_\theta$. Este cambio puede hacer que el Supuesto~\ref{assump:caso-particular-geodesicamente-convexo} no se cumpla, dado que es posible que $\Manifold$ no sea geodésicamente convexo. Esto provocaría que el Teorema~\ref{thm:convergencia-sgdw} y la Proposición~\ref{prop:convergencia-bsgdw} no garanticen la existencia o la unicidad del baricentro proyectado.
+
+
+\FM[inline]{Para comprobar estas hipótesis, se realizan los siguientes experimentos.....}
+\FM[inline]{Aquí quizás incluir que, por este motivo, se harán experimentos para ver si converge a una única medida o no.}
+
+
+\subsection{Integración de la Proyección al SGDW}\label{ssec:sgdwp-deduccion-algoritmo}  % MARK: - Integración de la Proyección al SGDW
+
+A pesar de que los autores de \cite{simon2020barycenters} explican que, para obtener los resultados de su artículo utilizan el Algoritmo~\ref{alg:ADMM-CWB}, la realidad es que al revisar su código fuente \cite{imagebar2020simon} se observa que sólo utilizan una iteración del algoritmo anterior (es decir, no utilizan el Lagrangiano Aumentado). De este modo, el algoritmo se simplifica de la siguiente manera: para dos medidas $\mu_0, \mu_1 \in \ProbSpace[\cX] $ y un número $t \in [0, 1]$, empiezan por calcular la $t$-interpolación geodésica de estas medidas, y luego proyectan este baricentro sobre la variedad $\Manifold$ a través del AE.
+
+Motivados por esta simplificación, se propone una adaptación del Algoritmo~\ref{alg:sgdw-general} para que proyecte el baricentro en la variedad $\Manifold$, donde además se agrega el parámetro $n_P\in\N$ para proyectar cada $n_P$ iteraciones del algoritmo. De este modo, se deduce el Algoritmo~\ref{alg:sgdwp} para el SGDW Proyectado.
+\begin{algorithm}[H]
+    \caption{SGDW Proyectado (SGDWP)}
+    \label{alg:sgdwp}
+    \begin{algorithmic}[1]
+        \Require Acceso a las muestras de $\Gamma(\dd \mu) \in \ProbSpace[\ProbSpace]$, un esquema de paso $(\eta_k)_k \in [0, 1]^\N$, un esquema de paso $(S_k)_k \in \N^\N$, un proyector $P:\ProbSpace[\cX] \to \Manifold\subseteq \ProbSpace[\cX] $ y un número $n_P \in \N$.
+        \State{$k\gets0$}
+        \State{Muestrear $\mu_0 \sim \Gamma$}
+        \Repeat
+        \State{Muestrear $\tilde \mu_k^{(1)}, \dots, \tilde \mu_k^{(S_k)} \simiid \Gamma$}
+        \State{$\gamma\gets\qty(1-\eta_k, \frac{\eta_k}{S_k}, \dots, \frac{\eta_k}{S_k})$}
+        \State Definir $\mu_k$ como el baricentro de $\qty( \mu_k, \tilde\mu_k^{(1)}, \dots, \tilde\mu_k^{(S_k)} )$ con pesos $\gamma$.
+        \If{$k \mod n_P = 0$}
+        \State{$\mu_k\gets P(\mu_k)$}\Comment{Proyectar $\mu_k$ sobre $\Manifold$}
+        \EndIf
+        \State{$k\gets k+1$}
+        \Until{un criterio de detención ha sido alcanzado.}
+        \State{$\mu_k\gets P(\mu_k)$}\Comment{Terminar con una última proyección antes de retornar.}
+        \State\Return $\mu_k$
+    \end{algorithmic}
+\end{algorithm}
+
+\FM[inline]{Este párrafo podría ser parte de las conclusiones? Onda, por el trabajo futuro.}
+
+Cabe destacar que el Algoritmo~\ref{alg:sgdwp} tiene una mecánica similar al Método del Gradiente Proyectado (MPG)~\cite[Secc. 5.1]{optimizacion2022amaya}, puesto que este es un método de optimización con restricciones que, si en una iteración se viola alguna restricción, entonces se proyecta dicha iteración sobre el conjunto de restricciones. Este es el caso del Algoritmo~\ref{alg:sgdwp}, donde se proyecta el baricentro en la variedad $\Manifold$. Sin embargo, se diferencia del MPG, en que el dominio $\Manifold$ puede no ser (geodésicamente) convexo.
+
+\FM[inline]{debería mencionar como se implemnetó el proyector $P$ en más detalle?}
+
+
+\subsection{Resultados y Discusión}\label{ssec:sgdwp-resultados-discusion}  % MARK: - Resultados y Discusión
+
+\subsection{Conclusiones}\label{ssec:sgdwp-conclusiones}  % MARK: - Conclusiones
+

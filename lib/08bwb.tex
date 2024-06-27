@@ -1,1 +1,85 @@
 \section{Baricentro de Wasserstein Bayesiano}\label{sec:bwb}  % MARK: - Section Baricentro de Wasserstein Bayesiano
+
+
+Teniendo un conjunto de modelos finito, dígase, $\Models \subseteq \ProbSpace[\cX] $ con $| \Models | = N < + \infty$, un acercamiento ``ingenuo'' para calcular la medida posterior sobre este espacio debría considerar el vector de verosimilitudes $L_n = (\cL_n(\mu))_{\mu \in \Models} \in \R^N$. El problema con este enfoque es que, por definición, es bastante probable que uno de los puntos en que se evalúa $\rho_\mu$ sea $0$. Es decir, si $\exists x_i \in D \colon \rho_\mu(x_i) = 0$, entonces ese modelo tendrá una verosimilitud nula. En la práctica, esto sucede con mucha frecuencia. Por este motivo, se decide tomar otro enfoque.
+
+
+\subsection{Construcción de la Posterior Usando una GAN}\label{ssec:construccion-posterior}  % MARK: - Construcción de la Posterior Usando una GAN
+
+\RED[inline]{Hay que seguir revisando esta sección}
+
+Como se explicó en secciones anteriores,\FM{Aquí sería bueno incluir las secciones de lo que se habla esto, sguramente el de la GAN y WGAN}
+dada una medida de referencia $\Prob_X$\footnote{del cuál se tiene acceso a través de una muestra para obtener una medida empírica $\hat\Prob_X = \frac{1}{N}\sum_{i=1}^{N} \delta_{x_i}$}\FM{Corregir} lo que hacen las redes generativas es aproximarla por medio de un modelo generativo $\Prob_G$. Gracias a esta propiedad, se propone utilizar una GAN como prior para poder calcular la posterior. Cabe destacar que, a pesar de que la idea de utilizar una GAN como prior fue original, ya existía un trabajo que propone algo similar \cite{patel2019bayesian}, sin embargo, en este trabajo de tesis se formalizan estas ideas.
+
+Dada una red generadora $G_\theta \colon \cZ \to \ProbSpace[\cX] $ con una medida en el espacio latente $\Prob_Z$, se propone utilizar como prior a la medida
+\begin{equation}
+    \Pi^G \eqdef \pf{G_\theta} \Prob_Z.
+\end{equation}
+De esta manera, la posterior tendría la siguiente forma:
+\begin{equation}
+    \Pi_n(\dd \mu)
+    \eqdef \frac{\cL_n(\mu)}{\int_{\ProbSpace[\cX]} \cL_n(\nu) \; \Pi^G(\dd \nu)} \; \Pi^G(\dd \mu)
+    = C^{-1} \cL_n(\mu) \; \Pi^G(\dd \mu),
+\end{equation}
+donde $C \eqdef \int_{\ProbSpace[\cX]} \cL_n(\nu) \; \Pi^G(\dd \nu)$ es una constante de normalización.
+
+Dada alguna función medible $g$ (como por ejemplo $\mu \mapsto \Wasserstein[p]{\mu}{\nu} $) con respecto a la medida $\Prob_X \in \ProbSpace[\ProbSpace[\cX]]$, se puede comprobar lo siguiente:
+\begin{align}
+     & \int_{\ProbSpace[\cX]} g(\mu) \; \Pi_n(\dd \mu)                         \\
+     & = C^{-1} \int_{\ProbSpace[\cX]} g(\mu) \cL_n(\mu) \; \Pi^G(\dd \mu)     \\
+     & = C^{-1} \int_{\cZ} g(G_\theta(z)) \cL_n(G_\theta(z)) \; \Prob_Z(\dd z) \\
+     & = \int_{\cZ} g(G_\theta(z)) \; \Pi^Z_n(\dd z),
+\end{align}
+donde $\Pi^Z_n(\dd z)$ es la \textit{medida posterior en el espacio latente} y está definida por
+\begin{equation}
+    \Pi^Z_n(\dd z) \eqdef C^{-1} \cL_n(G_\theta(z)) \; \Prob_Z(\dd z).
+\end{equation}
+
+Por la Definición~\ref{def:operador-push-forward} del operador push-forward, se concluye la siguiente propiedad de la medida posterior:
+\begin{equation}\label{eq:posterior-en-latente}
+    \Pi_n = \pf{G_\theta} \Pi^Z_n.
+\end{equation}
+La forma de interpretar la ecuación~\eqref{eq:posterior-en-latente} es que para obtener un muestreo de la posterior $\Pi_n(\dd \mu)$ basta con hacer un muestreo de la posterior en el espacio latente $\Pi^Z_n(\dd z)$ y después aplicar la red generadora $G_\theta$. Esto resulta beneficioso, pues delega la tarea de muestrear la posterior a la red generadora, la cual es mucho más fácil de simular, con por ejemplo, el método de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble}.
+
+
+
+
+
+
+% Esto es, dado una red generadora $G_\theta \colon \cZ \to \ProbSpace[\cX] $, se propone como prior sobre el conjunto de modelos de la siguiente manera:
+% \begin{equation}
+%     \Pi_G(\dd \mu) \eqdef \pf{G_\theta} \Prob_Z(\dd \mu).
+% \end{equation}
+% De manera que la posterior tendría la siguiente forma:
+% \begin{equation}
+%     \Pi_n(\dd \mu)
+%     \eqdef \frac{\cL_n(\mu)}{\int_{\ProbSpace[\cX]} \cL_n(\nu) \Pi_G(\dd \nu)} \Pi_G(\dd \mu)
+%     = \frac{1}{C} \cL_n(\mu) \Pi_G(\dd \mu),
+% \end{equation}
+% donde $C \eqdef \int_{\ProbSpace[\cX]} \cL_n(\nu) \Pi_G(\dd \nu)$ es una constante de normalización.
+
+
+% De este modo, la función valor del problema de optimización de la Definición~\ref{def:baricentroWassersteinBayesiano} se puede reescribir de la siguiente manera:
+% \begin{align}
+%      & \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \; \Pi_n(\dd \nu)                              \\
+%      & = \frac{1}{C} \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \cL_n(\nu) \; \Pi_G(\dd \mu)     \\
+%      & = \frac{1}{C} \int_{\cZ} \Wasserstein[p]{\mu}{G_\theta(z)}^p \cL_n(G_\theta(z)) \; \Prob_Z(\dd z)
+% \end{align}
+
+% Con este enfoque, notamos que la función de probabilidad de densidad de la medida posterior en el espacio latente es:
+% \begin{equation}
+%     \Pi_n^Z (\dz) \eqdef \frac{1}{C} \cL_n(G_\theta(z)) \; \Prob_Z(\dz).
+% \end{equation}
+% Y de este modo, la medida posterior en el espacio de los modelos es:
+
+% El objetivo de obtener esta función de distribución, es que nos dice que podemos simular muestras de la posterior $\Pi_n(\dd \mu)$ a través de la red generativa $G_\theta$. En efecto, basta darse cuenta que
+
+
+
+
+
+
+\subsection{Resultados y Discusión}\label{ssec:bwb-resultados-discusion}  % MARK: - Resultados y Discusión
+
+\subsection{Conclusiones}\label{ssec:bwb-conclusiones}  % MARK: - Conclusiones
+

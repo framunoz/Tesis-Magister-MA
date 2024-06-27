@@ -1,6 +1,6 @@
-\section{Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein}\label{sec:sgdw}  % MARK: SGDW
+\section{Implementación del SGDW}\label{sec:sgdw}  % MARK: SGDW
 
-\FM[inline]{Podría ser de título ``Implementación del SGDW''? ya lo definí anteriormente}
+\RED[inline]{Revisar esta sección}
 
 En esta sección se presenta la implementación del SGDW.
 
@@ -10,11 +10,13 @@ Recordar que si $\mu\in \ProbSpace[\cX] $ es una medida discreta, entonces esta 
 \begin{equation}\label{eq:medida-discreta}
     \mu = \sum_{i=1}^{n} m_i \delta_{x_i},
 \end{equation}
-donde $m \in \Simplex[n]$ es un vector de probabilidad y $ \left\{ x_1, \dots, x_n \right\} \subseteq \cX $ son sus posiciones. En el caso de una imagen, se puede interpretar como una medida discreta, donde $x_i$ es el $i$-ésimo píxel y $m_i$ es la intensidad de la imagen en el $i$-ésimo píxel. Por lo tanto, se puede muestrear un píxel de una imagen de la misma forma que se muestrea una medida discreta.
+donde $m \in \Simplex[n]$ es un vector de probabilidad en el Simplex y $ \left\{ x_1, \dots, x_n \right\} \subseteq \cX $ son sus posiciones.
 
-\FM[inline]{Es posible que este párrafo este de más.}
+En el caso de una imagen, esta se puede interpretar como una medida discreta, si se define $\cX \eqdef \left\{ x_1, \dots, x_n \right\}$ como las posiciones de los píxeles, con $n \eqdef n_1 \times n_2$; y $m \in \Simplex[n]$ como el vector de probabilidad representando las intensidades de los píxeles. En este caso, si se asume que el espacio de imágenes es el espacio de probabilidad $\ProbSpace[\cX] $, entonces las distribuciones que muestrean imágenes corresponderían a distribuciones en el espacio $\ProbSpace[\ProbSpace[\cX] ] $.
 
-Cabe destacar que por definición, realizar un muestreo $x \sim \mu$ es equivalente a muestrear un índice $i \sim \Categorical(m)$ y retornar $x = x_i$. Por este motivo, se implementan las medidas discretas siendo extendidas de la clase \texttt{Categorical} del módulo \texttt{torch.distributions} de \textit{PyTorch}. Del mismo modo, como una imagen es una medida discreta, se extiende la clase para una medida discreta, tal que sea eficiente en memoria y en tiempo de construcción.
+% \FM[inline]{Es posible que este párrafo este de más.}
+
+% Cabe destacar que por definición, realizar un muestreo $x \sim \mu$ es equivalente a muestrear un índice $i \sim \Categorical(m)$ y retornar $x = x_i$. Por este motivo, se implementan las medidas discretas, que son extendidas de la clase \texttt{Categorical} del módulo \texttt{torch.distributions} de \textit{PyTorch}. Del mismo modo, como una imagen es una medida discreta, se extiende la clase para una medida discreta, tal que sea eficiente en memoria y en tiempo de construcción.
 
 \subsection{Implementación del Algoritmo}\label{ssec:implementacion-algoritmo}  % MARK: - Implementación del Algoritmo
 
@@ -36,15 +38,30 @@ Dado que el Algoritmo~\ref{alg:sgdw-clasico} está diseñado para medidas absolu
     \end{algorithmic}
 \end{algorithm}
 
-Como se está trabajando con imágenes, se puede aprovechar su estructurar para calcular una estimación de los baricentros de manera más eficiente, utilizando el algoritmos de Baricentros de Wasserstein Convolucionales \cite{solomon2015convolutional} o su versión Insesgada (\textit{Debiased} en inglés) \cite{janati2020debiased}. Sin embargo, el Algoritmo~\ref{alg:sgdw-general} es lo suficientemente general para ser aplicado a cualquier medida discreta, utilizando la estimación del algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, por ejemplo. Todos estos métodos de cálculo de baricentros se implementan de manera eficiente utilizando la librería de \textit{Python Optimal Transport} (POT) \cite{flamary2021pot}, donde además esta librería admite la paralelización de los cálculos por medio del GPGPU \cite{owens2008gpu}.
+\RED[inline]{Hay que revisar esta sección para ver cómo se pueden combinar o modificar.}
 
-\FM[inline]{Mejorar esto utilizando la medida $\Prob_X$}
+Como se está trabajando con imágenes, se puede aprovechar su estructura para calcular una estimación de los baricentros de manera más eficiente, utilizando el algoritmo de Baricentros de Wasserstein Convolucionales \cite{solomon2015convolutional} o su versión Insesgada (\textit{Debiased} en inglés) \cite{janati2020debiased}. Sin embargo, el Algoritmo~\ref{alg:sgdw-general} es lo suficientemente general para ser aplicado a cualquier medida discreta, utilizando por ejemplo, la estimación del algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}.
 
-Para muestrear a partir de una medida $\Gamma$ a partir de un conjunto de datos $\left\{ \mu_i \right\}_{i=1}^{N} \subseteq \ProbSpace[\cX] $, se puede calcular la medida empírica $\hat \Gamma$ de la siguiente forma:
-\begin{equation}\label{eq:medida-empirica}
-    \hat \Gamma (\dd \mu) = \frac{1}{N} \sum_{i=1}^{N} \delta_{\mu_i} (\dd \mu).
+Todos estos métodos de cálculo de baricentros se implementan de manera eficiente utilizando la librería de \textit{Python Optimal Transport} (POT) \cite{flamary2021pot}, donde además esta librería admite la paralelización de los cálculos por medio de la computación de Propósito General en Unidades de Procesamiento Gráfico (GPGPU por sus siglas en inglés) \cite{owens2008gpu}. En la implementación, se mantienen las versiones tanto para imágenes como para medidas discretas genéricas, para mayor generalidad y versatilidad.
+
+\FM[inline]{Incluir un párrafo que implementé esto como una clase y la estrategia que usé? sólo para que en el SGDWP mencionar que ese es simplemente un decorador de este algoritmo.}
+
+\subsection{Experimentos con distintas medidas}\label{ssec:muestreando-gamma}  % MARK: - Muestreando de la Medida Gamma
+
+
+Se considera una medida de referencia $\Prob_X \in \ProbSpace[\ProbSpace[\cX]]$ que corresponde a la forma ideal\FM{Con esto me esto refiriendo que no se utiliza directamente el data set, si no más bien una versión teórica y continua del mismo, donde nosotros tenemos acceso a esa variedad a través de muestras, y que la utilizamos como una aproximación de dicha variedad.} del conjunto de datos \textit{Quick, Draw!} \cite{jongejan2016quick}. Se desea calcular el baricentro de esta medida, utilizando el Algoritmo~\ref{alg:sgdw-general}. Para ello, se obtendrán dos aproximaciones. La primera, es la empírica:
+\begin{equation}
+    \hat \Prob_X = \frac{1}{N} \sum_{i=1}^{N} \delta_{\mu_i},
 \end{equation}
-Esto corresponde muestrear una imagen cualquiera de forma equiprobable. Otra manera de obtener una $\Gamma$, es a través de un modelo generativo, de manera que muestrear una imagen correspondería a simplemente muestrear un ruido aleatorio $z \sim \Prob_Z$ y aplicar la función generadora $G_\theta(z)$.
+donde $\left\{ \mu_i \right\}_{i=1}^{N} \subseteq \ProbSpace[\cX] $ es el conjunto de datos obtenido de la Sección~\ref{ssec:preparacion-dataset}, y $N$ es el tamaño del conjunto de datos. La segunda, es la medida generada por la WGAN $G_\theta : \cZ \to \ProbSpace[\cX] $ entrenada como se explica en el Capítulo~\ref{chap:WAE-WGAN}:
+\begin{equation}
+    \tilde \Prob_X
+    = \pf{G_\theta} \Prob_Z
+    %\int_{\cZ} \delta_{G_\theta(z)} (\dd \mu) \; \Prob_Z(\dd z),
+\end{equation}
+donde $\Prob_Z$ es la medida del espacio latente (en este caso, la distribución normal estándar).
+
+Como ambas son estimaciones de la medida de referencia $\Prob_X$, se espera que el baricentro de estas medidas sean similares entre sí.
 
 \subsection{Resultados y Discusión}\label{ssec:sgdw-resultados-discusion}  % MARK: -- Resultados y Discusión
 
