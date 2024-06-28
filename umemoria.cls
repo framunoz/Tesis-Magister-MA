@@ -62,6 +62,7 @@
 % babel recomienda importar csquotes https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
 \RequirePackage{csquotes}
 
+% MARK: Draft
 % \RequirePackage[numbers,sort]{natbib}  % Estilo de citado (antiguo)
 \if@draft
     \RequirePackage[
@@ -69,7 +70,7 @@
         style=draft,
     ]{biblatex}  % Estilo de citado
     \RequirePackage[
-        %
+        inline
     ]{showlabels} % Mostrar etiquetas
 \else
     \RequirePackage[
