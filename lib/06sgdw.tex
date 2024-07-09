@@ -101,20 +101,21 @@ Como $\hat \Prob_X$ y $\tilde \Prob_X$ son estimaciones de la medida de referenc
 
 Para el algoritmo, se utiliza el siguiente esquema de paso:
 \begin{equation}
-    \eta_k = \frac{a}{(b^{1/c} + k)^c},\ \forall k \in \N.
+    \eta_k = \frac{a}{(b^{1/c} + k)^c},\quad \forall k \in \N.
 \end{equation}
-Se puede demostrar que, cuando $a > 1$, $b > 0$ y $0.5 < c \leq 1$, entonces $(\eta_k)_{k}$ cumple con las siguientes dos condiciones:
+Este esquema ha sido una reparametrización del que se presenta en \cite[Secc. 2]{welling2011bayesian}. Se puede demostrar que, cuando $a > 1$, $b > 0$ y $0.5 < c \leq 1$, entonces $(\eta_k)_{k}$ cumple con las siguientes dos condiciones:
 \begin{align}
     \sum_{k=0}^{\infty} \eta_k   & = \infty, &
     \sum_{k=0}^{\infty} \eta_k^2 & < \infty.
 \end{align}
-\FM[inline]{Hay que incluir algo como ``que son condiciones usuales para estos tipos de algoritmos''}
-En los experimentos se utilizan $a = 3$, $b = 3.01$ y $c = 0.501$. Se escogen estos parámetros para que se cumplan las siguientes condiciones: $\forall k\in\N \colon \eta_k\in[0, 1]$ y $\eta_0 = \frac{a}{b} \lesssim 1$.
-\FM[inline]{Dejar estos dos en una sola linea}
+Estas dos condiciones son usuales en la optimización convexa, pues garantizan la convergencia del algoritmo. En los experimentos se utilizan $a = 3$, $b = 3.01$ y $c = 0.501$. Se escogen estos parámetros para que se cumplan las siguientes condiciones:
+\begin{equation}
+    \forall k\in\N \colon \eta_k\in[0, 1]\qquad \text{y} \qquad \eta_0 = \frac{a}{b} \lesssim 1.
+\end{equation}
 
-Además, para estas dos medidas, se consideran dos esquemas para el número de lotes $S_k$: (1) uno simple $S_k = 1$, que correspondería al caso original, y (2) otro más complejo $S_k = 5$, para observar el efecto de una convergencia más rápida.
+Además, para estas dos medidas, se consideran dos esquemas para el número de lotes $S_k$: (\textit{i}) uno simple $S_k = 1$, que correspondería al caso original, y (\textit{ii}) otro más complejo $S_k = 5$, para observar el efecto de una convergencia más rápida.
 
-\FM[inline]{Habría que incluir los parámetros utilizados para el debiased creo yo. Se podría dejar en el anexo}
+Para la estimación del baricentro de Wasserstein en el paso 6. del Algoritmo~\ref{alg:sgdw-general} se utiliza el método del Baricentro de Wasserstein Convolucional Insesgado \cite{janati2020debiased}. Para mayor detalle de los parámetros parámetros utilizados, se puede consultar el Anexo~\ref{sec:compl-sgdw-params-adicional}.
 
 Los resultados de las iteraciones se presentan a continuación:
 \FM[inline]{Hay que modificar estas imagenes: quitarles los títulos, o bien, ponerlos en la descripción de la figura.}
@@ -137,22 +138,21 @@ Los resultados de las iteraciones se presentan a continuación:
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=0.75\textwidth]{img/barycenters/batch-bar-DS.pdf}
-        \caption{Baricentro de la medida empírica $\hat\Prob_X$, con $S_k=5$.}
+        \caption{Baricentro de la medida empírica $\hat\Prob_X$, versión~por lotes.}
         \label{fig:batch-bar-DS}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=0.75\textwidth]{img/barycenters/batch-bar-GAN.pdf}
-        \caption{Baricentro de la medida generadora $\tilde\Prob_X$, con $S_k=5$.}
+        \caption{Baricentro de la medida generadora $\tilde\Prob_X$, versión por lotes.}
         \label{fig:batch-bar-GAN}
     \end{subfigure}
     \caption{Baricentros de población de las medidas $\hat\Prob_X$ y $\tilde\Prob_X$ para el conjunto de datos \textit{Quick, Draw}, utilizando $S_k=1$ y $S_k=5$.}
     \label{fig:barycenters}
 \end{figure}
 
-\FM[inline]{\textbf{FALTARÍA AGREGAR LAS PRIMERAS Y ULTIMAS ITERACIONES DE ESTOS BARICENTROS, AUNQUE HAY QUE HACERLO EN UN ANEXO.}}
-
+En el Anexo~\ref{sec:compl-sgdw-iters} se presentan las primeras y últimas iteraciones del cálculo de los baricentros, tanto para la medida empírica $\hat\Prob_X$ como para la medida generadora $\tilde\Prob_X$.
 
 
 
