@@ -152,12 +152,13 @@ En la práctica, la forma de implementar la generadora es a través de un \emph{
 \end{equation}
 donde $\cZ$ es el espacio de las variables latentes, y $\Prob_Z \in \ProbSpace[\cZ] $ es la distribución del espacio latente (típicamente se utiliza la distribución Gaussiana o Uniforme).
 
-\RED[inline]{Revisar esta parte!}
 \begin{remark}\label{obs:modelo-generativo-push-forward}
-    En el caso en que el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, donde $G\colon\cZ\to\cX$ es una función medible, entonces la Ecuación~\eqref{eq:generative-model} se simplifica a $\Prob_G (\dd x) = \pf{G} \Prob_Z (\dd x)$, donde $\pf{G}$ es el \emph{push-forward} de la función $G$. Intuitivamente, para generar una muestra del modelo generativo, se muestrea una variable latente $z$ de la distribución $\Prob_Z$, y se mapea a través de la función $G$ para obtener una muestra $x$ del modelo generativo.
+    En el caso en que el modelo generativo $\Prob_G (\dd x \mid z)$ se mapee de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, donde $G\colon\cZ\to\cX$ es una función medible, entonces la Ecuación~\eqref{eq:generative-model} se simplifica a $\Prob_G (\dd x) = \pf{G} \Prob_Z (\dd x)$, donde $\pf{G}$ es el \emph{push-forward} de la función $G$. Intuitivamente, para generar una muestra del modelo generativo, primero se debe muestrear una variable latente $z\sim \Prob_Z$,
+    % de la distribución $\Prob_Z$
+    para luego mapearla a través de la función $G$ y así obtener una muestra $x$ del modelo generativo.
 \end{remark}
 
-Por simplicidad, la función $G\colon \cZ \to \cX$ se estima a través de una red neuronal $G_\theta$, y en virtud al Teorema~\ref{thm:gan-optimal-generator}, se sabe que, en el óptimo, el discriminador también toma una forma determinista, de forma que basta con buscar una función $D\colon\cX\to [0, 1]$, la cual también se estima a través de una red neuronal $D_\varphi$.
+Por simplicidad, la función $G\colon \cZ \to \cX$ se estima a través de una red neuronal $G_\theta$, y en virtud al Teorema~\ref{thm:gan-optimal-generator}, se sabe que, en el óptimo, el discriminador también toma una forma determinista. En otras palabras, basta con buscar una función $D\colon\cX\to [0, 1]$, la cual se estima a través de una red neuronal $D_\varphi$.
 
 % Por simplicidad, el modelo generativo $\Prob_G (\dd x \mid z)$ se mapea de forma determinista a través de $\Prob_G (\dd x \mid z) = \delta_{G(z)}(\dd x)$, utilizando una función $G\colon \cZ \to \cX$, la cuál se estima a través de una red neuronal $G_\theta$. Por otro lado, el Teorema~\ref{thm:gan-optimal-discriminator} dice que, en el óptimo, el discriminador toma una forma determinista, de forma que basta con buscar una función $D\colon\cX\to [0, 1]$, la cual también se estima a través de una red neuronal $D_\varphi$.
 
@@ -229,11 +230,7 @@ Inspirados en este teorema, los autores de la WGAN \cite{arjovsky2017wasserstein
     % (P_{\mathrm{WGAN}}) \quad 
     \min_{G} \max_{f \in \Lip[\cX]} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)],\tag{$P_{\mathrm{WGAN}}$}
 \end{equation}
-donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, para después utilizar esta estimación para minimizar la distancia entre la distribución real y la generada.
-\RED[inline]{
-    Siento que se repite la palabra ``para'':\newline
-    Se puede destacar que en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, \textbf{para} después utilizar esta estimación \textbf{para} minimizar la distancia entre la distribución real y la generada.
-}
+donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, en función de utilizar esta estimación para minimizar la distancia entre la distribución real y la generada.
 
 En la práctica, se utilizan las redes neuronales $G_\theta: \cZ \to \cX$ y $f_\omega: \cX \to \R$ para aproximar la generadora y la función crítica, respectivamente.
 Primero, la función crítica $f_\omega$ busca maximizar la discrepancia media de~\eqref{eq:dualidad-kantorovich-rubinstein}, con la restricción de que sea $1$-Lipschitz para obtener una estimación de la distancia de Wasserstein, mientras que la generadora $G_\theta$ busca, como en el caso de la GAN, minimizar la distancia de Wasserstein entre la distribución real y la generada.\RED{Revisar este párrafo}
