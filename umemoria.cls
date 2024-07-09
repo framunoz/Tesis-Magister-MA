@@ -50,6 +50,7 @@
 %% Caption antes de la tabla
 \RequirePackage{caption}
 \captionsetup[table]{position=above}
+\RequirePackage{subcaption}
 
 %% Agregar palabra para anexos
 \RequirePackage[titletoc]{appendix}
