@@ -63,7 +63,6 @@ Todos estos métodos de cálculo de baricentros se implementan de manera eficien
 
 Se considera una medida de referencia $\Prob_X \in \ProbSpace[\ProbSpace[\cX]]$ que corresponde a una forma ``idealizada'' del conjunto de datos \textit{Quick, Draw!} \cite{jongejan2016quick}. Esto es, si es que se tuviera un acceso ilimitado a muestras parecidas a este conjunto de datos, entonces este sería $\Prob_X$. Se desea calcular el baricentro de esta medida, utilizando el Algoritmo~\ref{alg:sgdw-general}.
 
-\RED[inline]{Debería mencionar la imagen justo cuando menciono la medida, o las nombro a ambas al final?}
 Para ello, se consideran dos aproximaciones de $\Prob_X$. La primera, es la empírica:
 \begin{equation}\label{eq:medida-empirica-quick-draw}
     \hat \Prob_X = \frac{1}{N} \sum_{i=1}^{N} \delta_{\mu_i},
@@ -103,7 +102,7 @@ Para el algoritmo, se utiliza el siguiente esquema de paso:
 \begin{equation}
     \eta_k = \frac{a}{(b^{1/c} + k)^c},\quad \forall k \in \N.
 \end{equation}
-Este esquema ha sido una reparametrización del que se presenta en \cite[Secc. 2]{welling2011bayesian}. Se puede demostrar que, cuando $a > 1$, $b > 0$ y $0.5 < c \leq 1$, entonces $(\eta_k)_{k}$ cumple con las siguientes dos condiciones:
+Este esquema es una reparametrización del que se presenta en \cite[Secc.~2]{welling2011bayesian}. Se puede demostrar que, cuando $a > 1$, $b > 0$ y $0.5 < c \leq 1$, entonces $(\eta_k)_{k}$ cumple con las siguientes condiciones:
 \begin{align}
     \sum_{k=0}^{\infty} \eta_k   & = \infty, &
     \sum_{k=0}^{\infty} \eta_k^2 & < \infty.
@@ -113,9 +112,9 @@ Estas dos condiciones son usuales en la optimización convexa, pues garantizan l
     \forall k\in\N \colon \eta_k\in[0, 1]\qquad \text{y} \qquad \eta_0 = \frac{a}{b} \lesssim 1.
 \end{equation}
 
-Además, para estas dos medidas, se consideran dos esquemas para el número de lotes $S_k$: (\textit{i}) uno simple $S_k = 1$, que correspondería al caso original, y (\textit{ii}) otro más complejo $S_k = 5$, para observar el efecto de una convergencia más rápida.
+Además, para estas dos medidas, se consideran dos esquemas para el número de lotes $S_k$: uno simple $S_k = 1$, que correspondería al caso original, y otro más complejo $S_k = 5$, para observar el efecto de una convergencia más rápida.
 
-Para la estimación del baricentro de Wasserstein en el paso 6. del Algoritmo~\ref{alg:sgdw-general} se utiliza el método del Baricentro de Wasserstein Convolucional Insesgado \cite{janati2020debiased}. Para mayor detalle de los parámetros parámetros utilizados, se puede consultar el Anexo~\ref{sec:compl-sgdw-params-adicional}.
+Para la estimación del baricentro de Wasserstein en el paso 6 del Algoritmo~\ref{alg:sgdw-general}, se utiliza el método del Baricentro de Wasserstein Convolucional Insesgado \cite{janati2020debiased}. Para mayor detalle de los parámetros utilizados, se puede consultar el Anexo~\ref{sec:compl-sgdw-params-adicional}.
 
 Los resultados de las iteraciones se presentan a continuación:
 \FM[inline]{Hay que modificar estas imagenes: quitarles los títulos, o bien, ponerlos en la descripción de la figura.}

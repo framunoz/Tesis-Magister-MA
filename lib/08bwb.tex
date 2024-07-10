@@ -6,10 +6,9 @@ Teniendo un conjunto de modelos finito, dígase, $\Models \subseteq \ProbSpace[\
 
 \subsection{Construcción de la Posterior Usando una GAN}\label{ssec:construccion-posterior}  % MARK: - Construcción de la Posterior Usando una GAN
 
-\RED[inline]{Hay que seguir revisando esta sección}
-
 Como se explicó en secciones anteriores,\FM{Aquí sería bueno incluir las secciones de lo que se habla esto, sguramente el de la GAN y WGAN}
-dada una medida de referencia $\Prob_X$\footnote{del cuál se tiene acceso a través de una muestra para obtener una medida empírica $\hat\Prob_X = \frac{1}{N}\sum_{i=1}^{N} \delta_{x_i}$}\FM{Corregir} lo que hacen las redes generativas es aproximarla por medio de un modelo generativo $\Prob_G$. Gracias a esta propiedad, se propone utilizar una GAN como prior para poder calcular la posterior. Cabe destacar que, a pesar de que la idea de utilizar una GAN como prior fue original, ya existía un trabajo que propone algo similar \cite{patel2019bayesian}, sin embargo, en este trabajo de tesis se formalizan estas ideas.
+dada una medida de referencia $\Prob_X$\footnote{Del cuál se tiene acceso a través de una estimación por medio de la medida empírica $\hat\Prob_X = \frac{1}{N}\sum_{i=1}^{N} \delta_{x_i}$, donde $x_i \sim \Prob_X$.}, lo que hacen las redes generativas es aproximarla por medio de un modelo generativo $\Prob_G$. Gracias a esta propiedad, se propone utilizar una GAN como prior para poder calcular la posterior.
+Cabe destacar que la idea de utilizar una GAN como prior se encuentra en un trabajo previo \cite{patel2019bayesian}, pero este presenta fallos en su planteamiento. Por lo tanto, en este trabajo de tesis se formalizan y solucionan estos errores.\RED{Hay que revisar este último párrafo.}
 
 Dada una red generadora $G_\theta \colon \cZ \to \ProbSpace[\cX] $ con una medida en el espacio latente $\Prob_Z$, se propone utilizar como prior a la medida
 \begin{equation}
@@ -23,14 +22,14 @@ De esta manera, la posterior tendría la siguiente forma:
 \end{equation}
 donde $C \eqdef \int_{\ProbSpace[\cX]} \cL_n(\nu) \; \Pi^G(\dd \nu)$ es una constante de normalización.
 
-Dada alguna función arbitraria $\Pi_n$-integrable $g$ (como por ejemplo $\mu \mapsto \Wasserstein[p]{\mu}{\nu}^p$), se puede comprobar lo siguiente:
+Dada una función arbitraria $g$ $\Pi_n$-integrable (como por ejemplo, la función $\mu \mapsto \Wasserstein[p]{\mu}{\nu}^p$), se puede comprobar lo siguiente:
 \begin{align}
      & \int_{\ProbSpace[\cX]} g(\mu) \; \Pi_n(\dd \mu)                         \\
      & = C^{-1} \int_{\ProbSpace[\cX]} g(\mu) \cL_n(\mu) \; \Pi^G(\dd \mu)     \\
      & = C^{-1} \int_{\cZ} g(G_\theta(z)) \cL_n(G_\theta(z)) \; \Prob_Z(\dd z) \\
      & = \int_{\cZ} g(G_\theta(z)) \; \Pi^Z_n(\dd z),
 \end{align}
-donde $\Pi^Z_n(\dd z)$ es la \textit{medida posterior en el espacio latente} y se define por
+donde $\Pi^Z_n(\dd z)$ es la \textit{medida posterior en el espacio latente}, y se define por
 \begin{equation}
     \Pi^Z_n(\dd z) \eqdef C^{-1} \cL_n(G_\theta(z)) \; \Prob_Z(\dd z).
 \end{equation}
@@ -39,9 +38,9 @@ Por la Definición~\ref{def:operador-push-forward} del operador push-forward, se
 \begin{equation}\label{eq:posterior-en-latente}
     \Pi_n = \pf{G_\theta} \Pi^Z_n.
 \end{equation}
-La forma de interpretar la ecuación~\eqref{eq:posterior-en-latente} es que para obtener un muestreo de la posterior $\Pi_n(\dd \mu)$ basta con hacer un muestreo de la posterior en el espacio latente $\Pi^Z_n(\dd z)$ y después aplicar la red generadora $G_\theta$.
+La forma de interpretar la ecuación anterior, es que para obtener un muestreo de la posterior $\mu\sim\Pi_n$ basta con hacer un muestreo $z\sim\Pi^Z_n$ y después aplicar la red generadora $G_\theta$ sobre $z$.
 
-Esto resulta beneficioso, pues delega la tarea de muestrear a partir de la posterior al espacio latente $\cZ$ (el cuál, en la práctica, es $\R^{d_z}$), la cual es mucho más fácil de simular. Por ejemplo, una manera de obtener muestreos a partir de $\Pi^Z_n$, es por medio del método de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble}.\RED{Revisar este párrafo}
+Esto resulta beneficioso, pues delega la tarea de realizar un muestreo a partir de la posterior al espacio latente $\cZ$ (el cuál, en la práctica, es $\R^{d_z}$), la cual es mucho más fácil de simular. Por ejemplo, una manera de obtener muestreos a partir de $\Pi^Z_n$, es por medio del método de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble}.
 
 
 

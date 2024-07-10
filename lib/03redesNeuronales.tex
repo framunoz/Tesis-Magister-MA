@@ -230,11 +230,10 @@ Inspirados en este teorema, los autores de la WGAN \cite{arjovsky2017wasserstein
     % (P_{\mathrm{WGAN}}) \quad 
     \min_{G} \max_{f \in \Lip[\cX]} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)],\tag{$P_{\mathrm{WGAN}}$}
 \end{equation}
-donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, en función de utilizar esta estimación para minimizar la distancia entre la distribución real y la generada.
+donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que, en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, en función de utilizar esta estimación, para minimizar la distancia entre la distribución real y la generada.
 
 En la práctica, se utilizan las redes neuronales $G_\theta: \cZ \to \cX$ y $f_\omega: \cX \to \R$ para aproximar la generadora y la función crítica, respectivamente.
-Primero, la función crítica $f_\omega$ busca maximizar la discrepancia media de~\eqref{eq:dualidad-kantorovich-rubinstein}, con la restricción de que sea $1$-Lipschitz para obtener una estimación de la distancia de Wasserstein, mientras que la generadora $G_\theta$ busca, como en el caso de la GAN, minimizar la distancia de Wasserstein entre la distribución real y la generada.\RED{Revisar este párrafo}
-% La generadora $G_\theta$ busca, como en el caso de la GAN, minimizar la distancia entre la distribución real y la generada, mientras que la función crítica $f_\omega$ busca maximizar la expresión en~\eqref{eq:dualidad-kantorovich-rubinstein}, con la restricción de que sea $1$-Lipschitz.
+Primero, la función crítica $f_\omega$ busca maximizar la discrepancia media de~\eqref{eq:dualidad-kantorovich-rubinstein}, con la restricción de que sea $1$-Lipschitz para obtener una estimación de la distancia de Wasserstein. Por otro lado, la generadora $G_\theta$ busca, como en el caso de la GAN, minimizar la distancia de Wasserstein entre la distribución real y la generada.
 
 Este procedimiento define a la función de pérdida como
 la diferencia entre la media de la función crítica evaluada en las muestras reales y generadas, lo que proporciona una estimación de la distancia de Wasserstein:
@@ -416,7 +415,7 @@ Dado lo anterior, el Algoritmo~\ref{alg:AE} describe la forma de estimar los par
 
 \subsection{Wasserstein AE}\label{ssec:WAE}  % MARK: WAE
 
-Al igual que en el caso de la GAN, se puede definir una versión del AE que minimiza la distancia de Wasserstein entre la distribución real y la generada. En este caso, el Wasserstein AE (WAE) \cite{tolstikhin2017wasserstein} busca minimizar la distancia de Wasserstein entre la distribución real y la generada, en lugar de solo minimizar el error de reconstrucción. Para ello, los autores de \cite{tolstikhin2017wasserstein} proponen una función de pérdida basado en el siguiente teorema:
+Al igual que en el caso de la GAN, se puede definir una versión del AE que minimiza la distancia de Wasserstein entre la distribución real y la generada. En este caso, el Wasserstein AE (WAE) \cite{tolstikhin2017wasserstein} busca minimizar la distancia de Wasserstein entre la distribución real y la generada, en lugar de solo minimizar el error de reconstrucción. Para ello, los autores de \cite{tolstikhin2017wasserstein} proponen una función de pérdida basada en el siguiente teorema:
 
 \begin{theorem}[Teorema Fundamental del WAE \cite{tolstikhin2017wasserstein}]
     Sea $\Prob_X\in \ProbSpace$ cualquiera y  $\Prob_G\in \ProbSpace$ un modelo generativo definido como en la Ecuación~\eqref{eq:generative-model}, donde $\Prob_G(\dd x \mid Z) = \delta_{G(Z)}(\dd x)$ es determinista para cualquier función $G:\cZ \to \cX$. Entonces, se cumple lo siguiente:
@@ -429,7 +428,7 @@ Al igual que en el caso de la GAN, se puede definir una versión del AE que mini
     corresponde a la marginal de $\ProbQ$ en el espacio latente.
 \end{theorem}
 
-Este teorema establece que, para cualquier función de pérdida $c$, la distancia de Wasserstein entre la distribución real y la generada se puede calcular de forma similar a un AE, utilizando un codificador $\ProbQ$ y un decodificador $G$. Es más, si es que se compara con la Ecuación~\eqref{eq:ae-obj-func}, se puede notar que las funciones objetivos son similares, con la diferencia de que en este caso, existe la restricción de que $\ProbQ_Z = \Prob_Z$.\RED{Quizás hay que revisar esta parte?}
+Este teorema establece que, para cualquier función de costo $c$, la distancia de Wasserstein entre la distribución real y la generada se puede calcular de forma similar a un AE, utilizando un codificador $\ProbQ$ y un decodificador $G$. Es más, si es que se compara con la Ecuación~\eqref{eq:ae-obj-func}, se puede notar que las funciones objetivos son similares, con la única diferencia de que en este caso, se tiene la restricción $\ProbQ_Z = \Prob_Z$.
 
 Por tanto, el objetivo del WAE es \textbf{minimizar el error de reconstrucción, con la restricción de que la marginal del codificador sea igual a la distribución del espacio latente}. Con esto en mente, el problema de optimización del WAE corresponde a:
 \begin{equation}
@@ -481,18 +480,9 @@ donde $z = (z_i)_{i=1}^{n}$ y $\tilde z = (\tilde z_i)_{i=1}^{n}$ son muestras d
 
 \section{Baricentros de Wasserstein Restringidos}\label{sec:app-bar-wass-Proyectados}  % MARK: - Section Aplicación: Baricentros de Wasserstein Restringidos
 
-\RED[inline]{Aquí no me gusta como me refiero a cada rato a ``los autores'', hay que cambiarlo}
-
-% Una aplicación interesante de las GANs es que aprenden la variedad de imágenes de un conjunto de datos \cite{zhu2016generative}. Los autores de \cite{simon2020barycenters} proponen una forma de calcular baricentros de Wasserstein, utilizando una GAN como forma de aproximar la variedad; y un AE, que funciona para proyectar sobre dicha variedad.
-
-
-\RED[inline]{Hay que revisar estos dos párrafos! Ya les hice los cambios respectivos.}
-
-% Aquel trabajo se enfoca en la interpolación de imágenes,
-% que se refiere a la transición visual de dos imágenes de entrada. Para que aquella transición sea visualmente atractiva, es deseable que cumpla con las siguientes propiedades: (\textit{i}) que sea suave, es decir, que no haya cambios bruscos en la transición; (\textit{ii}) que aplique los mínimos cambios necesarios en la imagen; y (\textit{iii}) que parezca ``realista'', evitando cambios no naturales en cada transición.
 La interpolación de imágenes se refiere a la transición visual de dos imágenes de entrada. Para que aquella transición sea visualmente atractiva, es deseable que cumpla con las siguientes propiedades: (\textit{i}) que sea suave, es decir, que no haya cambios bruscos en la transición; (\textit{ii}) que aplique los mínimos cambios necesarios en la imagen; y (\textit{iii}) que parezca ``realista'', evitando cambios no naturales en cada transición.
 
-Varias de estas propiedades se pueden obtener a través de una interpolación geodésica con baricentros de Wasserstein, sin embargo, el resultado de esta interpolación puede no verse natural.
+Varias de estas propiedades se pueden obtener a través de una interpolación geodésica con baricentros de Wasserstein. Sin embargo, el resultado de esta interpolación puede no verse natural.
 En base al trabajo de \cite{zhu2016generative}, que describe la manera en que una GAN aproxima una variedad de imágenes, y cómo se puede utilizar un AE para proyectar una imagen en esta variedad, los autores de \cite{simon2020barycenters} proponen utilizar una GAN y un AE para mantener la suavidad y realismo de la interpolación.
 
 \FM[inline]{Quizás podría ser bueno explicar cómo los autores de \cite{zhu2016generative} utilizan una GAN para aproximar la variedad de imágenes.}
@@ -562,7 +552,7 @@ En la Figura~\ref{fig:latent-pixel-space} se ilustra la diferencia entre su mét
     \includegraphics[width=0.48\textwidth]{img/cbw/latent-space.png}
     \includegraphics[width=0.48\textwidth]{img/cbw/pixel-space.png}
     \caption{
-        Una ilustración del proceso de interpolación de una imagen, fijando $t = 0 \to 1$, usando varios métodos en el espacio de píxeles y en el espacio latente de una GAN entrenada.
+        Ilustración del proceso de interpolación de una imagen, fijando $t = 0 \to 1$, usando varios métodos en el espacio de píxeles y en el espacio latente de una GAN entrenada.
         Imagen obtenida de \cite{simon2020barycenters}.
     }
     \label{fig:latent-pixel-space}
