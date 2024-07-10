@@ -18,7 +18,7 @@ Este cambio puede hacer que el Supuesto~\ref{assump:caso-particular-geodesicamen
 
 \subsection{Integración de la Proyección al SGDW}\label{ssec:sgdwp-deduccion-algoritmo}  % MARK: - Integración de la Proyección al SGDW
 
-A pesar de que los autores de \cite{simon2020barycenters} explican que, para obtener los resultados de su artículo utilizan el Algoritmo~\ref{alg:ADMM-CWB}, la realidad es que al revisar su código fuente \cite{imagebar2020simon} se observa que sólo utilizan una iteración del algoritmo anterior (es decir, no utilizan el Lagrangiano Aumentado). De este modo, el algoritmo se simplifica de la siguiente manera: para dos medidas $\mu_0, \mu_1 \in \ProbSpace[\cX] $ y un número $t \in [0, 1]$, empiezan por calcular la $t$-interpolación geodésica de estas medidas, y luego proyectan este baricentro sobre la variedad $\Manifold$ a través del AE.
+A pesar de que los autores de \cite{simon2020barycenters} explican que, para obtener los resultados de su artículo utilizan el Algoritmo~\ref{alg:ADMM-CWB}, la realidad es que al revisar su código fuente \cite{imagebar2020simon} se observa que sólo utilizan una iteración del algoritmo anterior (es decir, no utilizan el Lagrangiano Aumentado). De este modo, el algoritmo se simplifica de la siguiente manera: para dos medidas $\mu_0, \mu_1 \in \ProbSpace[\cX] $ y un número $t \in [0, 1]$, empiezan por calcular la $t$-interpolación geodésica de estas medidas (paso 3 del Alg.~\ref{alg:ADMM-CWB}), y luego proyectan este baricentro sobre la variedad $\Manifold$ a través del AE (paso 4 del Alg.~\ref{alg:ADMM-CWB}). El resto de pasos que conciernen al Lagrangiano Aumentado (los pasos 5, 6 y el bucle 2-7) son omitidos en su implementación.
 
 Motivados por esta simplificación, se propone una adaptación del Algoritmo~\ref{alg:sgdw-general} para que proyecte el baricentro en la variedad $\Manifold$, donde además se agrega el parámetro $n_P\in\N$ para proyectar cada $n_P$ iteraciones del algoritmo. De este modo, se deduce el Algoritmo~\ref{alg:sgdwp} para el SGDW Proyectado.
 \begin{algorithm}[H]
@@ -48,8 +48,110 @@ Cabe destacar que el Algoritmo~\ref{alg:sgdwp} tiene una mecánica similar al M�
 
 \FM[inline]{debería mencionar como se implemnetó el proyector $P$ en más detalle?}
 
+\subsubsection{Experimentos}\label{sssec:sgdwp-experimentos}  % MARK: - Experimentos
+
+Una primera pregunta que se tiene es:
+\begin{quotation}
+    \centering
+    ¿Existe un único baricentro para este problema?
+\end{quotation}
+% ¿existe un único baricentro para este problema? 
+Como se sabe, y los experimentos de la Sección~\ref{sec:sgdw} corroboraron, el baricentro que computa el SGDW es único y consistente. Sin embargo, la variedad $\Manifold$ en este caso puede no ser geodésicamente convexa, por lo que no se puede garantizar la unicidad del baricentro proyectado. Por este motivo, para saber si existe alguna convergencia en el baricentro proyectado, se ejecuta el Algoritmo~\ref{alg:sgdwp} múltiples veces para observar los distintos resultados, y verificar si son similares o no.
+
+Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales planteadas en la Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se definiría por $P = \ProbQ_\varphi \circ G_\theta$. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
+
+El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados obtenidos en diez experimentos distintos. Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para este problema.
+\begin{figure}[H]
+    \centering
+    % Experimento 01
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-01.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-01}
+    \end{subfigure}
+    \hfill
+    % Experimento 02
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-02.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-02}
+    \end{subfigure}
+    \hfill
+    % Experimento 03
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-03.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-03}
+    \end{subfigure}
+    \hfill
+    % Experimento 04
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-04.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-04}
+    \end{subfigure}
+    \hfill
+    % Experimento 05
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-05.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-05}
+    \end{subfigure}
+    \newline
+    % Experimento 06
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-06.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-06}
+    \end{subfigure}
+    \hfill
+    % Experimento 07
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-07.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-07}
+    \end{subfigure}
+    \hfill
+    % Experimento 08
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-08.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-08}
+    \end{subfigure}
+    \hfill
+    % Experimento 09
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-09.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-09}
+    \end{subfigure}
+    \hfill
+    % Experimento 10
+    \begin{subfigure}[b]{0.17\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp/bar-SGDWP-exp-10.pdf}
+        % \caption{}
+        \label{fig:bar-SGDWP-exp-10}
+    \end{subfigure}
+    \caption{Baricentros proyectados obtenidos por el Algoritmo~\ref{alg:sgdwp} en diez experimentos distintos.}
+    \label{fig:bar-SGDWP-exp}
+\end{figure}
+
+
+
 
 \subsection{Resultados y Discusión}\label{ssec:sgdwp-resultados-discusion}  % MARK: - Resultados y Discusión
+
+
 
 \subsection{Conclusiones}\label{ssec:sgdwp-conclusiones}  % MARK: - Conclusiones
 

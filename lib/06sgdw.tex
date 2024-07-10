@@ -99,7 +99,7 @@ donde $\Prob_Z$ es la medida del espacio latente (en este caso, una distribució
 Como $\hat \Prob_X$ y $\tilde \Prob_X$ son estimaciones de la medida de referencia $\Prob_X$, se espera que el baricentro de población de estas medidas sean similares entre sí. Por este motivo, se calculan los baricentros utilizando el Algoritmo~\ref{alg:sgdw-general} para ambas medidas, y se comparan los resultados obtenidos.
 
 Para el algoritmo, se utiliza el siguiente esquema de paso:
-\begin{equation}
+\begin{equation}\label{eq:esquema-paso}
     \eta_k = \frac{a}{(b^{1/c} + k)^c},\quad \forall k \in \N.
 \end{equation}
 Este esquema es una reparametrización del que se presenta en \cite[Secc.~2]{welling2011bayesian}. Se puede demostrar que, cuando $a > 1$, $b > 0$ y $0.5 < c \leq 1$, entonces $(\eta_k)_{k}$ cumple con las siguientes condiciones:
