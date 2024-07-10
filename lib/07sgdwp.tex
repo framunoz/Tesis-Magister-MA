@@ -48,7 +48,10 @@ Cabe destacar que el Algoritmo~\ref{alg:sgdwp} tiene una mecánica similar al M�
 
 \FM[inline]{debería mencionar como se implemnetó el proyector $P$ en más detalle?}
 
-\subsubsection{Experimentos}\label{sssec:sgdwp-experimentos}  % MARK: - Experimentos
+\subsection{Experimentos}\label{ssec:sgdwp-experimentos}  % MARK: - Experimentos
+
+\subsubsection{Único Baricentro}\label{sssec:sgdwp-unico-bar}  % MARK: - Único Baricentro
+
 
 Una primera pregunta que se tiene es:
 \begin{quotation}
@@ -58,7 +61,7 @@ Una primera pregunta que se tiene es:
 % ¿existe un único baricentro para este problema? 
 Como se sabe, y los experimentos de la Sección~\ref{sec:sgdw} corroboraron, el baricentro que computa el SGDW es único y consistente. Sin embargo, la variedad $\Manifold$ en este caso puede no ser geodésicamente convexa, por lo que no se puede garantizar la unicidad del baricentro proyectado. Por este motivo, para saber si existe alguna convergencia en el baricentro proyectado, se ejecuta el Algoritmo~\ref{alg:sgdwp} múltiples veces para observar los distintos resultados, y verificar si son similares o no.
 
-Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales planteadas en la Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se definiría por $P = \ProbQ_\varphi \circ G_\theta$. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
+Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales planteadas en la Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se definiría por $P = \ProbQ_\varphi (G_\theta (\bullet))$\FM{Quizás comentar en la sección de la WGAN-WAE que se hará el abuso de notación cuando se asume que $\ProbQ$ es determinista.}. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
 
 El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados obtenidos en diez experimentos distintos. Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para este problema.
 \begin{figure}[H]
@@ -145,6 +148,54 @@ El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGD
     \caption{Baricentros proyectados obtenidos por el Algoritmo~\ref{alg:sgdwp} en diez experimentos distintos.}
     \label{fig:bar-SGDWP-exp}
 \end{figure}
+
+\subsubsection{Variando el Parámetro de Proyectar Cada}\label{sssec:sgdwp-variar-param}  % MARK: - Variando el Parámetro de Proyectar Cada
+
+Otra pregunta que surge es:
+\begin{quotation}
+    \centering
+    ¿Cómo afecta el parámetro $n_P$ en la convergencia del baricentro proyectado?
+\end{quotation}
+Una hipótesis que se tiene es que permitir que se den algunas iteraciones del algoritmo ``clásico'' permitirá tener una mejor estimación del baricentro original antes de proyectarlo en la variedad $\Manifold$. Para verificar esta hipótesis, se ejecuta el Algoritmo~\ref{alg:sgdwp} con distintos valores de $n_P$ y se observa cómo afecta en la convergencia del baricentro proyectado.
+
+En particular, se ejecutará con los valores $n_P \in \left\{ 1, 3, 5, 10 \right\}$.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp-pe/bar-SGDWP-pe-01.pdf}
+        \caption{$n_P=1$}
+        \label{fig:bar-SGDWP-pe-01}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp-pe/bar-SGDWP-pe-03.pdf}
+        \caption{$n_P=3$}
+        \label{fig:bar-SGDWP-pe-03}
+    \end{subfigure}
+    % \newline
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp-pe/bar-SGDWP-pe-05.pdf}
+        \caption{$n_P=5$}
+        \label{fig:bar-SGDWP-pe-05}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/sgdwp-pe/bar-SGDWP-pe-10.pdf}
+        \caption{$n_P=10$}
+        \label{fig:bar-SGDWP-pe-10}
+    \end{subfigure}
+    % \includegraphics[width=0.5\textwidth]{}
+    \caption{Baricentros proyectados obtenidos por el Algoritmo~\ref{alg:sgdwp} con distintos valores de $n_P$.}
+    \label{fig:bar-SGDWP-pe}
+\end{figure}
+
+En el Anexo~\ref{anx:sgdwp} se presentan las iteraciones por las que pasaron estos baricentros.
 
 
 
