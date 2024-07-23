@@ -50,6 +50,7 @@
 %% Caption antes de la tabla
 \RequirePackage{caption}
 \captionsetup[table]{position=above}
+\RequirePackage{subcaption}
 
 %% Agregar palabra para anexos
 \RequirePackage[titletoc]{appendix}
@@ -62,12 +63,16 @@
 % babel recomienda importar csquotes https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
 \RequirePackage{csquotes}
 
+% MARK: Draft
 % \RequirePackage[numbers,sort]{natbib}  % Estilo de citado (antiguo)
 \if@draft
     \RequirePackage[
         sorting=none,
         style=draft,
     ]{biblatex}  % Estilo de citado
+    \RequirePackage[
+        inline
+    ]{showlabels} % Mostrar etiquetas
 \else
     \RequirePackage[
         style=ieee,

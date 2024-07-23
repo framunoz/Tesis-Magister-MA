@@ -4,7 +4,7 @@ El tema principal de lo que trata este trabajo de tesis es acerca del \emph{Bari
 
 Se sabe que para cualquier triángulo formado por tres puntos $x_1, x_2, x_3 \in \R^d$, su \emph{baricentro} corresponde al promedio de los puntos, es decir, el punto $x_b$ tal que $x_b =\nolinebreak \frac{x_1 + x_2 + x_3}{3}$. Por tanto, el \textbf{baricentro} es sólo otra manera de llamar al \textbf{promedio}. Sin embargo, este baricentro también se puede calcular resolviendo el siguiente problema de optimización:
 \begin{equation}\label{eq:baricentro-problema-optimizacion}
-	x_b = \argmin_{x \in \R^d} \sum_{i=1}^3 \frac{1}{3} \norm{x - x_i}_2^2.
+    x_b = \argmin_{x \in \R^d} \sum_{i=1}^3 \frac{1}{3} \norm{x - x_i}_2^2.
 \end{equation}
 
 En este contexto, la función definida por $\dist(x, y) \eqdef \norm{x - y}^2$ es una métrica en $\R^d$, y por tanto, el baricentro se puede interpretar como aquel punto que minimiza el promedio de las distancias con respecto a los puntos dados. En otras palabras, es aquel punto que, en promedio, intenta mantenerse lo más cerca posible de los demás puntos, siendo este un \textbf{representante} de todos ellos.
@@ -19,13 +19,13 @@ Teniendo en cuenta esta analogía, si es que la montaña estuviera más lejos de
 
 Son estas propiedades que convierten a la distancia de Wasserstein en un método práctico para calcular baricentros. En donde, si se considera un conjunto de medidas de probabilidad $\{\mu_1, \ldots, \mu_n\}$, y denotando a la $p$-distancia de Wasserstein\footnote{La constante $p$ parametriza la distancia de forma similar a las $p$-normas, aunque para esta introducción, no es necesario entrar en detalles.} entre dos medidas $\mu$ y $\nu$ por $\Wasserstein[p]{\mu}{\nu}$, entonces el \emph{baricentro de Wasserstein} se define por
 \begin{equation}\label{intro-wasserstein-barycenter}
-	\bar\mu \eqdef \argmin_{\mu \in \ProbSpace[\cX]} \sum_{i=1}^n \gamma_i \Wasserstein[p]{\mu}{\mu_i}^p.
+    \bar\mu \eqdef \argmin_{\mu \in \ProbSpace[\cX]} \sum_{i=1}^n \gamma_i \Wasserstein[p]{\mu}{\mu_i}^p.
 \end{equation}
 donde $\left\{ \gamma_1, \ldots, \gamma_n \right\}$ es una secuencia de pesos no negativos que suman 1.
 
 Cabe destacar que, en la definición del baricentro de Wasserstein, se está considerando un conjunto \textbf{finito} de medidas $\mu_1, \ldots, \mu_n$. Sin embargo, esta definición se puede generalizar a un conjunto \textbf{infinito} de medidas. Para esto, se considera una medida de probabilidad sobre medidas de probabilidad: una medida $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$, que cumple el rol de los pesos $\gamma_i$ en la ecuación \eqref{intro-wasserstein-barycenter}. Con este enfoque, la sumatoria es reemplazada por una integral, y la definición del baricentro de Wasserstein se generaliza a
 \begin{equation}
-	\bar\mu = \argmin_{\mu \in \ProbSpace[\cX]} \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \; {\Gamma(\dd \nu)}.
+    \bar\mu = \argmin_{\mu \in \ProbSpace[\cX]} \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \; {\Gamma(\dd \nu)}.
 \end{equation}
 
 Ahora que ya se conoce el concepto del \textbf{baricentro de Wasserstein}, se procede a explicar la componente \textbf{Bayesiana}. En el enfoque Bayesiano, es usual llamar por \emph{modelos} a las de medidas de probabilidad, donde al \emph{conjunto de modelos} se le denota por $\Models$.  Supongamos entonces que tenemos una muestra $\left\{ x_1, \ldots, x_n \right\}$ de $n$ datos que pertenecen a un espacio $\cX$.
@@ -33,13 +33,13 @@ A partir de esta muestra, se desea determinar un modelo $\bar{\mu}$ en $\Models\
 
 Para esto, se considera la verosimilitud de un modelo $\mu$ y que lo denotaremos por $\LikelihoodN[\mu]$, y un prior sobre los modelos $\Pi(\dd \mu) \in \ProbSpace[\ProbSpace[\cX]]$. En virtud de la regla de Bayes, la \emph{medida posterior} se define por
 \begin{equation}
-	\Pi_n(\dd \mu) \eqdef \frac{\LikelihoodN[\mu]}{\int_{\ProbSpace[\cX]} \LikelihoodN[\nu] \Pi(\dd \nu)} \Pi(\dd \mu).
+    \Pi_n(\dd \mu) \eqdef \frac{\LikelihoodN[\mu]}{\int_{\ProbSpace[\cX]} \LikelihoodN[\nu] \Pi(\dd \nu)} \Pi(\dd \mu).
 \end{equation}
 De esta manera, la medida posterior le dará mayor peso a aquellas medidas que sean más verosímiles con respecto a los datos.
 
 Así, el \emph{baricentro de Wasserstein Bayesiano} se define utilizando la medida posterior:
 \begin{equation}
-	\bar\mu \eqdef \argmin_{\mu \in \Models} \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \; {\Pi_n(\dd \nu)}.
+    \bar\mu \eqdef \argmin_{\mu \in \Models} \int_{\ProbSpace[\cX]} \Wasserstein[p]{\mu}{\nu}^p \; {\Pi_n(\dd \nu)}.
 \end{equation}
 
 
@@ -50,14 +50,14 @@ en la función de pérdida para las redes generativas adversarias, para aliviar 
 Sin embargo, desde la concepción del baricentro de Wasserstein Bayesiano, tan sólo se han realizado algunos experimentos con conjuntos de datos ``de juguete''\footnote{Se utiliza ``conjunto de datos de juguete'' para referirse al anglicismo \textit{toy datasets}.} (utilizando distribuciones normales, por ejemplo), para estudiar sus propiedades matemáticas y estadísticas, pero no se han visto aplicaciones en conjuntos de datos más complejos (como podría ser en imágenes).
 
 
-Una razón de esto, es porque obtener la distribución posterior $\Pi_n(\dd \mu)$ puede ser infactible de calcular para conjuntos de datos finitos, incluso si estos son muy grandes. Otro motivo es que, en el caso en que se utiliza un conjunto infinito de modelos, es necesario utilizar el Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein (en adelante, SGDW por sus siglas en inglés) \cite{backhoff2022stochastic}, el cuál es un algoritmo que, de la misma manera, es bastante reciente y no existen herramientas computacionales que lo implementen de forma general, y mucho menos para conjuntos de datos complejos.
+Una razón de esto, es porque obtener la distribución posterior $\Pi_n(\dd \mu)$ puede ser infactible de calcular para conjuntos de datos finitos, incluso si estos son muy grandes. Otro motivo es que, en el caso en que se utiliza un conjunto infinito de modelos, es necesario utilizar el Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein \cite{backhoff2022stochastic}, el cuál es un algoritmo que, de la misma manera, es bastante reciente y no existen herramientas computacionales que lo implementen de forma general, y mucho menos para conjuntos de datos complejos.
 
 Por este motivo, el objetivo general de este trabajo de tesis es la implementación eficiente de una librería en \emph{Python} para el cálculo del baricentro de Wasserstein Bayesiano sobre conjuntos de imágenes, utilizando el Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein.
 
 Dicho esto, los objetivos específicos son:
 \begin{myitemize}
-	\item \textbf{OE1}: Obtener aproximaciones de las medidas de probabilidad $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$.
-	\item \textbf{OE2}: Implementar el SGDW para una medida $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$.
-	\item \textbf{OE3}: Aproximar la medida posterior $\Pi_n(\dd \mu)$.
-	\item \textbf{OE4}: Calcular el baricentro de Wasserstein Bayesiano.
+    \item \textbf{OE1}: Obtener aproximaciones de las medidas de probabilidad $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$.
+    \item \textbf{OE2}: Implementar el SGDW para una medida $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$.
+    \item \textbf{OE3}: Aproximar la medida posterior $\Pi_n(\dd \mu)$.
+    \item \textbf{OE4}: Calcular el baricentro de Wasserstein Bayesiano.
 \end{myitemize}

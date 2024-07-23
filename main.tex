@@ -1,6 +1,10 @@
 % se puede agregar la opción [english] para 
 %  memorias o tesis en inglés (borrando el archivo .aux)
-\documentclass[]{umemoria} 
+% El documento tiene 3 modos:
+% - draft: Para revisión. Incluye notas de revisión, las referencias aparecen como se nombran en el tex e incluye el nombre de los labels al margen. No aparecen las imágenes para acelerar la compilación.
+% - (default): También para la revisión, pero sin las notas de revisión y sin los nombres de los labels al margen. Aparecen las imágenes.
+% - final: Para la versión final. Sin notas de revisión, sin nombres de labels al margen y con las referencias en el formato correcto. Además, el formato del documento es el solicitado por la biblioteca de la FCFM.
+\documentclass[draft]{umemoria} 
 
 \addbibresource{bibliografia.bib}
 
@@ -11,6 +15,8 @@
 \usepackage[chapter]{algorithm}
 \usepackage{algpseudocode}
 \usepackage{float}
+\usepackage{lipsum}
+
 
 \makeatletter
 \renewcommand{\ALG@name}{Algoritmo}
@@ -45,12 +51,14 @@
 % tiene que ser el año en que se da el examen de título/grado (defensa)
 \anho{2024} % incluir solo para reemplazar el año actual
 
-\usepackage{lipsum}
 
 % MARK: Include only
 % \includeonly{lib/04wganWae}
 
 \begin{document}
+
+% Acronimos
+% \input{lib/acronyms.tex}
 
 \frontmatter
 \maketitle
@@ -75,7 +83,7 @@
 \end{thanks}
 
 \tableofcontents
-\listoftables % opcional
+% \listoftables % opcional
 \listoffigures % opcional
 \listofalgorithms % opcional
 \listoftodos
@@ -104,7 +112,8 @@
 
 % opcional ...
 \begin{appendices}
-    % \input{lib/anexoA.tex}
     \input{lib/90anexoGAN.tex}
+    \input{lib/91anexoSGDW.tex}
+    \input{lib/92anexoSGDWP.tex}
 \end{appendices}
 \end{document}
