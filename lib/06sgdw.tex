@@ -117,7 +117,6 @@ Además, para estas dos medidas, se consideran dos esquemas para el número de l
 Para la estimación del baricentro de Wasserstein en el paso 6 del Algoritmo~\ref{alg:sgdw-general}, se utiliza el método del Baricentro de Wasserstein Convolucional Insesgado \cite{janati2020debiased}. Para mayor detalle de los parámetros utilizados, se puede consultar el Anexo~\ref{sec:compl-sgdw-params-adicional}.
 
 Los resultados de las iteraciones se presentan a continuación:
-\FM[inline]{Hay que modificar estas imagenes: quitarles los títulos, o bien, ponerlos en la descripción de la figura.}
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -151,7 +150,79 @@ Los resultados de las iteraciones se presentan a continuación:
     \label{fig:barycenters}
 \end{figure}
 
-En el Anexo~\ref{sec:compl-sgdw-iters} se presentan las primeras y últimas iteraciones del cálculo de los baricentros, tanto para la medida empírica $\hat\Prob_X$ como para la medida generadora $\tilde\Prob_X$.
+En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS} y \ref{fig:batch-iters-GAN} se presentan las primeras y últimas iteraciones para el cálculo de estos baricentros.
+
+
+% MARK: - Empirica
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-DS.pdf}
+        \caption{Primeras iteraciones.}
+        \label{fig:first-iters-DS}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-DS.pdf}
+        \caption{Últimas iteraciones.}
+        \label{fig:last-iters-DS}
+    \end{subfigure}
+    \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$.}
+    \label{fig:iters-DS}
+\end{figure}
+
+% MARK: - GAN
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-GAN.pdf}
+        \caption{Primeras iteraciones.}
+        \label{fig:first-iters-GAN}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-GAN.pdf}
+        \caption{Últimas iteraciones.}
+        \label{fig:last-iters-GAN}
+    \end{subfigure}
+    \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$.}
+    \label{fig:iters-GAN}
+\end{figure}
+
+% MARK: - Empirica Batched
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-DS.pdf}
+        \caption{Primeras iteraciones.}
+        \label{fig:batch-first-iters-DS}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-DS.pdf}
+        \caption{Últimas iteraciones.}
+        \label{fig:batch-last-iters-DS}
+    \end{subfigure}
+    \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$ en su versión por lotes.}
+    \label{fig:batch-iters-DS}
+\end{figure}
+
+% MARK: - GAN Batched
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-GAN.pdf}
+        \caption{Primeras iteraciones.}
+        \label{fig:batch-first-iters-GAN}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-GAN.pdf}
+        \caption{Últimas iteraciones.}
+        \label{fig:batch-last-iters-GAN}
+    \end{subfigure}
+    \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$ en su versión por lotes.}
+    \label{fig:batch-iters-GAN}
+\end{figure}
+
+
+% En el Anexo~\ref{sec:compl-sgdw-iters} se presentan las primeras y últimas iteraciones del cálculo de los baricentros, tanto para la medida empírica $\hat\Prob_X$ como para la medida generadora $\tilde\Prob_X$.
 
 
 

@@ -25,76 +25,72 @@ Estos parámetros han sido fijados de manera heurística, y no se ha realizado u
 
 Adicional a los baricentros presentados en la Figura~\ref{fig:barycenters}, se han registrado las primeras y últimas iteraciones del cálculo de los baricentros. En partícular, se presenta la primera medida del muestreo de $\Gamma$, que corresponde a la línea 4. del  Algoritmo~\ref{alg:sgdw-general}; y seguidamente se presenta el paso del algoritmo, que corrresponde a la línea 6. de dicho algoritmo.
 
-% MARK: - Empirica
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-DS.pdf}
-        \caption{Primeras iteraciones.}
-        \label{fig:first-iters-DS}
-    \end{subfigure}
-    \newline
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-DS.pdf}
-        \caption{Últimas iteraciones.}
-        \label{fig:last-iters-DS}
-    \end{subfigure}
-    \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$.}
-    \label{fig:iters-DS}
-\end{figure}
+% % MARK: - Empirica
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-DS.pdf}
+%         \caption{Primeras iteraciones.}
+%         \label{fig:first-iters-DS}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-DS.pdf}
+%         \caption{Últimas iteraciones.}
+%         \label{fig:last-iters-DS}
+%     \end{subfigure}
+%     \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$.}
+%     \label{fig:iters-DS}
+% \end{figure}
 
-% MARK: - GAN
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-GAN.pdf}
-        \caption{Primeras iteraciones.}
-        \label{fig:first-iters-GAN}
-    \end{subfigure}
-    \newline
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-GAN.pdf}
-        \caption{Últimas iteraciones.}
-        \label{fig:last-iters-GAN}
-    \end{subfigure}
-    \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$.}
-    \label{fig:iters-GAN}
-\end{figure}
+% % MARK: - GAN
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/first-iters-GAN.pdf}
+%         \caption{Primeras iteraciones.}
+%         \label{fig:first-iters-GAN}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/last-iters-GAN.pdf}
+%         \caption{Últimas iteraciones.}
+%         \label{fig:last-iters-GAN}
+%     \end{subfigure}
+%     \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$.}
+%     \label{fig:iters-GAN}
+% \end{figure}
 
-% MARK: - Empirica Batched
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-DS.pdf}
-        \caption{Primeras iteraciones.}
-        \label{fig:batch-first-iters-DS}
-    \end{subfigure}
-    \newline
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-DS.pdf}
-        \caption{Últimas iteraciones.}
-        \label{fig:batch-last-iters-DS}
-    \end{subfigure}
-    \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$ en su versión por lotes.}
-    \label{fig:batch-iters-DS}
-\end{figure}
+% % MARK: - Empirica Batched
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-DS.pdf}
+%         \caption{Primeras iteraciones.}
+%         \label{fig:batch-first-iters-DS}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-DS.pdf}
+%         \caption{Últimas iteraciones.}
+%         \label{fig:batch-last-iters-DS}
+%     \end{subfigure}
+%     \caption{Iteraciones del cálculo del baricentro de $\hat\Prob_X$ en su versión por lotes.}
+%     \label{fig:batch-iters-DS}
+% \end{figure}
 
-% MARK: - GAN Batched
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-GAN.pdf}
-        \caption{Primeras iteraciones.}
-        \label{fig:batch-first-iters-GAN}
-    \end{subfigure}
-    \newline
-    \begin{subfigure}[b]{0.95\textwidth}
-        \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-GAN.pdf}
-        \caption{Últimas iteraciones.}
-        \label{fig:batch-last-iters-GAN}
-    \end{subfigure}
-    \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$ en su versión por lotes.}
-    \label{fig:batch-iters-GAN}
-\end{figure}
+% % MARK: - GAN Batched
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/batch-first-iters-GAN.pdf}
+%         \caption{Primeras iteraciones.}
+%         \label{fig:batch-first-iters-GAN}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.75\textwidth}
+%         \includegraphics[width=\textwidth]{img/sgdw-iters/batch-last-iters-GAN.pdf}
+%         \caption{Últimas iteraciones.}
+%         \label{fig:batch-last-iters-GAN}
+%     \end{subfigure}
+%     \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$ en su versión por lotes.}
+%     \label{fig:batch-iters-GAN}
+% \end{figure}
 
 
