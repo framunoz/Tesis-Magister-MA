@@ -231,10 +231,8 @@ La función de pérdida se basa en el teorema de dualidad de Kantorovich-Rubinst
 
 Inspirados en este teorema, los autores de la WGAN \cite{arjovsky2017wasserstein} reemplazan el anterior juego de la GAN por el siguiente:
 \begin{equation}\label{eq:wgan-game}
-
     % (P_{\mathrm{WGAN}}) \quad 
     \min_{G} \max_{f \in \Lip[\cX]} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)],\tag{$P_{\mathrm{WGAN}}$}
-
 \end{equation}
 donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que, en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, en función de utilizar esta estimación, para minimizar la distancia entre la distribución real y la generada.
 
@@ -314,10 +312,8 @@ La idea por detrás de esta técnica proviene del siguiente corolario:
 
 La idea que hay por detrás de este corolario, es que basta penalizar la función de pérdida de la función crítica $f_\omega$ cuando su gradiente no sea $1$, para garantizar que esta sea $1$-Lipschitz. Es decir, que intercambian el problema de optimización de~\eqref{eq:wgan-game} por el siguiente:
 \begin{equation}
-
     % (P_{\mathrm{WGAN-GP}}) \quad 
     \min_{G} \max_{f} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)] + \lambda \Exp_{Y\sim\tau} \qty\Big[ \qty(\norm{\nabla f(Y)} - 1)^2 ],\tag{$P_{\mathrm{WGAN-GP}}$}
-
 \end{equation}
 donde $\lambda$ es un coeficiente de penalización y $\tau$ es una distribución definida como en el Corolario~\ref{cor:gradiente-penalizado}.
 
@@ -446,10 +442,8 @@ Este teorema establece que, para cualquier función de costo $c$, la distancia d
 
 Por tanto, el objetivo del WAE es \textbf{minimizar el error de reconstrucción, con la restricción de que la marginal del codificador sea igual a la distribución del espacio latente}. Con esto en mente, el problema de optimización del WAE corresponde a:
 \begin{equation}
-
     % (P_{\mathrm{WAE}}) \quad 
     \min_{G} \min_{\ProbQ\colon \ProbQ_Z = \Prob_Z} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ].\tag{$P_{\mathrm{WAE}}$}
-
 \end{equation}
 
 Como se tiene una restricción de igualdad, se puede penalizar el problema anterior a través de alguna divergencia entre las distribuciones $\ProbQ_Z$ y $\Prob_Z$. En el trabajo original, se propone utilizar la Discrepancia Promedio Máxima (MMD) \cite{gretton2006kernel} como divergencia. Este se define como:
@@ -460,10 +454,8 @@ Como se tiene una restricción de igualdad, se puede penalizar el problema anter
 \end{equation}
 donde $\cH_k$ es el RKHS asociado al kernel $k$.\FM{Creo que falta una cita aquí} De esta forma, el problema de optimización del WAE se puede reescribir como:
 \begin{equation}
-
     % (P_{\mathrm{WAE-MMD}}) \quad 
     \min_{G} \min_{\ProbQ} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ] + \lambda \cdot \MMDOp_{k}(\Prob_Z, \ProbQ_Z),\tag{$P_{\mathrm{WAE-MMD}}$}
-
 \end{equation}
 para algún kernel $k$ y un coeficiente de penalización $\lambda > 0$.
 
@@ -477,7 +469,6 @@ La ventaja de utilizar la MMD como divergencia es que esta se comporta bien en e
 donde $z = (z_i)_{i=1}^{n}$ y $\tilde z = (\tilde z_i)_{i=1}^{n}$ son muestras de las distribuciones $\Prob_Z$ y $\ProbQ_Z$, respectivamente.
 
 \begin{algorithm}[H]
-
     \caption{Entrenamiento de una Wasserstein Auto-Encoder \cite{tolstikhin2017wasserstein}}\label{alg:WAE}
 
     \begin{algorithmic}[1]
@@ -580,9 +571,7 @@ En la Figura~\ref{fig:latent-pixel-space} se ilustra la diferencia entre su mét
     \includegraphics[width=0.48\textwidth]{img/cbw/latent-space.png}
     \includegraphics[width=0.48\textwidth]{img/cbw/pixel-space.png}
     \caption{
-
         Ilustración del proceso de interpolación de una imagen, fijando $t = 0 \to 1$, usando varios métodos en el espacio de píxeles y en el espacio latente de una GAN entrenada.
-
         Imagen obtenida de \cite{simon2020barycenters}.
     }
     \label{fig:latent-pixel-space}
