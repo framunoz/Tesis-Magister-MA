@@ -107,7 +107,7 @@ Este esquema es una reparametrización del que se presenta en \cite[Secc.~2]{wel
     \sum_{k=0}^{\infty} \eta_k   & = \infty, &
     \sum_{k=0}^{\infty} \eta_k^2 & < \infty.
 \end{align}
-Estas dos condiciones son usuales en la optimización convexa, pues garantizan la convergencia del algoritmo. En los experimentos se utilizan $a = 3$, $b = 3.01$ y $c = 0.501$. Se escogen estos parámetros para que se cumplan las siguientes condiciones:
+Estas dos condiciones son usuales en la optimización convexa, pues garantizan la convergencia del algoritmo. En los experimentos se utilizan $a = 3$, $b = 3,01$ y $c = 0,501$. Se escogen estos parámetros para que se cumplan las siguientes condiciones:
 \begin{equation}
     \forall k\in\N \colon \eta_k\in[0, 1]\qquad \text{y} \qquad \eta_0 = \frac{a}{b} \lesssim 1.
 \end{equation}
@@ -150,7 +150,7 @@ Los resultados de las iteraciones se presentan a continuación:
     \label{fig:barycenters}
 \end{figure}
 
-En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS} y \ref{fig:batch-iters-GAN} se presentan las primeras y últimas iteraciones para el cálculo de estos baricentros.
+En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS} y \ref{fig:batch-iters-GAN} se presentan las primeras y últimas iteraciones para el cálculo de los baricentros anteriormente mencionados.
 
 
 % MARK: - Empirica
@@ -241,7 +241,4 @@ En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS}
 
 \subsection{Conclusiones}\label{ssec:sgdw-conclusiones}  % MARK: -- Conclusiones
 
-\FM[inline]{Insertar aquí alguna conclusión}
-
-\FM[inline]{Una conclusión que se me ocurre es como los dos baricentros, el del conjunto de datos y el de la GAN se parecen, algo que debería de pasar puesto que ambos están aproximando a alguna medida de referencia $\Prob_X$}
-
+Se puede observar que los baricentros obtenidos para los cuatro experimentos (los obtenidos en la Figura~\ref{fig:barycenters}) son muy similares entre sí, comprobando la hipótesis inicial. Es lo esperable, pues tanto $\hat\Prob_X$ como $\tilde\Prob_X$ son aproximaciones de la medida de referencia $\Prob_X$.  Además, a partir de las Figuras~\ref{fig:batch-first-iters-DS} y \ref{fig:batch-first-iters-GAN} se puede observar que efectivamente el método por lotes converge más rápido que el método original, resultando en baricentros muy similares a su versión simplificada.

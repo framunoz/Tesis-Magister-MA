@@ -58,7 +58,12 @@
 \if@en
     \RequirePackage{babel}
 \else
-    \RequirePackage[spanish, es-nolists, es-lcroman]{babel} % Lenguaje
+    \RequirePackage[
+        spanish,
+        es-nolists,
+        es-lcroman,
+        es-nodecimaldot,
+    ]{babel} % Lenguaje
 \fi
 % babel recomienda importar csquotes https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
 \RequirePackage{csquotes}
@@ -70,14 +75,21 @@
         sorting=none,
         style=draft,
     ]{biblatex}  % Estilo de citado
-    \RequirePackage[
-        inline
-    ]{showlabels} % Mostrar etiquetas
 \else
     \RequirePackage[
         style=ieee,
     ]{biblatex}  % Estilo de citado
 \fi
+\if@final
+    \RequirePackage[
+        final
+    ]{showlabels} % Mostrar etiquetas
+\else
+    \RequirePackage[
+        inline
+    ]{showlabels} % Mostrar etiquetas
+\fi
+
 % \bibliography{bibliografia}  % Archivo de bibliografía
 \RequirePackage[pdfpagelabels,hidelinks]{hyperref} % Links y numeracion del PDF
 \RequirePackage{listings} % Codigo Fuente
