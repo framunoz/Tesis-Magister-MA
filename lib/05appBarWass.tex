@@ -1,5 +1,13 @@
-\chapter{Aplicaciones a los Baricentros de Wasserstein}
+
+\chapter{Aplicaciones a los Baricentros de Wasserstein}\label{chap:app-bar-wass}
+
+En este capítulo se presenta el tema principal de la tesis: la implementación del Descenso del Gradiente Estocástico en el Espacio de Wasserstein (SGDW), y su aplicación a la estimación del Baricentro de Wasserstein Bayesiano (BWB).
+
+Para ello, se empieza explicando la implementación del SGDW, y se realizan experimentos con algunos muestreadores de distribuciones. Luego, se propone una adaptación del SGDW, donde se proyecta el baricentro sobre alguna variedad $\Manifold$ de medidas para que se vea más natural y atractivo. Finalmente, se utilizan estas implementaciones para el cálculo del BWB, donde se propone una técnica para poder estimarlo utilizando una GAN como prior.
 
 \input{lib/06sgdw.tex}
+% \newpage
 \input{lib/07sgdwp.tex}
+% \newpage
+
 \input{lib/08bwb.tex}

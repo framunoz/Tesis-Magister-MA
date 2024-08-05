@@ -8,6 +8,7 @@
 %% ====================================================================
 
 %% Paquetes requeridos y definiciones preliminares, necesarias para las opciones
+\RequirePackage{amsmath}  % Para capacidad matemática extra
 \RequirePackage{amssymb}  % Para los símbolos matemáticos
 \RequirePackage{physics}  % Para las diferenciales y paréntesis
 \RequirePackage{ifthen}
@@ -45,7 +46,7 @@
 
 %% Miscelaneos
 
-% Macros de letras caligráficas
+% MARK: Caligráficas
 \newcommand{\cA}{\mathcal{A}}
 \newcommand{\cB}{\mathcal{B}}
 \newcommand{\cC}{\mathcal{C}}
@@ -75,7 +76,7 @@
 
 %% ====================================================================
 
-% Macros de letras estilo blackboard
+% MARK: Blackboard
 \newcommand{\bA}{\mathbb{A}}
 \newcommand{\bB}{\mathbb{B}}
 \newcommand{\bC}{\mathbb{C}}
@@ -105,7 +106,7 @@
 
 %% ====================================================================
 
-% Convenciones clásicas
+% MARK: Convenciones clásicas
 \newcommand{\N}{\bN}
 \newcommand{\Z}{\bZ}
 \newcommand{\Q}{\bQ}
@@ -117,7 +118,7 @@
 
 
 %% ====================================================================
-% Vectores
+% MARK: Vectores
 \newcommand{\vx}{{x}}
 \newcommand{\vy}{{y}}
 \newcommand{\vth}{{\theta}}
@@ -126,7 +127,7 @@
 
 %% ====================================================================
 
-% Macros de operadores
+% MARK: Operadores
 
 
 
@@ -156,8 +157,11 @@
 \DeclareMathOperator{\ContBoundedSpaceOp}{\ContSpaceOp_{\mathrm{b}}}
 \newcommand{\ContBoundedSpace}[1][]{\opparent{\ContBoundedSpaceOp}{#1}{\left(#1\right)}}
 
+% Manifold
+\DeclareMathOperator{\Manifold}{\cM}
+
 %% ====================================================================
-% Macros de diferenciales
+% MARK: Diferenciales
 \newcommand{\dx}{\dd{x}}
 \newcommand{\dy}{\dd{y}}
 \newcommand{\dz}{\dd{z}}
@@ -171,5 +175,5 @@
 \newcommand{\dpsi}{\dd{\psi}}
 
 %% ====================================================================
-% Macros de Igualdades
+% MARK: Igualdades
 \newcommand{\eqdef}{\stackrel{\mathrm{def}}{=}}
