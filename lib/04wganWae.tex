@@ -3,6 +3,7 @@
 En capítulos anteriores se explica que tanto las WGANs como los WAEs aproximan la distribución de alguna distribución real $\Prob_X$, además de que permiten aproximar a variedades, y proyectar sobre ellas.
 Por esta razón, en este trabajo se estima una distribución de imágenes $\Prob_X$ para tener acceso a un muestreo rápido de este, además, para que los baricentros sean naturales, se utiliza una estructura de AE para proyectar sobre la variedad de imágenes, siguiendo el trabajo de \cite{simon2020barycenters}.
 
+
 Con respecto a la estimación de la distribución real y a la aproximación de variedades, la WGAN realiza estas dos tareas bastante bien, gracias a su componente adversaria. Sin embargo, este no posee un codificador (que es necesario para poder proyectar sobre la variedad de imágenes). Por el otro lado, el WAE posee este codificador, pero no es tan bueno generando muestras de la distribución real o aproximando la variedad de imágenes. Cada una de estas estructuras cumplen bien con una de las tareas, pero no están diseñadas para cumplir con ambas.
 
 \FM[inline]{Se podría agregar referencias de trabajos anteriores que tienen un AE adversario, que conectan ambos modelos, pero que no se ha visto una versión Wasserstein, que permite converjer en la top. débil}
@@ -40,9 +41,11 @@ Como se menciona en los capítulos anteriores, la WGAN y el WAE tienen tareas si
 
 Por este motivo, la deducción del algoritmo es simple: dejar que la WGAN entrene la generadora y la función crítica, de manera que la generadora ya esté bastante cerca de la distribución real. Luego, se puede utilizar la generadora de la WGAN como decodificadora del WAE, y entrenar esta última arquitectura (donde la generadora ya está más cerca de parecerse a la distribución real) para que el codificador sea capaz de proyectar sobre la variedad de imágenes. Es importante que la función de costo para el WAE sea $c(x, y) = |x - y|$ para que se esté calculando la $1$-distancia de Wasserstein, y la distribución generadora converja en la misma topología que la WGAN.
 
+
 Por este motivo, el algoritmo propuesto es el siguiente:
 
 \begin{algorithm}[H]
+
     \caption{Entrenamiento de una WAE-WGAN, elaboración propia}\label{alg:WAE-WGAN}
     \begin{algorithmic}[1]
         \Require Tamaño del batch $N$, número de iteraciones para el discriminador $N_d$ y los parámetros de penalización $\lambda_{\mathrm{WGAN}}$ y $\lambda_{\mathrm{WAE}}$.
@@ -75,11 +78,13 @@ Donde la función $\Call{penalty}{\omega, x, \tilde x}$ es alguna penalización 
 
 Notar que el Algoritmo~\ref{alg:WAE-WGAN} realiza alternadamente tres procesos. Primero, un entrenamiento de la función crítica. Luego, un entrenamiento de la generadora, utilizando una estimación de la distancia de Wasserstein en su versión de la WGAN. Finalmente, un entrenamiento del WAE, el que entrena simultáneamente a la codificadora y generadora. Para estos efectos, la generadora se entrena con el gradiente de la distancia de Wasserstein por ambos algoritmos en una sola iteración.
 
+
 Además, cuando la función crítica y la decodificadora alcanzan un máximo y mínimo aceptable, respectivamente, entonces la evaluación de estas redes en las funciones de pérdida provee una estimación de la distancia de Wasserstein para ambos casos. Esto resulta útil para monitorear el entrenamiento de la red.
 
 \section{Detalles de la implementación}\label{sec:detalles-implementacion}  % MARK: - Detalles de la implementación
 
 \subsection{WGAN con Gradiente Penalizado Generalizado}\label{ssec:wgan-ggp}  % MARK: - WGAN con Gradiente Penalizado Generalizado
+
 
 Como función de penalización para la función crítica, se desarrolla una forma novedosa de penalizar el gradiente, de manera que tenga mayor estabilidad. La idea es obtener un intermedio de una WGAN con penalización Lipschitz (WGAN-LP) \cite{zhou2018lp} y una WGAN con gradiente penalizado (WGAN-GP) \cite{gulrajani2017improved}.
 
@@ -113,6 +118,7 @@ En los experimentos, se utiliza $\lambda_{\mathrm{LP}} = 10$ y $\lambda_{\mathrm
 \FM[inline]{Cada vez que utilice pytorch lo nombro y lo cito (para que quede más claro)}
 
 Las redes neuronales son implementadas utilizando la librería de \textit{PyTorch} \cite{paszke2019pytorch}. Se utilizan redes neuronales convolucionales (CNN por sus siglas en inglés) siguiendo la estrategia de ResNet \cite{he2016deep} para la codificadora $\ProbQ_\varphi$, la generadora $G_\theta$ y la función crítica $f_\omega$.
+
 
 \FM[inline]{Ojalá incluir alguna imagen que ilustre la arquitectura}
 \FM[inline]{Aquí incluir la arquitectura de la red}

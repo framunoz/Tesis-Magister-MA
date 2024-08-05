@@ -1,7 +1,9 @@
 \chapter{Redes Neuronales, Modelos Generativos y sus Aplicaciones}\label{chap:redes-neuronales-y-modelos-generativos}  % MARK: Redes Neuronales y Modelos Generativos
 Este capítulo introduce los modelos generativos, empezando por las redes neuronales, viendo las versiones más simples, y terminando con sus variantes basadas en la distancia de Wasserstein. Para ello, se empieza por definir lo que es una red neuronal.
 
+
 \FM[inline]{¿Se podría poner en esta parte la razón por la que estoy incluyendo a las redes neuronales? ¿O explicar la forma en que estará estructurado el capítulo? (breve intro redes neuronales, GANs, WGANs, AE, WAE y por último la aplicación con baricentros de Wasserstein). \textbf{RESPUESTA: SÍ}}
+
 
 \section{Redes Neuronales}\label{sec:redes-Neuronales}  % MARK: Redes Neuronales
 En el último tiempo se ha visto un auge en el uso de las redes neuronales en diversas áreas de la ciencia y la tecnología. Esto se debe a que las redes neuronales han demostrado ser muy efectivas en la resolución de problemas complejos, como la clasificación de imágenes, el procesamiento de lenguaje natural, y la generación de texto e imágenes, entre otros.
@@ -174,7 +176,9 @@ donde $\{x_i\}_{i=1}^{N} \sim \Prob_X$ y $\{z_i\}_{i=1}^{N} \sim \Prob_Z$ son mu
 De esta manera, el Algoritmo~\ref*{alg:GAN} describe la forma de estimar los parámetros $\theta$ y $\varphi$ de la generadora y la discriminadora, respectivamente. Usualmente, el flujo de este algoritmo se realiza en dos pasos: primero se actualiza la discriminadora $D_\varphi$ por $N_d$ iteraciones, y luego se actualiza la generadora $G_\theta$ por una iteración. Este proceso se repite hasta que los parámetros $\theta$ converjan.
 
 \begin{algorithm}[H]
+
     \caption{Entrenamiento de una Red Generativa Adversaria \cite{goodfellow2014generative}}\label{alg:GAN}
+
     \begin{algorithmic}[1]
         \Require Tamaño del batch $N$ y número de iteraciones para el discriminador $N_d$.
         \State Inicializar los parámetros de la generadora $G_\theta$ y la discriminadora $D_\varphi$.
@@ -227,8 +231,10 @@ La función de pérdida se basa en el teorema de dualidad de Kantorovich-Rubinst
 
 Inspirados en este teorema, los autores de la WGAN \cite{arjovsky2017wasserstein} reemplazan el anterior juego de la GAN por el siguiente:
 \begin{equation}\label{eq:wgan-game}
+
     % (P_{\mathrm{WGAN}}) \quad 
     \min_{G} \max_{f \in \Lip[\cX]} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)],\tag{$P_{\mathrm{WGAN}}$}
+
 \end{equation}
 donde la función $G$ es la \textit{generadora} y $f$ es la \textit{función crítica}. Se puede destacar que, en este juego, el primer objetivo es obtener una estimación de la distancia de Wasserstein, en función de utilizar esta estimación, para minimizar la distancia entre la distribución real y la generada.
 
@@ -267,7 +273,9 @@ Paso seguido, la generadora utiliza la aproximación de la distancia de Wasserst
 De este modo, el algoritmo de entrenamiento de la WGAN se resume en el Algoritmo~\ref{alg:WGAN}.
 
 \begin{algorithm}[H]
+
     \caption{Entrenamiento de una Wasserstein GAN \cite{arjovsky2017wasserstein}}\label{alg:WGAN}
+
     \begin{algorithmic}[1]
         \Require Tamaño del batch $N$, número de iteraciones para el discriminador $N_d$ y el parámetro de clipping $c$.
         \State Inicializar los parámetros de la generadora $G_\theta$ y la función crítica $f_\omega$.
@@ -306,8 +314,10 @@ La idea por detrás de esta técnica proviene del siguiente corolario:
 
 La idea que hay por detrás de este corolario, es que basta penalizar la función de pérdida de la función crítica $f_\omega$ cuando su gradiente no sea $1$, para garantizar que esta sea $1$-Lipschitz. Es decir, que intercambian el problema de optimización de~\eqref{eq:wgan-game} por el siguiente:
 \begin{equation}
+
     % (P_{\mathrm{WGAN-GP}}) \quad 
     \min_{G} \max_{f} \Exp_{X\sim \Prob_X} [f(X)] - \Exp_{\tilde X \sim \Prob_G} [f(\tilde X)] + \lambda \Exp_{Y\sim\tau} \qty\Big[ \qty(\norm{\nabla f(Y)} - 1)^2 ],\tag{$P_{\mathrm{WGAN-GP}}$}
+
 \end{equation}
 donde $\lambda$ es un coeficiente de penalización y $\tau$ es una distribución definida como en el Corolario~\ref{cor:gradiente-penalizado}.
 
@@ -341,7 +351,9 @@ donde $u = (u_i)_{i=1}^{N} \sim \Uniform[0, 1]$, $x = (x_i)_{i=1}^{N} \sim \Prob
 Como este procedimiento se puede separar en dos pasos, se define un algoritmo para la penalización del gradiente, el cuál se presenta en el Algoritmo~\ref{alg:gradient-penalty}. Con este, se define el algoritmo de entrenamiento de la WGAN-GP en el Algoritmo~\ref{alg:WGAN-GP}.
 
 \begin{algorithm}[H]
+
     \caption{Entrenamiento de una WGAN con Gradiente Penalizado \cite{gulrajani2017improved}}\label{alg:WGAN-GP}
+
     \begin{algorithmic}[1]
         \Require Tamaño del batch $N$, número de iteraciones para el discriminador $N_d$ y el parámetro de penalización $\lambda$.
         \State Inicializar los parámetros de la generadora $G_\theta$ y la función crítica $f_\omega$.
@@ -422,18 +434,22 @@ Al igual que en el caso de la GAN, se puede definir una versión del AE que mini
     \begin{equation}
         \inf_{\pi\in\Cpl(\Prob_X, \Prob_G)} \Exp_{(X, Y)\sim\pi} \qty\big[ c(X, Y) ] = \inf_{\ProbQ \colon \ProbQ_Z = \Prob_Z} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ],
     \end{equation}
+
     donde
     % $\ProbQ_Z(\dd z) = \Exp_{X\sim \Prob_X} \qty[\ProbQ(\dd z \mid X)]$ 
     $\ProbQ_Z(\dd z) = \int_{\cX} \ProbQ(\dd z \mid x)\; \Prob_X(\dd x)$
     corresponde a la marginal de $\ProbQ$ en el espacio latente.
+
 \end{theorem}
 
 Este teorema establece que, para cualquier función de costo $c$, la distancia de Wasserstein entre la distribución real y la generada se puede calcular de forma similar a un AE, utilizando un codificador $\ProbQ$ y un decodificador $G$. Es más, si es que se compara con la Ecuación~\eqref{eq:ae-obj-func}, se puede notar que las funciones objetivos son similares, con la única diferencia de que en este caso, se tiene la restricción $\ProbQ_Z = \Prob_Z$.
 
 Por tanto, el objetivo del WAE es \textbf{minimizar el error de reconstrucción, con la restricción de que la marginal del codificador sea igual a la distribución del espacio latente}. Con esto en mente, el problema de optimización del WAE corresponde a:
 \begin{equation}
+
     % (P_{\mathrm{WAE}}) \quad 
     \min_{G} \min_{\ProbQ\colon \ProbQ_Z = \Prob_Z} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ].\tag{$P_{\mathrm{WAE}}$}
+
 \end{equation}
 
 Como se tiene una restricción de igualdad, se puede penalizar el problema anterior a través de alguna divergencia entre las distribuciones $\ProbQ_Z$ y $\Prob_Z$. En el trabajo original, se propone utilizar la Discrepancia Promedio Máxima (MMD) \cite{gretton2006kernel} como divergencia. Este se define como:
@@ -444,8 +460,10 @@ Como se tiene una restricción de igualdad, se puede penalizar el problema anter
 \end{equation}
 donde $\cH_k$ es el RKHS asociado al kernel $k$.\FM{Creo que falta una cita aquí} De esta forma, el problema de optimización del WAE se puede reescribir como:
 \begin{equation}
+
     % (P_{\mathrm{WAE-MMD}}) \quad 
     \min_{G} \min_{\ProbQ} \Exp_{X\sim\Prob_X} \Exp_{\tilde Z\sim\ProbQ(\dd z \mid X)} \qty\big[ c(X, G(\tilde Z)) ] + \lambda \cdot \MMDOp_{k}(\Prob_Z, \ProbQ_Z),\tag{$P_{\mathrm{WAE-MMD}}$}
+
 \end{equation}
 para algún kernel $k$ y un coeficiente de penalización $\lambda > 0$.
 
@@ -459,7 +477,9 @@ La ventaja de utilizar la MMD como divergencia es que esta se comporta bien en e
 donde $z = (z_i)_{i=1}^{n}$ y $\tilde z = (\tilde z_i)_{i=1}^{n}$ son muestras de las distribuciones $\Prob_Z$ y $\ProbQ_Z$, respectivamente.
 
 \begin{algorithm}[H]
+
     \caption{Entrenamiento de una Wasserstein Auto-Encoder \cite{tolstikhin2017wasserstein}}\label{alg:WAE}
+
     \begin{algorithmic}[1]
         \Require Tamaño del batch $N$, kernel característico definido-positivo $k$ y el parámetro de penalización $\lambda$.
         \Function{MMD}{$z$, $\tilde z$}
@@ -485,7 +505,9 @@ La interpolación de imágenes se refiere a la transición visual de dos imágen
 Varias de estas propiedades se pueden obtener a través de una interpolación geodésica con baricentros de Wasserstein. Sin embargo, el resultado de esta interpolación puede no verse natural.
 En base al trabajo de \cite{zhu2016generative}, que describe la manera en que una GAN aproxima una variedad de imágenes, y cómo se puede utilizar un AE para proyectar una imagen en esta variedad, los autores de \cite{simon2020barycenters} proponen utilizar una GAN y un AE para mantener la suavidad y realismo de la interpolación.
 
+
 \FM[inline]{Quizás podría ser bueno explicar cómo los autores de \cite{zhu2016generative} utilizan una GAN para aproximar la variedad de imágenes.}
+
 
 En la Figura~\ref{fig:interpolacion-wass-bar-gan} se observa un ejemplo donde se compara la interpolación de baricentros de Wasserstein con el método descrito en \cite{simon2020barycenters}.
 En la primera fila se muestra la interpolación de una zapatilla deportiva a una bota utilizando baricentros de Wasserstein, notando que esta es una interpolación difusa; en la segunda fila, se interpola en el espacio latente de una GAN, donde no es una transición suave; por último, en la tercera fila se muestra la interpolación utilizando el método propuesto, donde se puede notar que la transición es suave y realista.
@@ -507,6 +529,7 @@ En \cite{simon2020barycenters}, se empieza asumiendo que se trabajará con imág
 Por tanto, basta con considerar a los vectores $p^{(0)}$ y $p^{(1)}$ como vectores de probabilidad en el simplex $\Simplex[N] \eqdef \left\{ p \in [0, 1]^{N} \colon \sum_i p_i = 1 \right\}$.
 
 De esta forma, los autores de \cite{simon2020barycenters} proponen el siguiente problema de optimización:
+
 \begin{align}
     % (P_{\mathrm{CWB}}) \quad
     \min_{q \in \Simplex[N]} & \ \ (1-t) \cdot \Wasserstein[2]{\mu_0}{\nu}^2 + t \cdot \Wasserstein[2]{\nu}{\mu_1}^2
@@ -526,16 +549,21 @@ A partir del Problema~\eqref{eqline:p-cwb}, los autores imponen una restricción
     \text{s.a.}                       & \ \ \tilde \nu = \sum_{i=1}^{N} \tilde q_i \delta_{x_i} \in \Manifold.
 \end{align}
 
+
 El Problema~\eqref{eqline:p-cwb-al} se puede resolver usando el Método de los Multiplicadores de Dirección Alterna (ADMM) \cite[Cap. 3]{boyd2011distributed} el cuál se presenta a continuación:
 
 \begin{algorithm}[H]
+
     \caption{Baricentros de Wasserstein Restringidos \cite{simon2020barycenters}}\label{alg:ADMM-CWB}
+
     \begin{algorithmic}[1]
         \Require Vectores de probabilidad $p^{(0)}, p^{(1)} \in \Simplex[N]$, suposición inicial $q^{(0)}$, parámetro $t\in[0, 1]$, parámetro de penalización $\rho>0$ y umbral $\epsilon>0$.
         \State Inicializar $u^{(0)} \gets 0$, $\tilde q^{(0)} \gets q^{(0)}$, $k \gets 0$
         \Repeat
         \State $q^{(k+1)} \gets \argmin_{q\in\Simplex[N]}  (1-t) \Wasserstein[2]{\mu_0}{\nu}^2 + t\Wasserstein[2]{\nu}{\mu_1}^2 + \frac{\rho}{2} \| \tilde q^{(k)} - q + u^{(k)} \|_2^2$
+
         \State $\tilde q^{(k+1)} \gets \argmin_{\tilde q \colon \tilde \nu \in \Manifold } \| \tilde q - q^{(k+1)} + u^{(k)} \|_2^2 $
+
         \State $u^{(k+1)} \gets u^{(k)} + \tilde q^{(k+1)} - q^{(k+1)}$
         \State $k \gets k + 1$
         \Until{$\| q^{(k)} - \tilde q^{(k)} \|<\epsilon$}
@@ -552,7 +580,9 @@ En la Figura~\ref{fig:latent-pixel-space} se ilustra la diferencia entre su mét
     \includegraphics[width=0.48\textwidth]{img/cbw/latent-space.png}
     \includegraphics[width=0.48\textwidth]{img/cbw/pixel-space.png}
     \caption{
+
         Ilustración del proceso de interpolación de una imagen, fijando $t = 0 \to 1$, usando varios métodos en el espacio de píxeles y en el espacio latente de una GAN entrenada.
+
         Imagen obtenida de \cite{simon2020barycenters}.
     }
     \label{fig:latent-pixel-space}

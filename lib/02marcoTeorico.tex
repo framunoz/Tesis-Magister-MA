@@ -354,7 +354,6 @@ Lo interesante de la media de Fréchet, es que este concepto es mucho más gener
 
 Como se vió en la sección anterior, la media de Fréchet permite definir una noción de promedio para espacios métricos. Además, el Teorema~\ref{thm:espacioWassersteinEsMetrico} establece que si $(\cX, \dist)$ es un espacio Polaco, entonces $(\WassersteinSpace[p]{\cX}, W_p)$ es un espacio Polaco, y en particular, un espacio métrico. Por tanto, se puede definir su respectivo ``promedio'' utilizando la media de Fréchet:
 
-% \newacronym{wb}{WB}{baricentro de Wasserstein}
 
 % MARK: Baricentro de Wasserstein
 \begin{definition}[Baricentro de Wasserstein \cite{agueh2011barycenters}]\label{def:baricentroWasserstein}
@@ -419,7 +418,8 @@ La razón por la que la definición anterior es una generalización, es que si s
 
 \end{remark}
 
-\subsection{El Descenson del Gradiente Estocástico en el Espacio de Wasserstein}\label{ssec:sgdw}  % MARK: SGDW El Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein
+\subsection{El Descenso del Gradiente Estocástico en el Espacio de Wasserstein}\label{ssec:sgdw}  % MARK: SGDW El Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein
+
 
 Para calcular una estimación del baricentro de Wasserstein de una colección finita de medidas $\left\{ \mu_i \right\}_{i=1}^{n}$, existen múltiples algoritmos que se pueden utilizar. Por ejemplo, para el caso en que las medidas sean a soporte discreto, se puede deducir un problema de programación lineal \cite[ver Cap. 3]{peyre2019computational}, y resolver el problema de forma exacta \cite{bonneel2011displacement}, o utilizando una estimación de la solución por medio de métodos iterativos, como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}. En el caso en que las medidas provengan de imágenes, se pueden utilizar métodos convolucionales, como en \cite{solomon2015convolutional} o en su versión mejorada e insesgada \cite{janati2020debiased}.
 
@@ -436,7 +436,9 @@ En los trabajos mencionados, se hacen los siguientes supuestos (que serán váli
 \end{assumption}
 
 \begin{assumption}\label{assump:caso-particular-esquema-paso-L1-L2}
+
     Para un esquema de paso\FM{Quizás podría definir qué es un esquema de paso.} $(\eta_k)_k \in [0, 1]^\N$, se asume que $\sum_{k=0}^{\infty} \eta_k = \infty$ y $\sum_{k=0}^{\infty} \eta_k^2 < \infty$.
+
 \end{assumption}
 
 \begin{definition}[Secuencia de SGDW \cite{backhoff2022stochastic,backhoff2022bayesian}]\label{def:sgdw}
@@ -487,6 +489,7 @@ Además de la Secuencia de SGDW, en \cite{backhoff2022stochastic} se propone una
 Los siguientes dos resultados dicen que la Secuencia de BSGDW aún converge, mientras que la segunda dice que los lotes ayudan a reducir la varianza de la estimación:
 
 \begin{proposition}\label{prop:convergencia-bsgdw}
+
     Bajo los supuestos del Teorema~\ref{thm:convergencia-sgdw}, la secuencia de BSGDW $\left\{ \mu_k \right\}_k$ de la Ecuación~\eqref{eq:bsgdw} converge c.s. al único 2-baricentro de Wasserstein $\bar \mu$ de $\Gamma$.
 \end{proposition}
 
@@ -517,6 +520,7 @@ Se termina esta sección presentando el algoritmo del SGDW que se presenta en \c
     \end{algorithmic}
 \end{algorithm}
 
+
 El Algoritmo~\ref{alg:sgdw-clasico} posee dos cuellos de botella: el primero es que se debe poder muestrear a partir de $\Gamma(\dd \mu)$, y el segundo es la capacidad de calcular el baricentro entre medidas. Para el primer problema, se pueden utilizar técnicas de Markov Chain Monte Carlo (MCMC) \cite{andrieu2003introduction,brooks2011handbook,goodman2010ensemble} para muestrear de $\Gamma$, o alguna otra técnica de muestreo; mientras que para el segundo, se pueden utilizar métodos iterativos como el algoritmo de Sinkhorn \cite{cuturi2013sinkhorn}, o en el caso de imágenes, métodos convolucionales \cite{solomon2015convolutional,janati2020debiased}.
 
 Como parte del criterio de detención, se pueden utilizar algunos criterios clásicos (como por ejemplo, limitar el número máximo de iteraciones, o tener un tiempo de ejecución máximo), como también definir un criterio de convergencia basada en la distancia de Wasserstein entre iteraciones consecutivas. En particular, en \cite{backhoff2022bayesian} se describe una manera de calcular la distancia de Wasserstein para este caso:
@@ -540,14 +544,18 @@ Para este objetivo, se adoptará un enfoque Bayesiano, el cuál provee de un mar
 Para cada $n \in \N_\ast$, $\Pi$ induce una ley canónica $\bPi$ sobre $\cX^n\times \Models$, representando una ley conjunta de escoger un modelo $\mu$ de acuerdo a la ley $\Pi$, y una muestra i.i.d $\Data = (x_1,\ldots, x_n) \in \cX^n$ generadas por $\mu$. Esto es
 \begin{align}
     \bPi(\dd x_1,\ldots, \dd x_n, \dd \mu)
+
      & \eqdef \dmu[x_1] \cdots \dmu[x_n] \dPi[\mu]                                         \\
      & = \prod_{i=1}^{n} \rho_{\mu} (x_i) \; \dlambda[x_1] \cdots \dlambda[x_n] \dPi[\mu],
+
 \end{align}
 donde $\rho_\mu \eqdef \dv{\mu}{\lambda}$ denota la derivada de Radon-Nikodym \cite{nikodym1930generalisation} de $\mu$ con respecto a la medida de referencia $\lambda$.
 Considerando que $\bPi(\dd x_1,\ldots, \dd x_n, \dd \mu) = \bPi(\dd x_1,\ldots, \dd x_n \mid \mu) \Pi(\dd \mu)$, donde $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ es su respectivo kernel de transición, se deduce entonces que la ley sobre $\cX^n$ de los datos $\Data$, condicional al modelo $\mu$, está dado por
 \begin{equation}
     \bPi(\dd x_1,\ldots, \dd x_n \mid \mu)
+
     \eqdef \prod_{i=1}^{n} \rho_{\mu} (x_i) \; \dlambda[x_1] \cdots \dlambda[x_n],
+
 \end{equation}
 donde se define la \emph{verosimilitud} como la densidad de $\bPi(\dd x_1,\ldots, \dd x_n \mid \mu)$ con respecto a $\lambda^{\otimes n}$, la cual se denotará por $\LikelihoodN[\mu]$:
 \begin{equation}
@@ -561,9 +569,11 @@ y la verosimilitud marginal, también conocido como la \emph{evidencia}, que se 
 La \emph{densidad posterior} $\bPi(\dd\mu \mid x_1,\ldots, x_n )$, denotada por $\Pi_n(\dd\mu)$ por simplicidad, es un elemento de $\ProbSpace[\ProbSpace[\cX] ] $, y en virtud a la regla de Bayes, está dado por
 \begin{equation}
     \label{eq:distribucionPosterior}
+
     \dPiN[\mu]
     = \frac{\rho_\bPi(x_1,\ldots, x_n \mid \mu)}{\rho_\bPi(x_1,\ldots, x_n)} \; \dPi[\mu]
     = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\nu] \dPi[\nu]} \; \dPi[\mu].
+
 \end{equation}
 
 La derivada de Radon-Nikodym de $\Pi_n(\dd \mu)$ con respecto a $\Pi(\dd \mu)$ es la \emph{verosimilitud normalizada} y se denotará por $\Lambda_n = \frac{\LikelihoodN[\mu]}{\int_{\Models} \LikelihoodN[\nu] \dPi[\nu]}$ , donde se puede notar que, dado que $\Models$ es un espacio de modelos para $\Pi$, y que $\Pi_n \ll \Pi$, entonces $\Models$ es un espacio de modelos para $\Pi_n$ también.
@@ -573,7 +583,9 @@ La derivada de Radon-Nikodym de $\Pi_n(\dd \mu)$ con respecto a $\Pi(\dd \mu)$ e
 Ahora que se ha definido la distribución posterior sobre un conjunto de modelos $\Models$, podemos considerar que el modelo que mejor explique los datos $\Data$, correspondería al modelo que minimice el riesgo Bayesiano que utiliza como función de pérdida la distancia de Wasserstein:
 \begin{equation}
     \label{eq:riesgoBayesiano}
+
     \bar\mu^{(n)} = \arginf_{\mu \in \Models} \int_{\ProbSpace[\cX] } \Wasserstein[p]{\mu}{\nu}^p \dPiN[\nu].
+
 \end{equation}
 La definición anterior, corresponde justamente con la definición del baricentro de Wasserstein con respecto a $\Pi_n$, por lo que se puede definir el baricentro de Wasserstein Bayesiano de la siguiente manera:
 
