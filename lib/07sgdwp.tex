@@ -51,23 +51,22 @@ Cabe destacar que el Algoritmo~\ref{alg:sgdwp} tiene una mecánica similar al M�
 
 \subsection{Experimentos}\label{ssec:sgdwp-experimentos}  % MARK: - Experimentos
 
-\RED[inline]{Revisar esta sección completa. Está bien la forma en que se divide esta sección?}
-
 
 \subsubsection{Único Baricentro}\label{sssec:sgdwp-unico-bar}  % MARK: - Único Baricentro
 
 
-Una primera pregunta que se tiene es:
+Con este primer experimento se busca contestar a la siguiente pregunta: \RED{\textbf{HACER LO MISMO CON LAS OTRAS PARTES}}
+% Una primera pregunta que se tiene es:
 \begin{quotation}
     \centering
     ¿Existe un único baricentro para este problema?
 \end{quotation}
 % ¿existe un único baricentro para este problema? 
-Como se sabe, y los experimentos de la Sección~\ref{sec:sgdw} corroboraron, el baricentro que computa el SGDW es único y consistente. Sin embargo, la variedad $\Manifold$ en este caso puede no ser geodésicamente convexa, por lo que no se puede garantizar la unicidad del baricentro proyectado. Por este motivo, para saber si existe alguna convergencia en el baricentro proyectado, se ejecuta el Algoritmo~\ref{alg:sgdwp} múltiples veces para observar los distintos resultados, y verificar si son similares o no.
+Como se sabe, y los experimentos de la Sección~\ref{sec:sgdw} corroboran, el baricentro que computa el SGDW es único y consistente. Sin embargo, la variedad $\Manifold$ en este caso puede no ser geodésicamente convexa, por lo que no se puede garantizar la unicidad del baricentro proyectado. Por este motivo, para comprobar si existe alguna convergencia en el baricentro proyectado, se ejecuta el Algoritmo~\ref{alg:sgdwp} múltiples veces para observar los distintos resultados, y verificar si son similares o no.
 
-Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales planteadas en la Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se definiría por $P = \ProbQ_\varphi (G_\theta (\bullet))$\FM{Quizás comentar en la sección de la WGAN-WAE que se hará el abuso de notación cuando se asume que $\ProbQ$ es determinista.}. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
+Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales expuestas en el Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se define por $P = \ProbQ_\varphi (G_\theta (\bullet))$\FM{Quizás comentar en la sección de la WGAN-WAE que se hará el abuso de notación cuando se asume que $\ProbQ$ es determinista.}. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
 
-El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados obtenidos en diez experimentos distintos. Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para este problema.
+El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados en diez experimentos distintos. Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para el problema planteado.
 \begin{figure}[H]
     \centering
     % Experimento 01
@@ -155,12 +154,12 @@ El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGD
 
 \subsubsection{Variando el Parámetro de Proyectar Cada $n_P$}\label{sssec:sgdwp-variar-param}  % MARK: - Variando el Parámetro de Proyectar Cada
 
-Otra pregunta que surge es:
+En el segundo experimento, se busca contestar a la siguiente pregunta:
 \begin{quotation}
     \centering
     ¿Cómo afecta el parámetro $n_P$ en la convergencia del baricentro proyectado?
 \end{quotation}
-Una hipótesis que se tiene es que permitir que se den algunas iteraciones del algoritmo ``clásico'' permitirá tener una mejor estimación del baricentro original antes de proyectarlo en la variedad $\Manifold$. Para verificar esta hipótesis, se ejecuta el Algoritmo~\ref{alg:sgdwp} con distintos valores de $n_P$ y se observa cómo afecta en la convergencia del baricentro proyectado.
+La hipótesis plantea que la ejecución de las iteraciones del algoritmo ``clásico'', permitirán tener una mejor estimación del baricentro original antes de proyectarlo en la variedad $\Manifold$. Para verificar esta hipótesis, se ejecuta el Algoritmo~\ref{alg:sgdwp} con distintos valores de $n_P$ y se observa cómo afecta en la convergencia del baricentro proyectado.
 
 En particular, se ejecutará con los valores $n_P \in \left\{ 1, 3, 5, 10 \right\}$.
 
@@ -199,11 +198,14 @@ En particular, se ejecutará con los valores $n_P \in \left\{ 1, 3, 5, 10 \right
     \label{fig:bar-SGDWP-pe}
 \end{figure}
 
+\FM[inline]{\textbf{HAY QUE DISCUTIR ESTE RESULTADO}}
+
 En el Anexo~\ref{sec:sgdwp-iteraciones-adicionales} se presentan las iteraciones por las que pasaron estos baricentros.
 
 \subsubsection{Paseo Aleatorio}\label{sssec:sgdwp-paseo-aleatorio}  % MARK: - Paseo Aleatorio
 
-Dado que el baricentro proyectado no es único, se propone realizar un paseo aleatorio en la variedad $\Manifold$ para explorar las distintas medidas que se encuentren en esta variedad. Para ello, se propone un esquema de paso constante $\eta_k = 0.1$ donde $n_P = 1$. Se registran los resultados de cada 100 iteraciones del Algoritmo~\ref{alg:sgdwp}, los cuales se pueden observar en la Figura~\ref{fig:bar-SGDWP-random-walk}.
+Dado que el baricentro proyectado no es único, se propone realizar un paseo aleatorio sobre la variedad $\Manifold$ para explorar las distintas medidas que se encuentren en esta variedad. Para ello, se plantea un esquema de paso constante $\eta_k = 0.1$ donde $n_P = 1$.
+Se llevan a cabo 1000 iteraciones del Algoritmo~\ref*{alg:sgdwp}, registrando una muestra cada 100. Estos resultados se pueden observar en la Figura~\ref{fig:bar-SGDWP-random-walk}.
 
 \begin{figure}[H]
     \centering
@@ -280,11 +282,13 @@ Dado que el baricentro proyectado no es único, se propone realizar un paseo ale
     \label{fig:bar-SGDWP-random-walk}
 \end{figure}
 
+\FM[inline]{\textbf{HAY QUE DISCUTIR ESTE RESULTADO}}
 
 \subsection{Conclusiones}\label{ssec:sgdwp-conclusiones}  % MARK: - Conclusiones
 
 En vista a los experimentos, se puede observar que el baricentro proyectado provee una representación más natural de la imagen que se desea obtener.
-Sin embargo, se puede observar que el baricentro proyectado no es único, lo que sugiere que la variedad $\Manifold$ no es geodésicamente convexa. Esta es una diferencia significativa con respecto al baricentro original, que sí es único y consistente.
+Sin embargo, se puede observar que el baricentro proyectado no es único, lo que sugiere que la variedad $\Manifold$, en este caso, no es geodésicamente convexa. Esta es una diferencia significativa con respecto al baricentro original, que sí es único y consistente.
+
 Además, se observa que el parámetro $n_P$ no afecta significativamente en la convergencia del baricentro proyectado en este caso, sin embargo, es posible que sea necesario realizar más experimentos para verificar esta hipótesis.
-Por último, se observa que realizar un paseo aleatorio en la variedad $\Manifold$ permite explorar distintas medidas que se encuentren en esta variedad, lo que puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
+Por último, se observa que realizar un paseo aleatorio en la variedad $\Manifold$ permite explorar diversas medidas que se encuentren en esta variedad, lo que puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
 

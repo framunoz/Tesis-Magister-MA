@@ -70,14 +70,28 @@
         sorting=none,
         style=draft,
     ]{biblatex}  % Estilo de citado
-    \RequirePackage[
-        inline
-    ]{showlabels} % Mostrar etiquetas
+    % \RequirePackage[inline]{showlabels} % Mostrar etiquetas
 \else
     \RequirePackage[
         style=ieee,
     ]{biblatex}  % Estilo de citado
+    % \RequirePackage[
+    %     final
+    % ]{showlabels} % Mostrar etiquetas
 \fi
+
+% MARK: Final
+\if@final
+    \RequirePackage[
+        final
+    ]{showlabels} % Mostrar etiquetas
+\else
+    \RequirePackage[
+        inline
+    ]{showlabels} % Mostrar etiquetas
+\fi
+
+
 % \bibliography{bibliografia}  % Archivo de bibliografía
 \RequirePackage[pdfpagelabels,hidelinks]{hyperref} % Links y numeracion del PDF
 \RequirePackage{listings} % Codigo Fuente
