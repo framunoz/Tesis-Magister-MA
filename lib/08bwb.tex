@@ -162,6 +162,7 @@ A partir de las Figuras~\ref{fig:mcmc-n-005}, \ref{fig:mcmc-n-020}, \ref{fig:mcm
 
 \subsection{Cálculo del Baricentro de Wasserstein Bayesiano}\label{ssec:calc-bwb}  % MARK: - Cálculo del Baricentro de Wasserstein Bayesiano
 
+\RED[inline]{Revisar esta sección}
 Ahora que se conoce que se pueden simular muestras de la posterior $\Pi_n$ a partir de una red generativa, se puede calcular el baricentro de Wasserstein Bayesiano. Para ello, se utilizará el algoritmo de SGDW presentada en la Sección~\ref{sec:sgdw} con distintos valores de $n$ para observar cómo se comporta el baricentro a medida que se aumenta el número de datos.
 
 En la sección anterior se observa que con $n = 50$ ya hay muestras muy similares a la imagen original. Por este motivo, se realizarán experimentos con $n \in \left\{ 5, 10, 25, 50 \right\}$. Para el MCMC se utilizará $16$ cadenas diferentes de un largo de $25\,000$ cada una, quemando los primeros $2\,500$ pasos.
@@ -310,4 +311,5 @@ A partir de las figuras anteriores se puede observar que a medida que se aumenta
 
 \subsection{Conclusiones}\label{ssec:bwb-conclusiones}  % MARK: - Conclusiones
 
+\RED[inline]{Revisar esta conclusión}
 En vista a los resultados obtenidos, se concluye que el enfoque de obtener muestreos a partir de la posterior usando una red generativa como prior ha resultado de manera satisfactoria. Además, que la implementación del BWB ha resultado exitoso y que se ha logrado obtener baricentros de manera efectiva.

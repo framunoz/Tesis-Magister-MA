@@ -128,7 +128,8 @@ Además, cuando la función crítica y la decodificadora alcanzan un máximo y m
 
 \subsubsection{Implementación}\label{sssec:wae-wgan-implementacion}  % MARK: - Implementación
 
-El Algoritmo~\ref{alg:WAE-WGAN} se implementa utilizando la librería de \textit{PyTorch} \cite{paszke2019pytorch} a través de las redes neuronales convolucionales (CNN por sus siglas en inglés) siguiendo la estrategia de ResNet \cite{he2016deep}. La red neuronal se entrena en tres variedades de imágenes diferentes, las cuales han sido obtenidas siguiendo los pasos explicados en la Sección~\ref{ssec:preparacion-dataset}. Algunas muestras de estas variedades se presentan en la Figura~\ref{fig:variedades-imagenes}. Se separa el conjunto de datos en un conjunto de entrenamiento y otro de validación, con un $95\%$ y $5\%$ de las imágenes, respectivamente.
+
+El Algoritmo~\ref{alg:WAE-WGAN} se implementa utilizando la librería de \textit{PyTorch} \cite{paszke2019pytorch} a través de las redes neuronales convolucionales (CNN por sus siglas en inglés) [CITA], siguiendo la estrategia de ResNet \cite{he2016deep}. La red neuronal se entrena en tres variedades de imágenes diferentes, las cuales han sido obtenidas siguiendo los pasos explicados en la Sección~\ref{ssec:preparacion-dataset}. Algunas muestras de estas variedades se presentan en la Figura~\ref{fig:variedades-imagenes}. Se separa el conjunto de datos en un conjunto de entrenamiento y otro de validación, con un $95\%$ y $5\%$ de las imágenes, respectivamente.
 
 \begin{figure}[H]
     \begin{subfigure}[b]{0.32\textwidth}
@@ -155,7 +156,8 @@ El Algoritmo~\ref{alg:WAE-WGAN} se implementa utilizando la librería de \textit
     \label{fig:variedades-imagenes}
 \end{figure}
 
-A lo largo del entrenamiento se han registrado las estimaciones de la distancia de Wasserstein para la WGAN y el WAE sobre el conjunto de validación para analizar la convergencia. En la Figura~\ref{fig:wass-dist} se presentan dichas estimaciones. Se puede observar que ambas estimaciones disminuyen a lo largo del entrenamiento, lo que indica que las redes están aprendiendo a aproximar la distancia de Wasserstein correctamente, además de que corrobora que el algoritmo propuesto es estable.
+A lo largo del entrenamiento se han registrado las estimaciones de la distancia de Wasserstein para la WGAN y el WAE, sobre el conjunto de validación para analizar la convergencia. En la Figura~\ref{fig:wass-dist} se presentan dichas estimaciones. Se puede observar que ambas estimaciones disminuyen a lo largo del entrenamiento, lo que corrobora que el algoritmo propuesto es estable, y además, indica que las redes están aprendiendo a aproximar la distancia de Wasserstein correctamente.
+% , lo que indica que las redes están aprendiendo a aproximar la distancia de Wasserstein correctamente, además de que corrobora que el algoritmo propuesto es estable.
 
 \begin{figure}[H]
     \begin{subfigure}[b]{0.8\textwidth}
@@ -175,7 +177,8 @@ A lo largo del entrenamiento se han registrado las estimaciones de la distancia 
     \label{fig:wass-dist}
 \end{figure}
 
-Para validar que las redes generativas están aprendiendo a reconstruir y generar imágenes de calidad, se presentan en la Figura~\ref{fig:generacion-imagenes} imágenes reales, decodificadas y generadas por la WGAN y el WAE en las tres variedades de imágenes. Se puede observar que las imágenes generadas por la WAE-WGAN son bastante similares a las imágenes reales, lo que indica que las redes están aprendiendo a aproximar la distribución real. Además, las imágenes decodificadas por el WAE son bastante similares a las imágenes originales, lo que indica que la red está aprendiendo a proyectar sobre la variedad de imágenes simultáneamente.
+Para validar que las redes generativas están aprendiendo a reconstruir y generar imágenes de calidad,
+se presentan en la Figura~\ref{fig:generacion-imagenes} las imágenes reales, las decodificadas y las generadas por la WAE-WGAN.
 
 \begin{figure}[H]
     % Primera variedad
@@ -245,6 +248,8 @@ Para validar que las redes generativas están aprendiendo a reconstruir y genera
     \label{fig:generacion-imagenes}
 \end{figure}
 
+Se puede observar que las imágenes generadas por la WAE-WGAN son bastante similares a las imágenes reales, lo que indica que las redes están aprendiendo a aproximar la distribución real. Además, las imágenes decodificadas por el WAE son bastante similares a las imágenes originales, lo que muestra que la red está aprendiendo a proyectar sobre la variedad de imágenes simultáneamente.
+
 
 
 % \section{Detalles de la implementación}\label{sec:detalles-implementacion}  % MARK: - Detalles de la implementación
@@ -298,5 +303,6 @@ Para validar que las redes generativas están aprendiendo a reconstruir y genera
 
 \section{Conclusiones}\label{sec:conclusiones-wae-wgan}  % MARK: - Conclusiones
 
-A vista de los resultados, se puede concluir que la WAE-WGAN es capaz de generar imágenes de calidad y a la vez entrenar un codificador, de manera que se pueda proyectar sobre la variedad de imágenes. Además, se destaca que la WAE-WGAN es capaz de aproximar la distancia de Wasserstein, lo que indica que la red está aprendiendo a aproximar la distribución real. Por último, se destaca que la WAE-WGAN es capaz de aprender a proyectar sobre la variedad de imágenes, lo que indica que la red está aprendiendo a proyectar sobre la variedad de imágenes.
+
+A vista de los resultados, se puede concluir que la WAE-WGAN es capaz de generar imágenes de calidad y a la vez entrenar un codificador, de manera que se pueda proyectar sobre la variedad de imágenes. Además, se destaca que la WAE-WGAN es capaz de aproximar la distancia de Wasserstein, lo que indica que la red está aprendiendo a aproximar la distribución real.
 

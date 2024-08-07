@@ -1,1 +1,18 @@
-\chapter{Conclusiones Generales}\label{chap:conclusiones-generales}  % MARK: - Chapter Conclusiones Generales
+\chapter{Conclusiones Generales y Trabajo Futuro}\label{chap:conclusiones-generales}  % MARK: - Chapter Conclusiones Generales
+
+Para finalizar este trabajo de tesis, se presentan las conclusiones obtenidas a partir de los resultados obtenidos en los capítulos anteriores. En particular, se resumen los objetivos específicos y generales, y se discute el trabajo futuro que se puede realizar a partir de esta investigación.
+
+A nivel general, el resultado de este trabajo de tesis proporciona una librería en \textit{Python}, escrita utilizando \textit{PyTorch}. Esta librería hace uso de la GPU para el cálculo, tanto de baricentros de Wasserstein de población, como de baricentros de Wasserstein Bayesianos utilizando el SGDW. Dicho esto, el objetivo general de este trabajo de tesis se ha cumplido.\RED{Mostrar la meta cumplida -> poner el repo}
+
+Pasando a los objetivos específicos, en la Sección~\ref{ssec:implementacion-algoritmo} se explican dos maneras de estimar la medida $\Gamma \in \ProbSpace[\ProbSpace[\cX]]$ que se requiere para el cálculo del baricentro de Wasserstein Bayesiano. En particular, se proponen dos maneras de estimar la medida $\Gamma$: la primera es utilizar una red generativa, y la segunda es ocupar el conjunto de datos directamente. De esta manera, se cumple el objetivo específico \textbf{OE1}. Por otro lado, en la Sección~\ref{ssec:construccion-posterior} se propone una manera de estimar la medida posterior $\Pi_n(\dd \mu)$ usando una red generativa como distribución a priori, de manera que se cumple el objetivo específico \textbf{OE3}.
+
+Con el fin de cumplir el objetivo específico \textbf{OE2}, en la Sección~\ref*{sec:sgdw} se presenta el Algoritmo~\ref{alg:sgdw-general}, que es una adaptación del Algoritmo~\ref{alg:sgdw-clasico} para el cálculo de baricentros de Wasserstein que no posean densidad con respecto a la medida de Lebesgue. De este modo, se logra implementar el SGDW para una medida $\Gamma$, cumpliendo el objetivo específico \textbf{OE2}.
+
+Por último, cumplidos los objetivos específicos \textbf{OE2} y \textbf{OE3}, se calcula el baricentro de Wasserstein Bayesiano en la Sección~\ref{ssec:calc-bwb} para distintos valores de $n$, cumpliendo el objetivo específico \textbf{OE4}.
+
+Adicionalmente, en el transcurso de la tesis se ha desarrollado una manera novedosa de entrenar redes generativas adversarias basadas en la distancia de Wasserstein. Esto, para que el generador posea un codificador, con el objetivo de obtener un proyector sobre la variedad de imágenes deseada. Sin embargo, como este no ha sido el enfoque principal de la tesis, es necesario realizar un estudio más profundo para determinar si este enfoque es efectivo, además de acompañar los resultados visuales con métricas que permitan comparar este método con otros del estado del arte.
+
+Con respecto al descenso del gradiente estocástico, en la Sección~\ref{sec:sgdwp} se ha propuesto una extensión del algoritmo SGDW a una versión proyectada, de manera que el resultado del baricentro tenga un aspecto más natural. Esta extensión del algoritmo abre otras posibilidades de estudio, pues aún falta calibrar los parámetros efectivos. A pesar de esto, los resultados preliminares resultan prometedores.
+
+
+

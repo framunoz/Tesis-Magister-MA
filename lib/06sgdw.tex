@@ -151,7 +151,7 @@ Los resultados de las iteraciones se presentan a continuación:
     \label{fig:barycenters}
 \end{figure}
 
-En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS} y \ref{fig:batch-iters-GAN} se presentan las primeras y últimas iteraciones para el cálculo de los baricentros anteriormente mencionados. Se puede notar como en las primeras iteraciones de las Figuras~\ref{fig:first-iters-DS} y \ref{fig:first-iters-GAN}, la estimación del baricentro varía mucho entre una iteración y otra, debido al esquema de paso utilizado. Sin embargo, a medida que se avanza en las iteraciones, la estimación del baricentro se estabiliza. Además, se puede observar en las Figuras~\ref{fig:batch-first-iters-DS} y \ref{fig:batch-first-iters-GAN} que el método por lotes provee imágenes más difusas en las primeras iteraciones, debido a la mayor cantidad de muestras utilizadas en el cálculo del baricentro, pero que proporciona resultados muy similares a su versión simplificada en un menor tiempo de ejecución.
+En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS} y \ref{fig:batch-iters-GAN} se presentan las primeras y últimas iteraciones para el cálculo de los baricentros anteriormente mencionados.
 
 
 % MARK: - Empirica
@@ -221,6 +221,8 @@ En las Figuras~\ref{fig:iters-DS}, \ref{fig:iters-GAN}, \ref{fig:batch-iters-DS}
     \caption{Iteraciones del cálculo del baricentro de $\tilde\Prob_X$ en su versión por lotes.}
     \label{fig:batch-iters-GAN}
 \end{figure}
+
+Se puede notar cómo en las primeras iteraciones de las Figuras~\ref{fig:first-iters-DS} y \ref{fig:first-iters-GAN}, la estimación del baricentro varía mucho entre una iteración y otra, debido al esquema de paso utilizado. Sin embargo, a medida que se avanza en las iteraciones, la estimación del baricentro se estabiliza. Además, se puede observar en las Figuras~\ref{fig:batch-first-iters-DS} y \ref{fig:batch-first-iters-GAN} que el método por lotes provee imágenes más difusas en las primeras iteraciones, debido a la mayor cantidad de muestras utilizadas en el cálculo del baricentro. No obstante, proporciona resultados muy similares a su versión simplificada en un menor tiempo de ejecución.
 
 
 % En el Anexo~\ref{sec:compl-sgdw-iters} se presentan las primeras y últimas iteraciones del cálculo de los baricentros, tanto para la medida empírica $\hat\Prob_X$ como para la medida generadora $\tilde\Prob_X$.

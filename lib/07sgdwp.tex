@@ -66,7 +66,7 @@ Como se sabe, y los experimentos de la Sección~\ref{sec:sgdw} corroboran, el ba
 
 Para este experimento, se utiliza el mismo esquema $(\eta_k)_k$ de la Ecuación~\ref{eq:esquema-paso}, usando los mismos parámetros mencionados. Para el esquema de lotes, se utiliza $S_k=1,\ \forall k \in \N$. Para definir el proyector, se utilizan las redes neuronales expuestas en el Capítulo~\ref{chap:WAE-WGAN}, de manera que el proyector se define por $P = \ProbQ_\varphi (G_\theta (\bullet))$\FM{Quizás comentar en la sección de la WGAN-WAE que se hará el abuso de notación cuando se asume que $\ProbQ$ es determinista.}. Además se fija $n_P=1$ para proyectar en cada iteración del algoritmo.
 
-El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados en diez experimentos distintos. Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para el problema planteado. Además, se puede observar que los baricentros obtenidos difieren bastante en la forma del baricentro sin proyectar, como se observa en la Figura~\ref{fig:barycenters}. Una explicación a este fenómeno es debido a que se proyecta el baricentro en cada iteración del algoritmo, sin dar una ventana para que el baricentro se estabilice antes de proyectarlo.
+El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGDWP-exp}, donde se muestran los baricentros proyectados en diez experimentos distintos.
 \begin{figure}[H]
     \centering
     % Experimento 01
@@ -152,6 +152,8 @@ El resultado de este experimento se puede observar en la Figura~\ref{fig:bar-SGD
     \label{fig:bar-SGDWP-exp}
 \end{figure}
 
+Se puede observar que los baricentros proyectados son distintos entre sí, lo que sugiere que no existe un único baricentro proyectado para el problema planteado. Además, se puede observar que los baricentros obtenidos difieren bastante en la forma del baricentro clásico (Fig.~\ref{fig:barycenters}). Una explicación a este fenómeno es debido a que se proyecta el baricentro en cada iteración del algoritmo, sin dar una ventana para que el baricentro se estabilice antes de proyectarlo.
+
 \subsubsection{Variando el Parámetro de Proyectar Cada $n_P$}\label{sssec:sgdwp-variar-param}  % MARK: - Variando el Parámetro de Proyectar Cada
 
 En el segundo experimento, se busca contestar a la siguiente pregunta:
@@ -200,7 +202,7 @@ En particular, se ejecutará con los valores $n_P \in \left\{ 1, 3, 5, 10 \right
 
 En el Anexo~\ref{sec:sgdwp-iteraciones-adicionales} se presentan las iteraciones por las que pasaron estos baricentros.
 
-A partir de la Figura~\ref{fig:bar-SGDWP-pe}, se observa que utilizando otros valores de $n_P$ permite tener una estimación del baricentro más similar a los presentados en la Figura~\ref{fig:barycenters}, pero con una mayor naturalidad. En este caso, se destaca que el baricentro de la Figura~\ref{fig:bar-SGDWP-pe-05} es el que más se asemeja al baricentro original.
+A partir de la Figura~\ref{fig:bar-SGDWP-pe}, se observa que utilizar otros valores de $n_P$, permite obtener una estimación del baricentro más similar al baricentro clásico (Fig.~\ref{fig:barycenters}), pero con una mayor naturalidad. En este caso, se destaca que el baricentro de la Figura~\ref{fig:bar-SGDWP-pe-05} es el que más se asemeja al baricentro original.
 
 
 \subsubsection{Paseo Aleatorio}\label{sssec:sgdwp-paseo-aleatorio}  % MARK: - Paseo Aleatorio
@@ -283,13 +285,15 @@ Se llevan a cabo 1000 iteraciones del Algoritmo~\ref*{alg:sgdwp}, registrando un
     \label{fig:bar-SGDWP-random-walk}
 \end{figure}
 
-A partir de la Figura~\ref{fig:bar-SGDWP-random-walk}, se observa que el paseo aleatorio permite explorar distintas medidas similares entre sí que se encuentran en la variedad $\Manifold$, evitando caer en un mínimo local. Además, se observa que el paseo aleatorio permite explorar distintas medidas que se encuentran en la variedad $\Manifold$, lo que puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
+A partir de la Figura~\ref{fig:bar-SGDWP-random-walk}, se observa que el paseo aleatorio permite explorar distintas medidas similares entre sí, que se encuentran en la variedad $\Manifold$, evitando caer en un mínimo local. Esto puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
+% Además, se observa que el paseo aleatorio permite explorar distintas medidas que se encuentran en la variedad $\Manifold$, 
+% lo que puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
 
 \subsection{Conclusiones}\label{ssec:sgdwp-conclusiones}  % MARK: - Conclusiones
 
 En vista a los experimentos, se puede observar que el baricentro proyectado provee una representación más natural de la imagen que se desea obtener.
-Sin embargo, se puede notar que el baricentro proyectado no es único, lo que sugiere que la variedad $\Manifold$, en este caso, no es geodésicamente convexa. Esta es una diferencia significativa con respecto al baricentro original, que sí es único y consistente.
+Sin embargo, se puede notar que el baricentro proyectado no es único, lo que sugiere que la variedad $\Manifold$, en este caso, no es geodésicamente convexa. Esta es una diferencia significativa con respecto al baricentro clásico, que sí es único y consistente.
 
-Además, se observa que modificando el parámetro $n_P$ permite obtener baricentros más similares al baricentro original, pero con una mayor naturalidad. En particular, se destaca que el baricentro proyectado con $n_P=5$ es el que más se asemeja al baricentro original.
+Además, se observa que modificar el parámetro $n_P$ permite obtener baricentros más similares al baricentro clásico, pero con una mayor naturalidad. En particular, se destaca que el baricentro proyectado con $n_P=5$ es el que más se asemeja al baricentro clásico.
 Por último, se observa que realizar un paseo aleatorio en la variedad $\Manifold$ permite explorar diversas medidas que se encuentren en esta variedad, lo que puede ser útil para obtener distintas representaciones de la imagen que se desea obtener.
 
