@@ -164,12 +164,150 @@ A partir de las Figuras~\ref{fig:mcmc-n-005}, \ref{fig:mcmc-n-020}, \ref{fig:mcm
 
 Ahora que se conoce que se pueden simular muestras de la posterior $\Pi_n$ a partir de una red generativa, se puede calcular el baricentro de Wasserstein Bayesiano. Para ello, se utilizará el algoritmo de SGDW presentada en la Sección~\ref{sec:sgdw} con distintos valores de $n$ para observar cómo se comporta el baricentro a medida que se aumenta el número de datos.
 
-En la sección anterior se observa que con $n = 50$ ya hay muestras muy similares a la imagen original. Por este motivo, se realizarán experimentos con $n \in \left\{ 5, 10, 25, 50 \right\}$. Para el MCMC se utilizará el mismo número de cadenas y pasos que en la sección anterior.\FM{Muy seguramente estos parámetros cambiarán, hay que estar atento.}
-Y para los parámetros del SGDW se utilizarán los mismos que en la Sección~\ref{sec:sgdw}.\FM{Esto también puede cambiar.}
+En la sección anterior se observa que con $n = 50$ ya hay muestras muy similares a la imagen original. Por este motivo, se realizarán experimentos con $n \in \left\{ 5, 10, 25, 50 \right\}$. Para el MCMC se utilizará $16$ cadenas diferentes de un largo de $25\,000$ cada una, quemando los primeros $2\,500$ pasos.
+Y para los parámetros del SGDW se utilizarán los mismos que en la Sección~\ref{sec:sgdw}.\FM{\textbf{Esto también puede cambiar.}}
 
 
-\subsection{Resultados y Discusión}\label{ssec:bwb-resultados-discusion}  % MARK: - Resultados y Discusión
+% \begin{figure}[H]
+%     % n = 5
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/samples-hist-n-05.pdf}
+%         \caption{Histograma de los datos con $n=5$.}
+%         \label{fig:samples-hist-n-05}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/BWB-n-data-05.pdf}
+%         \caption{Baricentro con $n=5$.}
+%         \label{fig:bwb-n-data-05}
+%     \end{subfigure}
+%     % n = 10
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/samples-hist-n-10.pdf}
+%         \caption{Histograma de los datos con $n=10$.}
+%         \label{fig:samples-hist-n-10}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/BWB-n-data-10.pdf}
+%         \caption{Baricentro con $n=10$.}
+%         \label{fig:bwb-n-data-10}
+%     \end{subfigure}
+%     % n = 25
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/samples-hist-n-25.pdf}
+%         \caption{Histograma de los datos con $n=25$.}
+%         \label{fig:samples-hist-n-25}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/BWB-n-data-25.pdf}
+%         \caption{Baricentro con $n=25$.}
+%         \label{fig:bwb-n-data-25}
+%     \end{subfigure}
+%     % n = 50
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/samples-hist-n-50.pdf}
+%         \caption{Histograma de los datos con $n=50$.}
+%         \label{fig:samples-hist-n-50}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[height=6cm]{img/bwb/BWB-n-data-50.pdf}
+%         \caption{Baricentro con $n=50$.}
+%         \label{fig:bwb-n-data-50}
+%     \end{subfigure}
+%     \caption{Resultados de los experimentos para el cálculo del baricentro de Wasserstein Bayesiano.}
+%     \label{fig:bwb-experiments}
+% \end{figure}
+
+% n = 5
+\begin{figure}[H]
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/samples-hist-n-05.pdf}
+        \caption{Histograma de los datos con $n=5$.}
+        \label{fig:samples-hist-n-05}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/BWB-n-data-05.pdf}
+        \caption{Baricentro con $n=5$.}
+        \label{fig:bwb-n-data-05}
+    \end{subfigure}
+    \caption{Resultados de los experimentos para el cálculo del BWB con $n=5$.}
+    \label{fig:bwb-experiments-n-05}
+\end{figure}
+
+% n = 10
+\begin{figure}[H]
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/samples-hist-n-10.pdf}
+        \caption{Histograma de los datos con $n=10$.}
+        \label{fig:samples-hist-n-10}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/BWB-n-data-10.pdf}
+        \caption{Baricentro con $n=10$.}
+        \label{fig:bwb-n-data-10}
+    \end{subfigure}
+    \caption{Resultados de los experimentos para el cálculo del BWB con $n=10$.}
+    \label{fig:bwb-experiments-n-10}
+\end{figure}
+
+% n = 25
+\begin{figure}[H]
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/samples-hist-n-25.pdf}
+        \caption{Histograma de los datos con $n=25$.}
+        \label{fig:samples-hist-n-25}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/BWB-n-data-25.pdf}
+        \caption{Baricentro con $n=25$.}
+        \label{fig:bwb-n-data-25}
+    \end{subfigure}
+    \caption{Resultados de los experimentos para el cálculo del BWB con $n=25$.}
+    \label{fig:bwb-experiments-n-25}
+\end{figure}
+
+% n = 50
+\begin{figure}[H]
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/samples-hist-n-50.pdf}
+        \caption{Histograma de los datos con $n=50$.}
+        \label{fig:samples-hist-n-50}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=6cm]{img/bwb/BWB-n-data-50.pdf}
+        \caption{Baricentro con $n=50$.}
+        \label{fig:bwb-n-data-50}
+    \end{subfigure}
+    \caption{Resultados de los experimentos para el cálculo del BWB con $n=50$.}
+    \label{fig:bwb-experiments-n-50}
+\end{figure}
+
+A partir de las figuras anteriores se puede observar que a medida que se aumenta el número de datos $n$, el baricentro de Wasserstein Bayesiano se parece más al modelo original $\tilde\mu$, pero de manera difuminada, como lo son los baricentros clásicos (Fig.~\ref{fig:barycenters}). Esto es lo esperable, pues a medida que se aumenta el número de datos, la posterior se concentra más en el modelo original, lo que se traduce en un baricentro más parecido a $\tilde\mu$.
 
 
 \subsection{Conclusiones}\label{ssec:bwb-conclusiones}  % MARK: - Conclusiones
 
+En vista a los resultados obtenidos, se concluye que el enfoque de obtener muestreos a partir de la posterior usando una red generativa como prior ha resultado de manera satisfactoria. Además, que la implementación del BWB ha resultado exitoso y que se ha logrado obtener baricentros de manera efectiva.
