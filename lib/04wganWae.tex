@@ -175,7 +175,7 @@ A lo largo del entrenamiento se han registrado las estimaciones de la distancia 
     \label{fig:wass-dist}
 \end{figure}
 
-Para validar que las redes generativas están aprendiendo a reconstruir y generar imágenes de calidad, se presentan en la Figura~\ref{fig:generacion-imagenes} imágenes reales, decodificadas y generadas por la WGAN y el WAE en las tres variedades de imágenes. Se puede observar que las imágenes generadas por la WAE-WGAN son bastante similares a las imágenes reales, lo que indica que las redes están aprendiendo a aproximar la distribución real. Además, las imágenes decodificadas por el WAE son bastante similares a las imágenes reales, lo que indica que la red está aprendiendo a proyectar sobre la variedad de imágenes simultáneamente.
+Para validar que las redes generativas están aprendiendo a reconstruir y generar imágenes de calidad, se presentan en la Figura~\ref{fig:generacion-imagenes} imágenes reales, decodificadas y generadas por la WGAN y el WAE en las tres variedades de imágenes. Se puede observar que las imágenes generadas por la WAE-WGAN son bastante similares a las imágenes reales, lo que indica que las redes están aprendiendo a aproximar la distribución real. Además, las imágenes decodificadas por el WAE son bastante similares a las imágenes originales, lo que indica que la red está aprendiendo a proyectar sobre la variedad de imágenes simultáneamente.
 
 \begin{figure}[H]
     % Primera variedad
@@ -298,5 +298,5 @@ Para validar que las redes generativas están aprendiendo a reconstruir y genera
 
 \section{Conclusiones}\label{sec:conclusiones-wae-wgan}  % MARK: - Conclusiones
 
-\FM[inline]{Aquí incluir las conclusiones}
+A vista de los resultados, se puede concluir que la WAE-WGAN es capaz de generar imágenes de calidad y a la vez entrenar un codificador, de manera que se pueda proyectar sobre la variedad de imágenes. Además, se destaca que la WAE-WGAN es capaz de aproximar la distancia de Wasserstein, lo que indica que la red está aprendiendo a aproximar la distribución real. Por último, se destaca que la WAE-WGAN es capaz de aprender a proyectar sobre la variedad de imágenes, lo que indica que la red está aprendiendo a proyectar sobre la variedad de imágenes.
 

@@ -158,9 +158,11 @@ donde $\nu_z = G_\theta(z)$, mientras que para el primer término se utiliza el 
     \label{fig:mcmc-n-100}
 \end{figure}
 
+A partir de las Figuras~\ref{fig:mcmc-n-005}, \ref{fig:mcmc-n-020}, \ref{fig:mcmc-n-050} y \ref{fig:mcmc-n-100}, se puede observar que a medida que se aumenta el número de datos $n$, las muestras de la posterior $\Pi^Z_n$ se parecen más al modelo original $\tilde\mu$. Esto es lo esperable en un enfoque Bayesiano.
+
 \subsection{Cálculo del Baricentro de Wasserstein Bayesiano}\label{ssec:calc-bwb}  % MARK: - Cálculo del Baricentro de Wasserstein Bayesiano
 
-Ahora que se conoce que se pueden simular muestras de la posterior $\Pi_n$ a partir de una red generativa, se puede calcular el baricentro de Wasserstein Bayesiano. Para ello, se utilizará la variación del algoritmo de SGDW presentada en la Sección~\ref{sec:sgdw} para distintos valores de $n$ para observar cómo se comporta el baricentro a medida que se aumenta el número de datos.
+Ahora que se conoce que se pueden simular muestras de la posterior $\Pi_n$ a partir de una red generativa, se puede calcular el baricentro de Wasserstein Bayesiano. Para ello, se utilizará el algoritmo de SGDW presentada en la Sección~\ref{sec:sgdw} con distintos valores de $n$ para observar cómo se comporta el baricentro a medida que se aumenta el número de datos.
 
 En la sección anterior se observa que con $n = 50$ ya hay muestras muy similares a la imagen original. Por este motivo, se realizarán experimentos con $n \in \left\{ 5, 10, 25, 50 \right\}$. Para el MCMC se utilizará el mismo número de cadenas y pasos que en la sección anterior.\FM{Muy seguramente estos parámetros cambiarán, hay que estar atento.}
 Y para los parámetros del SGDW se utilizarán los mismos que en la Sección~\ref{sec:sgdw}.\FM{Esto también puede cambiar.}
