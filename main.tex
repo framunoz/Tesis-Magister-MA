@@ -4,7 +4,7 @@
 % - draft: Para revisión. Incluye notas de revisión, las referencias aparecen como se nombran en el tex e incluye el nombre de los labels al margen. No aparecen las imágenes para acelerar la compilación.
 % - (default): También para la revisión, pero sin las notas de revisión y sin los nombres de los labels al margen. Aparecen las imágenes.
 % - final: Para la versión final. Sin notas de revisión, sin nombres de labels al margen y con las referencias en el formato correcto. Además, el formato del documento es el solicitado por la biblioteca de la FCFM.
-\documentclass[]{umemoria} 
+\documentclass[final]{umemoria} 
 
 \addbibresource{bibliografia.bib}
 
@@ -25,7 +25,7 @@
 
 \depto{Departamento de Ingeniería Matemática}
 \author{Francisco Muñoz Guajardo}
-\title{Título de la Memoria/Tesis}
+\title{Cálculo del Baricentro de Wasserstein Bayesiano en Conjuntos de Imágenes mediante Descenso del Gradiente Estocástico}
 
 % incluir ambos comandos para una doble titulación
 %  o quitar el comando que no aplica
@@ -68,7 +68,16 @@
 \maketitle
 
 \begin{resumen}
-    \lipsum[1-4]
+    En el presente trabajo de tesis se expone el desarrollo e implementación del algoritmo de Descenso del Gradiente Estocástico sobre el Espacio de Wasserstein (SGDW) para el cálculo de baricentros de Wasserstein Bayesiano (BWB). La relevancia de este trabajo radica en que, hasta la fecha, no existe implementación del SGDW ni el BWB sobre conjuntos de imágenes.
+
+    Para ello, se comienza con una revisión de la teoría de transporte óptimo y la distancia de Wasserstein, seguida de una explicación de los baricentros de Wasserstein de población y la manera en que se pueden calcular utilizando el SGDW. Posteriormente, y dado que se utilizará como medida a priori de la distribución posterior, se presenta la teoría necesaria de las redes generativas.
+
+    En este contexto, se introduce un método para entrenar redes generativas adversarias basadas en la distancia de Wasserstein, donde también se entrena simultáneamente un codificador para el generador. El codificador será necesario en el futuro para obtener un proyector sobre la variedad de imágenes deseada.
+
+    Se explica la implementación del algoritmo SGDW, se presenta la variación proyectada del algoritmo y se concluye con el cálculo del baricentro de Wasserstein Bayesiano. Cada una de estas secciones está acompañada de experimentos que validan cualitativamente la calidad de las simulaciones.
+
+    Finalmente, se menciona que el resultado de este trabajo es una librería en \textit{Python}, utilizada para desarrollar las simulaciones de este trabajo. Como parte del trabajo futuro, se señala que el SGDW proyectado y la red generativa con codificador requieren especial atención.
+
 \end{resumen}
 
 % opcional: incluir para tesis en inglés;
